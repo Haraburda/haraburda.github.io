@@ -1,6 +1,6 @@
 # <b>Supply Chain Analytics Executive | Predictive Data Scientist | Professional Engineer (PE) | Project Manager (PMP) | PhD | OPM-Certified SES Candidate | Colonel, USA (Ret.)
 
-## Executive Profile
+## EXECUTIVE PROFILE
 
 <img src="haraburda_photo.jpg" align="left" width="100px"/> <b>Highly analytical, OPM-Certified Senior Executive Service (SES) Candidate</b> and registered <b>Professional Engineer (PE)</b> with 30+ years of industrial leadership at the intersection of <b>multi-billion-dollar ERP systems, predictive data science, and macro SIOP/S&OP frameworks</b>.
 
