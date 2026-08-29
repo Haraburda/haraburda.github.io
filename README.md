@@ -92,13 +92,16 @@ This section contains a deep catalog of production-grade statistical architectur
 
 * **Generalized Cross-Validation (GCV) LOESS Curve-Smoothing:** 
   * *Operational Impact:* Automates scatterplot variance modeling using Locally Estimated Scatterplot Smoothing (LOESS), integrating an explicit Generalized Cross-Validation (GCV) computation loop to mathematically determine optimal span selection and prevent objective analysis bias.
-  * **🔗 View R Script:** [GCV LOESS Smoothing Script](./scripts/statistics/loess_smoothing.R)
+  * **🔗 View R Script:** [GCV LOESS Smoothing Script](statistics/Sta_Loess_Regression.html)
 * **Cross-Validated Nonlinear Regression Analysis:** 
   * *Operational Impact:* Maps non-linear, shop-floor process behaviors using custom curvilinear regression formulations, backed by multi-fold cross-validation metrics to explicitly prevent over-fitting.
-  * **🔗 View R Script:** [Nonlinear Cross-Validation Script](./scripts/statistics/nonlinear_regression.R)
+  * **🔗 View R Script:** [Nonlinear Cross-Validation Script](statistics/Sta_Nonlinear_Regression.html)
 * **Bayesian vs. Frequentist Linear Regression Frameworks:** 
   * *Operational Impact:* Side-by-side analytical testing suite evaluating data structures via classical hypothesis loops (p-values, confidence bounds) compared against prior-informed Bayesian probability intervals.
-  * **🔗 View R Script:** [Comparative Linear Regression Script](./scripts/statistics/linear_regression.R)
+  * **🔗 View R Script:** [Comparative Linear Regression Script](statistics/Sta_Linear_Regression.html)
+* **Process Capability & Lead-Time Variance Modeling (Histogram & Normal Curve):** 
+  * *Operational Impact:* Renders frequency distribution matrices overlaid with a parametric Gaussian curve to assess process behavior, calculate statistical variance, and evaluate shop-floor manufacturing capabilities (Cp/Cpk) against engineering tolerances.
+  * **🔗 View R Script:** [Histogram Distribution Script](visualization/Vis_Histogram1.html)
 
 ---
 
@@ -106,13 +109,13 @@ This section contains a deep catalog of production-grade statistical architectur
 
 * **Descriptive Analytics & Root-Cause Safety Architecture:** 
   * *Operational Impact:* Transforms plant incident reporting data into high-visibility executive dashboards. Features Pareto distribution layers, cross-unit weekday heatmaps, and conditional incident-severity pyramids to uncover root-cause manufacturing risk metrics.
-  * **🔗 View R Script:** [Safety Dashboards Analytics Script](./scripts/visualization/safety_analytics.R)
+  * **🔗 View R Script:** [Safety Dashboards Analytics Script](visualization/Vis_Safety1.html)
 * **Network Supply Chain Sankey Flux Visualization:** 
   * *Operational Impact:* Programmatically maps complex financial, raw material, and labor velocity flows across disconnected enterprise nodes using high-clarity weighted directional Sankey network trees.
-  * **🔗 View R Script:** [Sankey Flow Diagrams Script](./scripts/visualization/sankey_diagram.R)
+  * **🔗 View R Script:** [Sankey Flow Diagrams Script](visualization/Vis_Sankey1.html)
 * **Global Route Geospatial Mapping:** 
   * *Operational Impact:* Visualizes inter-theater logistics legs and distribution center connections by rendering precise orthodromic route line matrices directly on top of coordinate world map scales.
-  * **🔗 View R Script:** [Geospatial Mapping Script](./scripts/visualization/global_routes.R)
+  * **🔗 View R Script:** [Geospatial Mapping Script](visualization/Vis_GlobalMap1.html)
 
 ---
 
@@ -120,42 +123,15 @@ This section contains a deep catalog of production-grade statistical architectur
 
 * **Automated Web-Scraping Tabular Extraction Pipelines:** 
   * *Operational Impact:* Deploys web-scraping scripts to crawl HTML structures, targets isolated index tables, and cleanly normalizes messy unstructured tabular payloads into standardized analytical dataframes.
-  * **🔗 View R Script:** [Automated Web Scraping Script](./scripts/wrangle/web_scraping.R)
+  * **🔗 View R Script:** [Automated Web Scraping Script](wrangle/Wra_WebScrape1.html)
 * **Data Cleansing & Vector Integrity Pipelines:** 
   * *Operational Impact:* Cleans incoming raw CSV/database outputs by isolating sparse columns, correcting corrupt categorical vector definitions, and safely translating missing values into uniform missing-data (`NA`) primitives.
-  * **🔗 View R Script:** [Vector Cleaning Pipeline Script](./scripts/wrangle/data_cleansing.R)
+  * **🔗 View R Script:** [Vector Cleaning Pipeline Script](wrangle/Wra_RemoveBlankCell.html)
 
 ---
 
-## Analysis Scripts (R programming)
-<p align="center"><b>Chemical Engineering</b></p>
-* [Helical-Coil Heat Exchanger Design](chem_eng/ChE_HelicalCoilHX.html). To design a helical-coil heat exchanger, which is useful for three-phase flow, by calculating the tube-side heat-transfer coefficient; calculating the shell-side heat-transfer coefficient; and calculating the heat-exchanger size; calculating the tube-side pressure drop. This contains the script for my <i>Chemical Engineering</i> article. *(date: July 1, 1995)*<br>
-* [Liquid Density Predictions](chem_eng/ChE_predict_rho.html). To predict liquid densities using equations for the Rackett and Bhirud correlation methods. Examples include water and hexane, a polar and non-polar chemical respectively. *(date: June 9, 1994)*<br>
-* [Vapor Pressures from Curve-Fitting](chem_eng/ChE_Curve_Fit_VP.html). To use simple and quick techniques to estimate vapor pressures using known data. This includes a quick estimate using the Antoine equation, and a more rigorous estimation using the Newton_Raphson method. This includes the script for my <i>Chemical Engineering</i> article. *(date: March 1, 1996)*
 <p></p>
-
-<p align="center"><b>Statistics</b></p>
-* [Linear Regression of Data](statistics/Sta_Linear_Regression.html). To conduct linear regression of data using two general approaches - Frequentist and Bayesian. The Frequentist approach conducts hypothesis testing using P values and confidence intervals, which are well-established throughout the scientific community for decades. However, it isn’t able to address order, inequality, and direction for its hypothesis. Nor, does it consider prior knowledge. Lately, scientific articles using Bayesian methods have increased. *(date: January 19, 2023)*
-<p></p>
-* [Local Regression Smoothing of Data](statistics/Sta_Loess_Regression.html). To conduct local regression smoothing plots of data on x-y axis using LOESS (locally estimated scatter-plot smoothing). Different values for span are used to demonstrate this parameter for smoothing the curve that represents the scatter of data.  The default value is 0.75 So, the primary question becomes: <i>"What size span should I use?"</i> One method demonstrated is to use a visual interpretation using different span values and choosing the one with the least amount of smoothing that appears appropriate to the analysis. Other methods include calculations, such as cross validation (CV) and Generalized Cross Validation (GCV). A quick GCV approach is used to select the best span value in this example. *(date: February 4, 2019)*
-<p></p>
-* [Nonlinear Regression of Data](statistics/Sta_Nonlinear_Regression.html). To conduct non-linear regression plots of data along with cross-validation metrics to assess concerns regarding potential overfitting in the model. This example contains 101 data points. *(date: September 24, 2018)*
-<p></p>
-<p align="center"><b>Visualization</b></p>
-* [Connecting Routes on a Global Map](visualization/Vis_GlobalMap1.html). To portray connection lines between several locations on a map. *(date: September 13, 2018)*
-<p></p>
-* [Descriptive Analytics of Safety Data](visualization/Vis_Safety1.html). To portray a graphical representation of safety data using descriptive analytics to assess valuable information. This includes a Pareto by event for all safety incidents, a Pareto of recordable incidents, a graph of recordable incidents by unit and by day of the week, a heatmap of recordable safety incidents by day of the week for each unit (percentage by day and by unit), safety pyramid by severity for each unit, and heatmap of incidents by time of the weekday. *(date: October 15, 2019)*
-<p></p>
-* [Histogram Plot with Normal Distribution Curve](visualization/Vis_Histogram1.html). To portray a graphical representation of data using a histogram and a normal distribution curve (frequency weighted). *(date: September 20, 2018)*
-<p></p>
-* [Sankey Diagram](visualization/Vis_Sankey1.html). To portray a graphical representation of the flow of entities (ie money, material, and labor) between nodes, such as processes and organizations. This uses codes to generate Sankey diagrams, which are visualizations used to depict a flow from one set of values to another in which the things being connected are called nodes and the connections are called links. *(date: November 25, 2019)*
-<p></p>
-<p align="center"><b>Wrangle</b></p>
-* [Replace Blank Cells with NA](wrangle/Wra_RemoveBlankCell.html).  To locate and remove blank cells (NULL) from data files with vectors characterized as factors and replace with NA. This also replaces factor types. *(date: September 18, 2018)*
-<p></p>
-* [Retrieve Tabular Data from a Website](wrangle/Wra_WebScrape1.html).  To retrieve tabular data via web scraping techniques. This example extracts the “past population” data (10th table on the website) from the Wikipedia “World Population” site. *(date: April 27, 2020)*
-<p></p>
-[click to view tutorial codes](https://github.com/Haraburda/tutorial_codes.git)
+[click to view Advanced Operations Research, Data Engineering & Machine Learning Engines codes](https://github.com/Haraburda/tutorial_codes.git)
 
 ## Patents and Patent Publications
 <img src="haraburda_patent.jpg" align="left" width="400px"/>
