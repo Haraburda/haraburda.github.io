@@ -20,6 +20,8 @@ Throughout my career, spanning <b>global military logistics theater command, fed
 
 [click to view Resume](Haraburda_Resume.pdf)
 
+---
+
 ## 🔬 Enterprise Analytics & Predictive Modeling Projects
 
 Explore the underlying codebase frameworks built to leverage statistical programming, resolve network bottlenecks, and optimize resource allocation.
@@ -39,15 +41,14 @@ Explore the underlying codebase frameworks built to leverage statistical program
 * **Supply Chain Impact:** Armed the Crisis Management Team (CMT) with predictive operational visibility, preserving shop-floor capacity, balancing weather/safety leave adjustments, and maintaining high-velocity munitions manufacturing continuity under extreme disruptions.
 * **📂 Code Base:** [View Operational Resilience Code](project/COVID.html)
 
----
 <p></p>
 [click to view project codes](https://github.com/Haraburda/project_codes.git)
+
+---
 
 ## 🎛️ Advanced Operations Research, Data Engineering & Machine Learning Engines
 
 This section contains a deep catalog of production-grade statistical architecture, algorithmic scripts, and simulation layers engineered in `R` to model physical constraints and optimize industrial networks.
-
----
 
 ### 1. Machine Learning & Predictive Maintenance (PdM)
 
@@ -61,8 +62,6 @@ This section contains a deep catalog of production-grade statistical architectur
   * *Operational Impact:* Multi-branch sequence-query logic layer designed to cleanly parse high-dimensional datasets containing intermixed un-ordered categorical variables and continuous metrics without requiring lossy pre-processing.
   * **🔗 View R Script:** [Decision Tree Modeling Script](machine_learning/ML_CART1.html)
 
----
-
 ### 2. Operations Research, Modeling & Simulation
 
 * **Mixed-Integer Linear Programming (MILP) Constraints Optimization:** 
@@ -71,8 +70,6 @@ This section contains a deep catalog of production-grade statistical architectur
 * **Kriging (Gaussian Process Regression) Grid Estimation:** 
   * *Operational Impact:* Uses spatially correlated coordinate matrices and Gaussian regression algorithms to accurately interpolate data layers between isolated physical sampling grid nodes.
   * **🔗 View R Script:** [Spatial Kriging Interpolation Script](modeling_simulation/Mod_Krige1.html)
-
----
 
 ### 3. Complex Chemical & Process Engineering Simulations
 
@@ -85,8 +82,6 @@ This section contains a deep catalog of production-grade statistical architectur
 * **Multi-Component Liquid Density Predictions:** 
   * *Operational Impact:* Translates empirical chemical mechanics into code utilizing the Rackett and Bhirud correlation frameworks to accurately predict real-time density matrices across polar and non-polar liquid variations.
   * **🔗 View R Script:** [Liquid Density Correlations Script](chem_eng/ChE_predict_rho.html)
-
----
 
 ### 4. Advanced Manufacturing Statistics & Optimization
 
@@ -103,8 +98,6 @@ This section contains a deep catalog of production-grade statistical architectur
   * *Operational Impact:* Renders frequency distribution matrices overlaid with a parametric Gaussian curve to assess process behavior, calculate statistical variance, and evaluate shop-floor manufacturing capabilities (Cp/Cpk) against engineering tolerances.
   * **🔗 View R Script:** [Histogram Distribution Script](visualization/Vis_Histogram1.html)
 
----
-
 ### 5. Industrial Flow & Enterprise Safety Visualizations
 
 * **Descriptive Analytics & Root-Cause Safety Architecture:** 
@@ -117,8 +110,6 @@ This section contains a deep catalog of production-grade statistical architectur
   * *Operational Impact:* Visualizes inter-theater logistics legs and distribution center connections by rendering precise orthodromic route line matrices directly on top of coordinate world map scales.
   * **🔗 View R Script:** [Geospatial Mapping Script](visualization/Vis_GlobalMap1.html)
 
----
-
 ### 6. Data Engineering, Wrangling & Extraction Pipelines
 
 * **Automated Web-Scraping Tabular Extraction Pipelines:** 
@@ -128,10 +119,10 @@ This section contains a deep catalog of production-grade statistical architectur
   * *Operational Impact:* Cleans incoming raw CSV/database outputs by isolating sparse columns, correcting corrupt categorical vector definitions, and safely translating missing values into uniform missing-data (`NA`) primitives.
   * **🔗 View R Script:** [Vector Cleaning Pipeline Script](wrangle/Wra_RemoveBlankCell.html)
 
----
-
 <p></p>
 [click to view Advanced Operations Research, Data Engineering & Machine Learning Engines codes](https://github.com/Haraburda/tutorial_codes.git)
+
+---
 
 ## Patents and Patent Publications
 <img src="haraburda_patent.jpg" align="left" width="400px"/>
