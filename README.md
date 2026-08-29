@@ -27,17 +27,17 @@ Explore the underlying codebase frameworks built to leverage statistical program
 ### 1. Multi-Node Demand Planning & Commodity Consumption Architecture
 * **Operational Framework:** Built a multi-variate statistical profiling engine to ingest extensive national longitudinal supply datasets. The model cross-references demographics, regional allocations, and consumption velocity to map demand patterns across complex distribution nodes.
 * **Supply Chain Impact:** Provides producers with actionable demand-sensing intelligence to align production planning, mitigate inventory holding risks, and stabilize supply network flows.
-* **Code Base:** [View Commodity Analysis Code](./projects/commodity_consumption/) *(<- Update with your exact folder path)*
+* **Code Base:** [View Commodity Analysis Code](project/commodity_consumption.html)
 
 ### 2. Predictive Capacity & Infrastructure Forecasting for U.S. Army Facilities
 * **Operational Framework:** Engineered an predictive data asset to forecast and categorize facility code distributions across deep defense infrastructure matrices.
 * **Supply Chain Impact:** Enabled macro-level master production scheduling (MPS) and facility asset readiness tracking, ensuring industrial base capabilities match tactical deployment cadences.
-* **Code Base:** [View Infrastructure Forecasting Code](./projects/army_facility_forecasting/) *(<- Update with your exact folder path)*
+* **Code Base:**  *(Currently updating script)*
 
 ### 3. Crisis Operations Resilience & Advanced Workforce Capacity Engine (COVID-19)
 * **Operational Framework:** Deployed an agile, R-based analytics framework for a major DoD Organic Industrial Base (CAAA) during critical pandemic disruptions. Implemented automated script layers featuring trailing rolling averages and multi-variable exponential smoothing models to track risk, workforce decay, and manufacturing throughput constraints.
 * **Supply Chain Impact:** Armed the Crisis Management Team (CMT) with predictive operational visibility, preserving shop-floor capacity, balancing weather/safety leave adjustments, and maintaining high-velocity munitions manufacturing continuity under extreme disruptions.
-* **Code Base:** [View Operational Resilience Code](./projects/covid_resilience_analytics/) *(<- Update with your exact folder path)*
+* **Code Base:** [View Operational Resilience Code](project/COVID.html)
 
 
 1. [Commodity Consumption.](project/commodity_consumption.html)  The Economic Research Service of the United States Department of Agriculture tracks the supply of food available for consumption in the United States andexamines consumer food preferences by consumers’ age, income, region, race/ethnicity,and place where food is obtained, as well as by food/commodity categories and othercharacteristics. Descriptive statistics of this commodity consumption help inform producers about who consumes their commodities, how and where their commodities areconsumed, and how much is consumed. This data comes from four national food intake surveys conducted between 1994 and 2008. *(date: July 28, 2022)*
