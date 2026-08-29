@@ -120,7 +120,7 @@ This section contains a deep catalog of production-grade statistical architectur
   * **🔗 View R Script:** [Vector Cleaning Pipeline Script](wrangle/Wra_RemoveBlankCell.html)
 
 <p></p>
-[click to view Advanced Operations Research, Data Engineering & Machine Learning Engines codes](https://github.com/Haraburda/tutorial_codes.git)
+[click to view these analytics codes](https://github.com/Haraburda/tutorial_codes.git)
 
 ---
 
