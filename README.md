@@ -14,7 +14,7 @@ Vetted at the highest federal level for corporate-equivalent governance across a
 
 * <b>FISCAL & LABOR STEWARDSHIP</b>: Direct <b>P&L oversight of a $50M</b> market-driven revolving fund, lean efficiency optimization via <b>Lean Six Sigma Black Belt</b> methodologies, and collaborative <b>AFGE collective bargaining</b> relations.
 
-* TURNKEY REGULATORY COMPLIANCE: Master-level adherence to strict <b>ITAR/EAR</b> federal export control mandates, national security protocols, and industrial <b>EPA/OSHA</b> frameworks.
+* <b>TURNKEY REGULATORY COMPLIANCE</b>: Master-level adherence to strict <b>ITAR/EAR</b> federal export control mandates, national security protocols, and industrial <b>EPA/OSHA</b> frameworks.
 
 Throughout my career, spanning <b>global military logistics theater command, federal munitions manufacturing oversight</b>, and private-sector chemical process engineering at <b>GE Plastics and Bayer</b>—I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
 
