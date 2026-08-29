@@ -1,14 +1,22 @@
-# Scott S. Haraburda: Supply Chain Analytics Executive | Predictive Data Scientist | Professional Engineer (PE) | Project Manager (PMP) | PhD | OPM-Certified SES Candidate | Colonel, USA (Ret.)
+# <b>SCOTT S. HARABURDA</b>: Supply Chain Analytics Executive | Predictive Data Scientist | Professional Engineer (PE) | Project Manager (PMP) | PhD | OPM-Certified SES Candidate | Colonel, USA (Ret.)
 
-## Brief Biography
+## Executive Profile
 
-<img src="haraburda_photo.jpg" align="left" width="200px"/> Dr. Scott Haraburda worked in the United States Army, in either military or civilian positions. He served in a variety of enlisted and commissioned officer positions on active and reserve duty within the medical service corps, chemical corps, engineer corps, and acquisition corps. He retired from military service in the United States Army as a Colonel. Prior to his retirement from the military, Colonel Haraburda served as the Commander of the 464th Chemical Brigade and Commander of the 472nd Chemical Battalion. Also, Colonel Haraburda deployed to Kuwait as the Senior Logistics Support Officer in support of Logistics Civil Augmentation Program (LOGCAP). And, he served as the Executive Secretary for the Army Science Board at the Pentagon.
+<img src="haraburda_photo.jpg" align="left" width="200px"/> <b>Highly analytical, OPM-Certified Senior Executive Service (SES) Candidate</b> and registered <b>Professional Engineer (PE)</b> with 30+ years of industrial leadership at the intersection of <b>multi-billion-dollar ERP systems, predictive data science, and macro SIOP/S&OP frameworks</b>.
 
-His civilian Army positions include project management duties for the destruction of VX nerve agent at the Newport Chemical Agent Disposal Facility, along with munitions manufacturing, supply chain management, and data science duties for Crane Army Ammunition Activity. Also, Dr. Haraburda performed chemical engineering duties for Bayer Corporation and General Electric.<br clear="left"/>
+Vetted at the highest federal level for corporate-equivalent governance across all five Executive Core Qualifications (ECQs), my career is defined by <b>migrating legacy, spreadsheet-heavy information silos into unified, synchronized, and highly automated data ecosystems<b>. As a retired <b>U.S. Army Colonel</b>, I combine command-level operational scale with deep technical, engineering, and predictive analytical disciplines.
 
-Dr. Haraburda received an Associates in Arts from Grand Rapids Junior College, a Bachelor of Science in Chemistry from Central Michigan University, a Master in Strategic Studies from the United States Army War College, and a Doctor of Philosophy in Chemical Engineering from Michigan State University. He also graduated from the United States Air War College, the Naval Command and Staff College, and Army Command and General Staff College. Dr. Haraburda also graduated from the Senior Executive Service Candidate Development Program (SESCDP).
+<b>CORE EXECUTIVE COMPETENCIES & TECHNICAL ANCHORS:</b>
 
-Throughout his military and civilian careers, Dr. Haraburda’s has received many awards, including Legion of Merit, Meritorious Service Medal, Distinguished Alumnus from Grand Rapids Community College, Fellow of the National Society of Professional Engineers, and Hall of Fame from Central Michigan University Reserve Officers Training Corps.  A member of the Defense Acquisition Corps, Dr. Haraburda possesses certifications in Program Management, Engineering, Life Cycle Logistics, and Contracting. He is also a registered Professional Engineer (PE) in Indiana and Michigan, along with being a certified Project Management Professional (PMP).
+* <b>SUPPLY CHAIN ANALYTICS and TRANSFORMATION<b>: Network-level <b>SIOP governance, master production scheduling (MPS)</b>, multi-site <b>ERP modernizations</b>, data synchronization, and <b>SAP framework integrations</b>.
+
+* <b>PREDICTIVE DATA SCIENCE</b>: Advanced logistics data modeling, statistical simulation (<b>Python, FORTRAN, AI/ML, R</b>), and strict computational <b>Verification, Validation, and Accreditation (VVA)</b>.
+
+* <b>FISCAL & LABOR STEWARDSHIP</b>: Direct <b>P&L oversight of a $50M</b> market-driven revolving fund, lean efficiency optimization via <b>Lean Six Sigma Black Belt</b> methodologies, and collaborative <b>AFGE collective bargaining</b> relations.
+
+* TURNKEY REGULATORY COMPLIANCE: Master-level adherence to strict <b>ITAR/EAR</b> federal export control mandates, national security protocols, and industrial <b>EPA/OSHA</b> frameworks.
+
+Throughout my career, spanning <b>global military logistics theater command, federal munitions manufacturing oversight</b>, and private-sector chemical process engineering at <b>GE Plastics and Bayer</b>—I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
 
 [click to view Resume](resume.docx)
 
