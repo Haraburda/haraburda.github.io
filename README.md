@@ -2,7 +2,7 @@
 
 ## Executive Profile
 
-<img src="haraburda_photo.jpg" align="left" width="150px"/> <b>Highly analytical, OPM-Certified Senior Executive Service (SES) Candidate</b> and registered <b>Professional Engineer (PE)</b> with 30+ years of industrial leadership at the intersection of <b>multi-billion-dollar ERP systems, predictive data science, and macro SIOP/S&OP frameworks</b>.
+<img src="haraburda_photo.jpg" align="left" width="125px"/> <b>Highly analytical, OPM-Certified Senior Executive Service (SES) Candidate</b> and registered <b>Professional Engineer (PE)</b> with 30+ years of industrial leadership at the intersection of <b>multi-billion-dollar ERP systems, predictive data science, and macro SIOP/S&OP frameworks</b>.
 
 Vetted at the highest federal level for corporate-equivalent governance across all five Executive Core Qualifications (ECQs), my career is defined by <b>migrating legacy, spreadsheet-heavy information silos into unified, synchronized, and highly automated data ecosystems<b>. As a retired <b>U.S. Army Colonel</b>, I combine command-level operational scale with deep technical, engineering, and predictive analytical disciplines.
 
