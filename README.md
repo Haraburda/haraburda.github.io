@@ -56,10 +56,10 @@ This section contains a deep catalog of production-grade statistical architectur
   * **🔗 View R Script:** [Predictive Maintenance Script](machine_learning/ML_PdM1.html)
 * **Algorithmic Defect & Imbalanced Dataset Optimization:** 
   * *Operational Impact:* Implements sampling corrections and custom cost-sensitive class balancing (maximizing mean per-class recall) to handle highly skewed production data layouts (e.g., 1% rare quality defects vs. 99% nominal passes), outperforming generic accuracy-maximization loops that ignore critical outliers.
-  * **🔗 View R Script:** [Imbalanced Dataset Balancing Script](./scripts/machine_learning/imbalanced_data.R)
+  * **🔗 View R Script:** [Imbalanced Dataset Balancing Script](machine_learning/ML_imbalanced_data.html)
 * **Classification & Regression Trees (CART) for Mixed Data Types:** 
   * *Operational Impact:* Multi-branch sequence-query logic layer designed to cleanly parse high-dimensional datasets containing intermixed un-ordered categorical variables and continuous metrics without requiring lossy pre-processing.
-  * **🔗 View R Script:** [Decision Tree Modeling Script](./scripts/machine_learning/cart_tree.R)
+  * **🔗 View R Script:** [Decision Tree Modeling Script](machine_learning/ML_CART1.html)
 
 ---
 
@@ -67,10 +67,10 @@ This section contains a deep catalog of production-grade statistical architectur
 
 * **Mixed-Integer Linear Programming (MILP) Constraints Optimization:** 
   * *Operational Impact:* Formulates mathematical optimization matrices via IP, LP, and Mixed-Integer Linear Programming (MILP) techniques to calculate strict minimum/maximum yield values for constrained supply chain networks, material capacities, and scheduling profiles.
-  * **🔗 View R Script:** [Linear Optimization Constraints Script](./scripts/modeling/linear_programming.R)
+  * **🔗 View R Script:** [Linear Optimization Constraints Script](modeling_simulation/Mod_LinearProgram1.html)
 * **Kriging (Gaussian Process Regression) Grid Estimation:** 
   * *Operational Impact:* Uses spatially correlated coordinate matrices and Gaussian regression algorithms to accurately interpolate data layers between isolated physical sampling grid nodes.
-  * **🔗 View R Script:** [Spatial Kriging Interpolation Script](./scripts/modeling/kriging_grid.R)
+  * **🔗 View R Script:** [Spatial Kriging Interpolation Script](modeling_simulation/Mod_Krige1.html)
 
 ---
 
@@ -78,13 +78,13 @@ This section contains a deep catalog of production-grade statistical architectur
 
 * **Helical-Coil Three-Phase Heat Exchanger Design Engine:** 
   * *Operational Impact:* Developed algorithmic code computing tube-side/shell-side heat-transfer dynamics, dimensional sizing profiles, and non-linear pressure drop variations for complex three-phase fluid systems—published in *Chemical Engineering*.
-  * **🔗 View R Script:** [Exchanger Heat Transfer Design Script](./scripts/chemical_engineering/heat_exchanger.R)
+  * **🔗 View R Script:** [Exchanger Heat Transfer Design Script](chem_eng/ChE_HelicalCoilHX.html)
 * **Newton-Raphson Vapor Pressure Estimation & Antoine Curve-Fitting:** 
   * *Operational Impact:* Applies rigorous Newton-Raphson iterative numerical analysis and Antoine equation fits to map and estimate non-linear vapor pressure vectors from scattered empirical observations.
-  * **🔗 View R Script:** [Vapor Pressure Iterative Script](./scripts/chemical_engineering/vapor_pressure.R)
+  * **🔗 View R Script:** [Vapor Pressure Iterative Script](chem_eng/ChE_Curve_Fit_VP.html)
 * **Multi-Component Liquid Density Predictions:** 
   * *Operational Impact:* Translates empirical chemical mechanics into code utilizing the Rackett and Bhirud correlation frameworks to accurately predict real-time density matrices across polar and non-polar liquid variations.
-  * **🔗 View R Script:** [Liquid Density Correlations Script](./scripts/chemical_engineering/liquid_density.R)
+  * **🔗 View R Script:** [Liquid Density Correlations Script](chem_eng/ChE_predict_rho.html)
 
 ---
 
@@ -133,16 +133,7 @@ This section contains a deep catalog of production-grade statistical architectur
 * [Liquid Density Predictions](chem_eng/ChE_predict_rho.html). To predict liquid densities using equations for the Rackett and Bhirud correlation methods. Examples include water and hexane, a polar and non-polar chemical respectively. *(date: June 9, 1994)*<br>
 * [Vapor Pressures from Curve-Fitting](chem_eng/ChE_Curve_Fit_VP.html). To use simple and quick techniques to estimate vapor pressures using known data. This includes a quick estimate using the Antoine equation, and a more rigorous estimation using the Newton_Raphson method. This includes the script for my <i>Chemical Engineering</i> article. *(date: March 1, 1996)*
 <p></p>
-<p></p><p align="center"><b>Machine Learning</b></p>
-* [Classification and Regression Tree](machine_learning/ML_CART1.html). To structure a sequence of questions, the answers to which determine what the next question, if any should be.  The result of these questions is a tree-like structure where the ends are terminal nodes at which point there are no more questions. An example is provided with un-ordered data intermixed with continuous data, which applies the Classification and Regression Tree method to account for the different types of data in the analysis. *(data: February 4, 2019)*<br>
-* [Machine Learning for an Imbalanced Dataset](machine_learning/ML_imbalanced_data.html). To use simple machine learning concepts involving an imbalanced dataset, one that contains skewed class proportions. An extreme example would be one with 99% of the data representing a majority class and 1% a minority one. Throwing this data into a machine learning algorithm might provide the wrong prediction when it completely ignores the minority class, predicting that all members of this dataset were majority members, demonstrated with a 99% overall accuracy. Methods to offset this imbalance includes sampling techniques and modeling evaluation techniques. In this example, I applied a balanced approach to maximize the average for each class, comparing it to the maximum accuracy for the overall dataset. *(date: January 17, 2019)*
-<br>
-* [Predictive Maintenance](machine_learning/ML_PdM1.html). To assess equipment failure data through the condition status of in-service equipment for estimating service life expectancy. This is a data-driven, proactive method for predictive maintenance (PdM) that relies upon sensors for early fault or fault detection. For this to work effectively, data from key sensors need to be available and accurately captured for analyses. *(date: December 15, 2022)*
-<p></p>
-<p align="center"><b>Modeling and Simulation</b></p>
-* [Kriging to Predict Values on a Grid](modeling_simulation/Mod_Krige1.html). To predict values on a grid, portrayed graphically with contours, also known as Gaussian process regression. This method takes collected spatially related data, usually mapped to a grid coordinates, and estimates the values between the data. This is often used in soil science and geology. *(date: September 19, 2018)*<br>
-* [Linear Programming](modeling_simulation/Mod_LinearProgram1.html). To use linear program techniques to calculate minimum or maximum values of a constrained objective function. Three examples are provided for Integer Programming (IP), Linear Programming (LP), and Mixed-Integer Linear Programming (MILP) techniques. *(date: March 31, 2020)*
-<p></p>
+
 <p align="center"><b>Statistics</b></p>
 * [Linear Regression of Data](statistics/Sta_Linear_Regression.html). To conduct linear regression of data using two general approaches - Frequentist and Bayesian. The Frequentist approach conducts hypothesis testing using P values and confidence intervals, which are well-established throughout the scientific community for decades. However, it isn’t able to address order, inequality, and direction for its hypothesis. Nor, does it consider prior knowledge. Lately, scientific articles using Bayesian methods have increased. *(date: January 19, 2023)*
 <p></p>
