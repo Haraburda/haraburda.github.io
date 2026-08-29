@@ -39,13 +39,92 @@ Explore the underlying codebase frameworks built to leverage statistical program
 * **Supply Chain Impact:** Armed the Crisis Management Team (CMT) with predictive operational visibility, preserving shop-floor capacity, balancing weather/safety leave adjustments, and maintaining high-velocity munitions manufacturing continuity under extreme disruptions.
 * **Code Base:** [View Operational Resilience Code](project/COVID.html)
 
-
-1. [Commodity Consumption.](project/commodity_consumption.html)  The Economic Research Service of the United States Department of Agriculture tracks the supply of food available for consumption in the United States andexamines consumer food preferences by consumers’ age, income, region, race/ethnicity,and place where food is obtained, as well as by food/commodity categories and othercharacteristics. Descriptive statistics of this commodity consumption help inform producers about who consumes their commodities, how and where their commodities areconsumed, and how much is consumed. This data comes from four national food intake surveys conducted between 1994 and 2008. *(date: July 28, 2022)*
-2. Forecasting Facility Codes for US Army Facilities. *(date: October, 2020)*
-3. [COVID-19 Analyses within a DoD Organic Industrial Base](project/COVID.html). During the first week of March 2020, Indiana received its first confirmed COVID-19 case. Less than three weeks later, its Governor issued a ‘stay at home’ order. In response to this pandemic, Crane Army Ammunition Activity (CAAA), an organic industrial base located in Southern Indiana, activated its Crisis Management Team (CMT) and began implementing workforce protective measures such as social distancing and equipment/facility disinfecting, along with sending increased risk employees home on weather & safety leave or telework. Using R programming, I developed scripts to assess trends that supported decisions made by the CMT. These scripts included rolling averages and simple exponential smoothing forecasting. *(date: October 27, 2020)*
-
 <p></p>
 [click to view project codes](https://github.com/Haraburda/project_codes.git)
+
+## 🎛️ Advanced Operations Research, Data Engineering & Machine Learning Engines
+
+This section contains a deep catalog of production-grade statistical architecture, algorithmic scripts, and simulation layers engineered in `R` to model physical constraints and optimize industrial networks.
+
+---
+
+### 1. Machine Learning & Predictive Maintenance (PdM)
+
+* **Predictive Maintenance (PdM) Sensor Modeling:** 
+  * *Operational Impact:* Advanced data-driven, proactive framework designed to digest continuous time-series streaming data from physical manufacturing assets. Translates multi-sensor early fault detection into actionable Remaining Useful Life (RUL) forecasting to minimize unplanned factory downtime.
+  * **🔗 View R Script:** [Predictive Maintenance Script](machine_learning/ML_PdM1.html)
+* **Algorithmic Defect & Imbalanced Dataset Optimization:** 
+  * *Operational Impact:* Implements sampling corrections and custom cost-sensitive class balancing (maximizing mean per-class recall) to handle highly skewed production data layouts (e.g., 1% rare quality defects vs. 99% nominal passes), outperforming generic accuracy-maximization loops that ignore critical outliers.
+  * **🔗 View R Script:** [Imbalanced Dataset Balancing Script](./scripts/machine_learning/imbalanced_data.R)
+* **Classification & Regression Trees (CART) for Mixed Data Types:** 
+  * *Operational Impact:* Multi-branch sequence-query logic layer designed to cleanly parse high-dimensional datasets containing intermixed un-ordered categorical variables and continuous metrics without requiring lossy pre-processing.
+  * **🔗 View R Script:** [Decision Tree Modeling Script](./scripts/machine_learning/cart_tree.R)
+
+---
+
+### 2. Operations Research, Modeling & Simulation
+
+* **Mixed-Integer Linear Programming (MILP) Constraints Optimization:** 
+  * *Operational Impact:* Formulates mathematical optimization matrices via IP, LP, and Mixed-Integer Linear Programming (MILP) techniques to calculate strict minimum/maximum yield values for constrained supply chain networks, material capacities, and scheduling profiles.
+  * **🔗 View R Script:** [Linear Optimization Constraints Script](./scripts/modeling/linear_programming.R)
+* **Kriging (Gaussian Process Regression) Grid Estimation:** 
+  * *Operational Impact:* Uses spatially correlated coordinate matrices and Gaussian regression algorithms to accurately interpolate data layers between isolated physical sampling grid nodes.
+  * **🔗 View R Script:** [Spatial Kriging Interpolation Script](./scripts/modeling/kriging_grid.R)
+
+---
+
+### 3. Complex Chemical & Process Engineering Simulations
+
+* **Helical-Coil Three-Phase Heat Exchanger Design Engine:** 
+  * *Operational Impact:* Developed algorithmic code computing tube-side/shell-side heat-transfer dynamics, dimensional sizing profiles, and non-linear pressure drop variations for complex three-phase fluid systems—published in *Chemical Engineering*.
+  * **🔗 View R Script:** [Exchanger Heat Transfer Design Script](./scripts/chemical_engineering/heat_exchanger.R)
+* **Newton-Raphson Vapor Pressure Estimation & Antoine Curve-Fitting:** 
+  * *Operational Impact:* Applies rigorous Newton-Raphson iterative numerical analysis and Antoine equation fits to map and estimate non-linear vapor pressure vectors from scattered empirical observations.
+  * **🔗 View R Script:** [Vapor Pressure Iterative Script](./scripts/chemical_engineering/vapor_pressure.R)
+* **Multi-Component Liquid Density Predictions:** 
+  * *Operational Impact:* Translates empirical chemical mechanics into code utilizing the Rackett and Bhirud correlation frameworks to accurately predict real-time density matrices across polar and non-polar liquid variations.
+  * **🔗 View R Script:** [Liquid Density Correlations Script](./scripts/chemical_engineering/liquid_density.R)
+
+---
+
+### 4. Advanced Manufacturing Statistics & Optimization
+
+* **Generalized Cross-Validation (GCV) LOESS Curve-Smoothing:** 
+  * *Operational Impact:* Automates scatterplot variance modeling using Locally Estimated Scatterplot Smoothing (LOESS), integrating an explicit Generalized Cross-Validation (GCV) computation loop to mathematically determine optimal span selection and prevent objective analysis bias.
+  * **🔗 View R Script:** [GCV LOESS Smoothing Script](./scripts/statistics/loess_smoothing.R)
+* **Cross-Validated Nonlinear Regression Analysis:** 
+  * *Operational Impact:* Maps non-linear, shop-floor process behaviors using custom curvilinear regression formulations, backed by multi-fold cross-validation metrics to explicitly prevent over-fitting.
+  * **🔗 View R Script:** [Nonlinear Cross-Validation Script](./scripts/statistics/nonlinear_regression.R)
+* **Bayesian vs. Frequentist Linear Regression Frameworks:** 
+  * *Operational Impact:* Side-by-side analytical testing suite evaluating data structures via classical hypothesis loops (p-values, confidence bounds) compared against prior-informed Bayesian probability intervals.
+  * **🔗 View R Script:** [Comparative Linear Regression Script](./scripts/statistics/linear_regression.R)
+
+---
+
+### 5. Industrial Flow & Enterprise Safety Visualizations
+
+* **Descriptive Analytics & Root-Cause Safety Architecture:** 
+  * *Operational Impact:* Transforms plant incident reporting data into high-visibility executive dashboards. Features Pareto distribution layers, cross-unit weekday heatmaps, and conditional incident-severity pyramids to uncover root-cause manufacturing risk metrics.
+  * **🔗 View R Script:** [Safety Dashboards Analytics Script](./scripts/visualization/safety_analytics.R)
+* **Network Supply Chain Sankey Flux Visualization:** 
+  * *Operational Impact:* Programmatically maps complex financial, raw material, and labor velocity flows across disconnected enterprise nodes using high-clarity weighted directional Sankey network trees.
+  * **🔗 View R Script:** [Sankey Flow Diagrams Script](./scripts/visualization/sankey_diagram.R)
+* **Global Route Geospatial Mapping:** 
+  * *Operational Impact:* Visualizes inter-theater logistics legs and distribution center connections by rendering precise orthodromic route line matrices directly on top of coordinate world map scales.
+  * **🔗 View R Script:** [Geospatial Mapping Script](./scripts/visualization/global_routes.R)
+
+---
+
+### 6. Data Engineering, Wrangling & Extraction Pipelines
+
+* **Automated Web-Scraping Tabular Extraction Pipelines:** 
+  * *Operational Impact:* Deploys web-scraping scripts to crawl HTML structures, targets isolated index tables, and cleanly normalizes messy unstructured tabular payloads into standardized analytical dataframes.
+  * **🔗 View R Script:** [Automated Web Scraping Script](./scripts/wrangle/web_scraping.R)
+* **Data Cleansing & Vector Integrity Pipelines:** 
+  * *Operational Impact:* Cleans incoming raw CSV/database outputs by isolating sparse columns, correcting corrupt categorical vector definitions, and safely translating missing values into uniform missing-data (`NA`) primitives.
+  * **🔗 View R Script:** [Vector Cleaning Pipeline Script](./scripts/wrangle/data_cleansing.R)
+
+---
 
 ## Analysis Scripts (R programming)
 <p align="center"><b>Chemical Engineering</b></p>
