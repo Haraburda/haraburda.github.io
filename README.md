@@ -18,7 +18,7 @@ Vetted at the highest federal level for corporate-equivalent governance across a
 
 Throughout my career, spanning <b>global military logistics theater command, federal munitions manufacturing oversight</b>, and private-sector chemical process engineering at <b>GE Plastics and Bayer</b>—I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
 
-[click to view Resume](resume.docx)
+[click to view Resume](Haraburda_Resume.pdf)
 
 ## Projects
 1. [Commodity Consumption.](project/commodity_consumption.html)  The Economic Research Service of the United States Department of Agriculture tracks the supply of food available for consumption in the United States andexamines consumer food preferences by consumers’ age, income, region, race/ethnicity,and place where food is obtained, as well as by food/commodity categories and othercharacteristics. Descriptive statistics of this commodity consumption help inform producers about who consumes their commodities, how and where their commodities areconsumed, and how much is consumed. This data comes from four national food intake surveys conducted between 1994 and 2008. *(date: July 28, 2022)*
