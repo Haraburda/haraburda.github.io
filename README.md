@@ -10,13 +10,15 @@ Vetted at the highest federal level for corporate-equivalent governance across a
 
 * <b>SUPPLY CHAIN ANALYTICS and TRANSFORMATION<b>: Network-level <b>SIOP governance, master production scheduling (MPS)</b>, multi-site <b>ERP modernizations</b>, data synchronization, and <b>SAP framework integrations</b>.
 
-* <b>PREDICTIVE DATA SCIENCE</b>: Advanced logistics data modeling, statistical simulation (<b>Python, FORTRAN, AI/ML, R</b>), and strict computational <b>Verification, Validation, and Accreditation (VVA)</b>.
+* <b>PREDICTIVE DATA SCIENCE</b>: Advanced logistics data modeling, statistical simulation (<b>Python, FORTRAN, AI/ML, R</b>). Personally engineer end-to-end analytical solutions — such as automated multi-site demand sensing models — backed by fully integrated GitHub Actions CI/CD pipelines to guarantee 100% test coverage and schema enforcement on every deployment.
+
+* <b>COMPUTATIONAL RIGOR</b>: Strict adherence to data integrity, algorithmic validation, and thorough <b>Verification, Validation, and Accreditation (VVA)</b> to eliminate predictive bias and optimize working capital.
 
 * <b>FISCAL & LABOR STEWARDSHIP</b>: Direct <b>P&L oversight of a $50M</b> market-driven revolving fund, lean efficiency optimization via <b>Lean Six Sigma Black Belt</b> methodologies, and collaborative <b>AFGE collective bargaining</b> relations.
 
 * <b>TURNKEY REGULATORY COMPLIANCE</b>: Master-level adherence to strict <b>ITAR/EAR</b> federal export control mandates, national security protocols, and industrial <b>EPA/OSHA</b> frameworks.
 
-Throughout my career, spanning <b>global military logistics theater command, federal munitions manufacturing oversight</b>, and private-sector chemical process engineering at <b>GE Plastics and Bayer</b>—I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
+Throughout my career - spanning <b>global military logistics theater command, federal munitions manufacturing oversight</b>, and private-sector chemical process engineering at <b>GE Plastics and Bayer</b> -I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
 
 [click to view Resume](Haraburda_Resume.pdf)
 
