@@ -31,7 +31,7 @@ Explore the underlying codebase frameworks built to leverage statistical program
 ### 🔮 1. Multi-Node Demand Planning & Commodity Consumption Architecture
 * **Operational Framework:** Built a multi-variate statistical profiling engine to ingest extensive national longitudinal supply datasets. The model cross-references demographics, regional allocations, and consumption velocity to map demand patterns across complex distribution nodes.
 * **Supply Chain Impact:** Provides producers with actionable demand-sensing intelligence to align production planning, mitigate inventory holding risks, and stabilize supply network flows.
-* **📊 Live Analytical Application:** **[Launch Interactive SIOP Demand Sensing Dashboard](https://haraburda,github.io/Haraburda)**
+* **📊 Live Analytical Application:** **[Launch Interactive SIOP Demand Sensing Dashboard](https://haraburda.github.io/Haraburda/)**
 * **📂 Code Base:** [View Commodity Analysis Code](project/commodity_consumption.html)
 
 ### 🏢 2. Predictive Capacity & Infrastructure Forecasting for U.S. Army Facilities
