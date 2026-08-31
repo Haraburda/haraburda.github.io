@@ -8,7 +8,7 @@ Vetted at the highest federal level for corporate-equivalent governance across a
 
 <b>CORE EXECUTIVE COMPETENCIES & TECHNICAL ANCHORS:</b>
 
-* <b>SUPPLY CHAIN ANALYTICS and TRANSFORMATION<b>: Network-level <b>SIOP governance, master production scheduling (MPS)</b>, multi-site <b>ERP modernizations</b>, data synchronization, and <b>SAP framework integrations</b>.
+* <b>SUPPLY CHAIN ANALYTICS and TRANSFORMATION</b>: Network-level <b>SIOP governance, master production scheduling (MPS)</b>, multi-site <b>ERP modernizations</b>, data synchronization, and <b>SAP framework integrations</b>.
 
 * <b>PREDICTIVE DATA SCIENCE</b>: Advanced logistics data modeling, statistical simulation (<b>Python, FORTRAN, AI/ML, R</b>). Personally engineer end-to-end analytical solutions — such as automated multi-site demand sensing models — backed by fully integrated GitHub Actions CI/CD pipelines to guarantee 100% test coverage and schema enforcement on every deployment.
 
