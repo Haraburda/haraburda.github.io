@@ -117,6 +117,24 @@ This section contains a deep catalog of production-grade statistical architectur
 * **Global Route Geospatial Mapping:** 
   * *Operational Impact:* Visualizes inter-theater logistics legs and distribution center connections by rendering precise orthodromic route line matrices directly on top of coordinate world map scales.
   * **🔗 View R Script:** [Geospatial Mapping Script](visualization/Vis_GlobalMap1.html)
+  * **Multi-Tier Supplier Performance Comparison Optimization:** 
+  * *Operational Impact:* Isolates fulfillment metrics and delivery variances across diverse vendor cohorts by executing dynamic multi-variable comparison engines like Dot Plots, Marimekko charts, and Bullet graphs.
+  * **🔗 View R Script:** [Supplier Performance Comparison Script](visualization/Vis_SupplierComp1.html)
+* **Lead-Time Volatility & Time-Series Diagnostics:** 
+  * *Operational Impact:* Traces and diagnoses systemic material delivery delays and cyclic procurement bottlenecks across volatile inventory horizons by deploying high-density Horizon graphs, Bump charts, and Sparklines.
+  * **🔗 View R Script:** [Time-Series Inventory Diagnostics Script](visualization/Vis_InventoryTime1.html)
+* **Sub-Tier Operational Risk Distribution Diagnostics:** 
+  * *Operational Impact:* Maps and isolates statistical process out-of-control signals and tail-end disruptions across tier-two component lead times using Box-and-Whisker frameworks, Ridgeline plots, and Statistical Uncertainty models.
+  * **🔗 View R Script:** [Risk Distribution Diagnostics Script](visualization/Vis_RiskDist1.html)
+* **Multivariate Supply Chain Network Relationship Modeling:** 
+  * *Operational Impact:* Visualizes raw material capacity constraints and network flow dependencies between multiple continuous variables by running matrix Scatter plots, Chord diagrams, Parallel Coordinates, and high-order Non-Linear Regression curves.
+  * **🔗 View R Script:** [Network Relationship Modeling Script](visualization/Vis_NetworkModel1.html)
+* **Theater Logistics & Density Geospatial Analysis:** 
+  * *Operational Impact:* Overlays computational throughput matrices directly onto territorial coordinate systems, utilizing proportional Cartograms, Choropleths, and point-source Density heat maps to identify lane stress profiles independent of political boundaries.
+  * **🔗 View R Script:** [Geospatial Density Mapping Script](visualization/Vis_GeospatialDensity1.html)
+* **Executive Data Presentation Optimization Engine:** 
+  * *Operational Impact:* Maximizes executive decision velocity by applying Gestalt visual grouping mechanics and inline structural explainers to data tables while systematically clearing out cognitive barriers like moiré vibrations, cross-hatching, and literal graphic chartjunk.
+  * **🔗 View R Script:** [Presentation Optimization Engine Script](visualization/Vis_DataOptimization1.html)
 
 ### 6. Data Engineering, Wrangling & Extraction Pipelines
 
