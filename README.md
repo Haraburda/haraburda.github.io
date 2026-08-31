@@ -117,7 +117,7 @@ This section contains a deep catalog of production-grade statistical architectur
 * **Global Route Geospatial Mapping:** 
   * *Operational Impact:* Visualizes inter-theater logistics legs and distribution center connections by rendering precise orthodromic route line matrices directly on top of coordinate world map scales.
   * **🔗 View R Script:** [Geospatial Mapping Script](visualization/Vis_GlobalMap1.html)
-  * **Multi-Tier Supplier Performance Comparison Optimization:** 
+* **Multi-Tier Supplier Performance Comparison Optimization:** 
   * *Operational Impact:* Isolates fulfillment metrics and delivery variances across diverse vendor cohorts by executing dynamic multi-variable comparison engines like Dot Plots, Marimekko charts, and Bullet graphs.
   * **🔗 View R Script:** [Supplier Performance Comparison Script](visualization/Vis_SupplierComp1.html)
 * **Lead-Time Volatility & Time-Series Diagnostics:** 
