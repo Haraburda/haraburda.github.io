@@ -44,6 +44,11 @@ Explore the underlying codebase frameworks built to leverage statistical program
 * **Supply Chain Impact:** Armed the Crisis Management Team (CMT) with predictive operational visibility, preserving shop-floor capacity, balancing weather/safety leave adjustments, and maintaining high-velocity munitions manufacturing continuity under extreme disruptions.
 * **📂 Code Base:** [View Operational Resilience Code](project/COVID.html)
 
+### 🛡️ 4. Autonomous System Guardrails & Real-Time Production Containment Framework
+* **Operational Framework:** Engineered an active runtime containment architecture built into native compilation layers to secure edge-deployed autonomous platforms against real-world telemetry drift, data corruption, and adversarial jamming. Implemented a programmatic, 6-Zone Defensive Architecture that replaces passive post-hoc auditing with machine-velocity software friction to evaluate semantic sanity and freeze out-of-bounds calculations prior to platform actuation.
+* **Supply Chain Impact:** Neutralizes the "Velocity Hazard" by ensuring high-speed predictive propulsion engines (spanning classical time series, decentralized clustering, deep neural transformers, and reinforcement loops) operate under strict, rule-based containment. Provides defense program managers with a zero-trust procurement benchmark to enforce structural safety limits, preventing catastrophic platform failure and mitigating multi-million-dollar supply chain or asset paralysis.
+* **📂 Code Base:** [View Real-Time Containment Implementation](project/autonomous_guardrails.html)
+
 <p></p>
 [click to view project codes](https://github.com/Haraburda/project_codes.git)
 
