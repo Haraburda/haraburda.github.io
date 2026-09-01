@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Scott Haraburda">
+    <title>Multi-Tier Supplier Performance Comparison Optimization</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color, #2d3748);
+            background-color: var(--bg-color, #ffffff);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--container-bg, #ffffff);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color, #3182ce);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color, #3182ce);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        h2 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        /* Linked Section Header Class Explicitly to CSS */
+        .section-header, h3 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Linked Main Impact Box Explicitly to CSS to Enforce Containment */
+        .main-impact {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .keywords {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+    .table-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .table-title {
+        font-size: 1.15rem;
+        font-weight: normal;
+        margin-bottom: 2px;
+        text-align: left;
+    }
+    .table-subtitle {
+        font-size: 1rem;
+        font-style: italic;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+    th, td {
+        padding: 5px 8px;
+        font-weight: normal;
+    }
+    /* Academic top and bottom structural borders */
+    thead tr.top-border th {
+        border-top: 2px solid #000;
+    }
+    thead tr.bottom-border th {
+        border-bottom: 1px solid #000;
+    }
+    /* Specific line boundary separating the core data from the summary metrics */
+    tbody tr.summary-start td {
+        border-top: 1px solid #000;
+    }
+    tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+    }
+    /* Text layout alignments */
+    .left-align { text-align: left; }
+    .center-align { text-align: center; }
+    .right-align { text-align: right; }
+    
+    /* Footer formatting for Notes and Sources */
+    .table-footer {
+        font-size: 0.85rem;
+        text-align: left;
+        line-height: 1.4;
+    }
+    .table-footer p {
+        margin: 6px 0 0 0;
+    }
+    .r-script-section {
+        background-color: #000000;  /* Pure black background */
+        color: #00FF00;             /* Matrix-style neon green text */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.95rem;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+        white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+        border: 1px solid #333;
+    }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container"> 
+    <header>
+        <h1>Multi-Tier Supplier Performance Comparison Optimization</h1>
+        <h4 class="author">Scott S. Haraburda</h4>
+        <h4 class="date">16 March 2025</h4>
+    </header>
+
+    <div class="main-impact">
+        <!-- FIXED: Added closing </span> tag below to prevent global browser text stream blowout -->
+        <p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">Comparison graphs are like the speed‑dating version of data — they help you quickly see what’s similar, what’s different, and what’s just awkward. They come in all shapes and sizes: bar graphs, bubble charts, bullet graphs, dot plots, heatmaps, Marimekko charts, Sankey diagrams, unit charts, and the ever‑dramatic waterfall graph. We’ll walk through each one using highway‑related data from Table 1, because nothing says fun like transportation analytics.</span></p>
+    </div>
+
+<p></p>
+<p style="text-align: center;"><b>Table 1</b>. Generic Data for Graphing</p>
+<p></p>
+
+    <div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>Counts for all items peak during summer</b></div>
+    <div class="table-subtitle">Largest numbers occur in 2nd quarter</div>
+
+    <table>
+        <thead>
+            <!-- First Header Row (Top Level) -->
+            <tr class="top-border">
+                <!-- Added explicit border-bottom styles to connect the lines directly across -->
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Quarter</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Month</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">County</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2" class="center-align" style="border-bottom: 1px solid #000; padding-bottom: 2px;">Relation of C to sum of all three items</th>
+            </tr>
+            <!-- Second Header Row (Bottom Level Alignment) -->
+            <tr class="bottom-border">
+                <th class="center-align" style="font-weight: bold;">A<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">B<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">C<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align">A + B + C</th>
+                <th class="center-align">% of C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 1st Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">1st</td>
+                <td class="left-align">Jan</td>
+                <td class="left-align">Newton</td>
+                <td class="center-align">18</td>
+                <td class="center-align">19</td>
+                <td class="center-align">17</td>
+                <td class="center-align">54</td>
+                <td class="center-align">31.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Feb</td>
+                <td class="left-align">Lake</td>
+                <td class="center-align">16</td>
+                <td class="center-align">25</td>
+                <td class="center-align">18</td>
+                <td class="center-align">59</td>
+                <td class="center-align">30.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Mar</td>
+                <td class="left-align">Porter</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">19</td>
+                <td class="center-align">65</td>
+                <td class="center-align">29.2</td>
+            </tr>
+            <!-- 2nd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">2nd</td>
+                <td class="left-align">Apr</td>
+                <td class="left-align">LaPorte</td>
+                <td class="center-align">21</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">19</td>
+                <td class="center-align">70</td>
+                <td class="center-align">27.1</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">May</td>
+                <td class="left-align">St Joseph</td>
+                <td class="center-align">17</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">20</td>
+                <td class="center-align">67</td>
+                <td class="center-align">29.9</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Jun</td>
+                <td class="left-align">Marshall</td>
+                <td class="center-align">18</td>
+                <td class="center-align"><b>31</b></td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">79</td>
+                <td class="center-align">38.0</td>
+            </tr>
+            <!-- 3rd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">3rd</td>
+                <td class="left-align">Jul</td>
+                <td class="left-align">Starke</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">29</td>
+                <td class="center-align">21</td>
+                <td class="center-align">80</td>
+                <td class="center-align">26.3</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Aug</td>
+                <td class="left-align">Jasper</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">30</td>
+                <td class="center-align">76</td>
+                <td class="center-align">39.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Sep</td>
+                <td class="left-align">White</td>
+                <td class="center-align">17</td>
+                <td class="center-align">30</td>
+                <td class="center-align">19</td>
+                <td class="center-align">66</td>
+                <td class="center-align">28.8</td>
+            </tr>
+            <!-- 4th Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">4th</td>
+                <td class="left-align">Oct</td>
+                <td class="left-align">Pulaski</td>
+                <td class="center-align">17</td>
+                <td class="center-align">28</td>
+                <td class="center-align">18</td>
+                <td class="center-align">63</td>
+                <td class="center-align">28.6</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Nov</td>
+                <td class="left-align">Fulton</td>
+                <td class="center-align">16</td>
+                <td class="center-align">27</td>
+                <td class="center-align">18</td>
+                <td class="center-align">61</td>
+                <td class="center-align">29.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Dec</td>
+                <td class="left-align">Cass</td>
+                <td class="center-align">14</td>
+                <td class="center-align">24</td>
+                <td class="center-align">18</td>
+                <td class="center-align">56</td>
+                <td class="center-align">32.1</td>
+            </tr>
+            <!-- Aggregated Data Summary Tier -->
+            <tr class="summary-start">
+                <td></td>
+                <td></td>
+                <td class="right-align">total</td>
+                <td class="center-align">218</td>
+                <td class="center-align">331</td>
+                <td class="center-align">247</td>
+                <td class="center-align">796</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">average</td>
+                <td class="center-align">18.2</td>
+                <td class="center-align">27.6</td>
+                <td class="center-align">20.6</td>
+                <td class="center-align">66.3</td>
+                <td class="center-align">31.0</td>
+            </tr>
+            <tr>
+                <td></td>
+                <!-- Merged the Month and County columns for cleaner text space -->
+                <td colspan="2" class="right-align">population variance</td>
+                <td class="center-align">15.1</td>
+                <td class="center-align">10.7</td>
+                <td class="center-align">18.7</td>
+                <td class="center-align">67.4</td>
+                <td class="center-align">14.8</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Documentation & Explanatory Metadata Footer -->
+    <div class="table-footer">
+        <p><strong>Source:</strong> Doe, J. (2026). Impact of Table Designs. <i>Journal of Data Visualization</i>, 15(2), 100-110. Accessed www.example-data-source.org on January 14, 2026.</p>
+        <p><strong>Notes:</strong> This table is for illustrative purposes only. Actual results may vary depending on localized variables.</p>
+
+
+ <h2>Bar Graph</h2>
+    <p>This chart is basically the “line‑up” of the chart world, with each category getting its own rectangular bar so you can instantly see who’s the big shot and who’s falling behind. These bars (or columns, if you’re feeling fancy) can stand tall or lay flat depending on how you set them up. In Figure 1, the bars are standing upright, loud and proud, and it’s pretty clear that item B is the overachiever of the group.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_1.jpeg" alt="Figure 1: Bar Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 1.</strong> Bar Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(ggplot2, ggwaffle, networkD3, pdftools, stringr, tidyverse,
+               waterfalls)
+df1 <- read.csv("comparison.csv")
+plot1 <- ggplot(df1, aes(x = Item, y = Count, fill = Item)) +
+  geom_col(fill = "lightgray", width = 0.7) + 
+  ylim(0, 400) + 
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_text(color="#0000FF", 
+                                  face="bold", 
+                                  size=15, 
+                                  hjust=0.5),
+        axis.title.x = element_text(size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.title.y = element_text(angle=0,
+                                    size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        legend.position = "none",
+        panel.background = element_blank(),
+        axis.line.x = element_blank(),
+        axis.ticks = element_blank())
+plot1
+    </div>
+
+<h2>Bubble Graph</h2>
+    <p>This is like a scatter plot that decided to level up — it doesn’t just show you two values, it shows you three at once. It’s basically the overachiever of charts. In Figure 2, each bubble shows the size of an item for every month, and the bigger the bubble, the bigger the value. Think of it as data wearing different‑sized helmets so you can tell who’s who at a glance.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_2.jpeg" alt="Figure 2: Bubble Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 2.</strong> Bubble Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free bubble chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df1$Month <- factor(df1$Month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+plot2 <- ggplot(df1, aes(x = Item, y = fct_rev(Month), size = Count)) +
+  geom_point(shape = 16, color = "gray", alpha = 0.8) + 
+  scale_size_continuous(range = c(1, 10)) +
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_text(color="#0000FF", 
+                                  face="bold", 
+                                  size=15, 
+                                  hjust=0.5),
+        axis.title.x = element_text(size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.title.y = element_text(angle=0,
+                                    size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=12),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=12),
+        legend.position = "none",
+        panel.background = element_blank(),
+        axis.line.x = element_line(color = "black", linewidth = 0.5)) +
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_text(color="#0000FF", 
+                                  face="bold", 
+                                  size=15, 
+                                  hjust=0.5),
+        axis.title.x = element_text(size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.title.y = element_text(angle=0,
+                                    size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=12),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=12),
+        legend.position = "none",
+        panel.background = element_blank(),
+        axis.line.x = element_blank(),
+        axis.ticks = element_blank())
+plot2
+    </div>
+
+<h2>Bullet Graph</h2>
+    <p>This is like the speedometer on your dashboard; it shows one number on a set scale and looks pretty cool doing it. But when it comes to actually understanding data, the bullet graph is the smarter, more practical cousin. It lays everything out in a clean, straight line so your eyes don’t have to work overtime. In Figure 3, you can see the monthly averages, with item B chilling comfortably in the middle range (20–29), right where the graph says, “Yep, that seems about right”.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_3.jpeg" alt="Figure 3: Bullet Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 3.</strong> Bullet Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free bullet chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df_averages <- df1 %>%
+  group_by(Item) %>%
+  summarize(Average_Count = mean(Count))
+low_region  <- 20.0
+mid_region  <- 30.0
+high_region <- 40.0
+plot3 <- ggplot(df_averages) +
+  geom_col(aes(x = Item, y = high_region), fill = "#707070", width = 0.6) + # 30-40: Dark grey
+  geom_col(aes(x = Item, y = mid_region),  fill = "#A0A0A0", width = 0.6) + # 20-30: Grey
+  geom_col(aes(x = Item, y = low_region),  fill = "#E0E0E0", width = 0.6) + #  0-20: Light grey
+  geom_col(aes(x = Item, y = Average_Count), fill = "#000000", width = 0.22) +
+  geom_label(aes(x = Item, y = Average_Count + 1.5, label = sprintf("%.1f", Average_Count)),
+             color = "#000000", fill = "#FFFFFF", fontface = "bold", size = 4, 
+             label.padding = unit(0.2, "lines"), label.size = NA) +
+  scale_y_continuous(limits = c(0, 40), expand = c(0, 0)) +
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_text(color="#0000FF", 
+                                  face="bold", 
+                                  size=15, 
+                                  hjust=0.5),
+        plot.margin = margin(t = 0.5, r = 0.5, b = 0.5, l = 0.5, unit = "cm"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 20),
+        axis.text.y = element_text(angle = 0,
+                                   vjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 20),
+        legend.position = "none",
+        panel.background = element_blank(),
+        axis.line.x = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks = element_blank())
+plot3
+    </div>
+
+
+<h2>Dot Plot</h2>
+    <p>This is the “no‑nonsense” chart of the statistics world, just a bunch of dots chilling on a number line, each one representing a data point. When multiple values repeat, the dots politely stack up like they’re waiting in line at a coffee shop. In Figure 4, item A is looking pretty balanced, item B is hanging out on the higher side, and item C is keeping things low‑key on the lower end.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_4.jpeg" alt="Figure 4: Bullet Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 4.</strong> Dot Plot.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free dot plot by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+plot4 <- ggplot(df1, aes(x = Item, fill = Item, y = Count)) +
+  geom_dotplot(binaxis = "y", stackdir = "center", fill = "lightgray") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_text(color="#0000FF", 
+                                  face="bold", 
+                                  size=15, 
+                                  hjust=0.5),
+        axis.title.x = element_text(size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.title.y = element_text(angle=0,
+                                    size=14, 
+                                    face="bold", 
+                                    color="black"),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot4
+</div>
+
+<h2>Heatmap</h2>
+    <p>This is basically the mood ring of data visualization — except way more accurate and far less embarrassing. It uses colors to show how big or small each value is across a dataset. In Figure 5, the colors make it pretty clear that all three items are living their best lives in the summer and taking a long winter nap when the temperatures drop.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_5.jpeg" alt="Figure 5: Heatmap" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 5.</strong> Heatmap.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free heatmap by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+plot5 <- ggplot(df1, aes(x = Item, y = Month, fill = Count)) +
+  geom_tile() +
+  scale_y_discrete(limits = rev) +
+  scale_fill_gradient(low = "#f0f0f0", high = "#505050") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot5
+</div>
+
+<h2>Marimekko Graph</h2>
+    <p>This chart, called a mosaic graph, is basically a stacked chart that decided to go 2‑D and show off. Instead of just stacking things up, it also stretches the columns wider or narrower to show how different categories relate to each other. In Figure 6, item B is clearly the star of the 20–29 range, taking up more space than the other two items and making sure everyone notices.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_6.jpeg" alt="Figure 6: Marimekko Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 6.</strong> Marimekko Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free Marimekko graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Categorize data entries into three specified group ranges
+df_grouped <- df1 %>%
+  mutate(Group = case_when(
+    Count >= 0  & Count <= 19 ~ "0-19",
+    Count >= 20 & Count <= 29 ~ "20-29",
+    Count >= 30 & Count <= 40 ~ "30-40"
+  ))
+# Convert Group into a strict ordered factor layer for stacked alignment
+df_grouped$Group <- factor(df_grouped$Group, levels = c("30-40", "20-29", "0-19"))
+# Calculate the precise vertical middle points for Item C's labels
+# Placed at index 3.35 to clear the column width boundary (centered at 3.0)
+df_labels <- data.frame(
+  X_Pos = c(3.35, 3.35, 3.35), 
+  Group = c("0-19", "20-29", "30-40"),
+  Label_Y = c(
+    0.75 / 2,                    # Midpoint of 0-19 section (Y = 0.375)
+    0.75 + (0.0833 / 2),         # Midpoint of 20-29 section (Y = 0.7917)
+    0.75 + 0.0833 + (0.1667 / 2) # Midpoint of 30-40 section (Y = 0.9167)
+  ),
+  Label_Text = c("0-19", "20-29", "30-40")
+)
+
+plot6 <- ggplot(df_grouped, aes(x = Item, fill = Group)) +
+  geom_bar(position = "fill", width = 0.6, color = "#FFFFFF", linewidth = 0.5) +
+  scale_fill_manual(values = c(
+    "0-19"  = "#E0E0E0", # Light grey
+    "20-29" = "#A0A0A0", # Grey
+    "30-40" = "#707070"  # Dark grey
+  )) +
+  scale_x_discrete(expand = expansion(mult = c(0.2, 0.6))) +
+  scale_y_continuous(labels = scales::percent_format(), 
+                     expand = expansion(mult = c(0, 0.05))) +
+  geom_text(data = df_labels, aes(x = X_Pos, y = Label_Y, label = Label_Text),
+            inherit.aes = FALSE, color = "#000000", fontface = "bold", 
+            size = 4.5, hjust = 0, vjust = 0.5) +
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 15),
+        axis.text.y = element_text(angle = 0,
+                                   vjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 15),
+        legend.position = "none", 
+        panel.background = element_blank(),
+        axis.line.x = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks = element_blank())
+plot6
+</div>
+
+
+<h2>Sankey</h2>
+    <p>This is like an air‑traffic controller of charts as it shows you exactly where everything is flowing and how much of it is moving around. The thicker the connecting lines (called links), the bigger the flow. It’s perfect for tracking how resources like hours, materials, or general chaos move through different stages, known as nodes. In Figure 7, you can follow the journey as each month sends its flow into items A and B, which then funnel into item C, before everything branches right back out into each month again. It’s basically a very organized data round‑trip.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_7.jpeg" alt="Figure 7: Sankey" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 7.</strong> Sankey.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free Sankey by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity. This requires both nodes and links. Table 2 provides the values for the links</p>
+    </div>
+
+<p></p>
+<p style="text-align: center;"><b>Table 2</b>. Links for Sankey</p>
+<p></p>
+
+<div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>Values of links used to generate Sankey</b></div>
+    <div class="table-subtitle">Data extracted from Table 1</div>
+
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="left-align">source</th>
+                <th class="left-align">target</th>
+                <th class="center-align">idsource</th>
+                <th class="center-align">idtarget</th>
+                <th class="center-align">value</th>
+                <th class="center-align">linkgroup</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="left-align">Jan</td><td class="left-align">A</td><td class="center-align">0</td><td class="center-align">12</td><td class="center-align">14</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Feb</td><td class="left-align">A</td><td class="center-align">1</td><td class="center-align">12</td><td class="center-align">16</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Mar</td><td class="left-align">A</td><td class="center-align">2</td><td class="center-align">12</td><td class="center-align">17</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Apr</td><td class="left-align">A</td><td class="center-align">3</td><td class="center-align">12</td><td class="center-align">18</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">May</td><td class="left-align">A</td><td class="center-align">4</td><td class="center-align">12</td><td class="center-align">21</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Jun</td><td class="left-align">A</td><td class="center-align">5</td><td class="center-align">12</td><td class="center-align">18</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Jul</td><td class="left-align">A</td><td class="center-align">6</td><td class="center-align">12</td><td class="center-align">30</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Aug</td><td class="left-align">A</td><td class="center-align">7</td><td class="center-align">12</td><td class="center-align">17</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Sep</td><td class="left-align">A</td><td class="center-align">8</td><td class="center-align">12</td><td class="center-align">17</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Oct</td><td class="left-align">A</td><td class="center-align">9</td><td class="center-align">12</td><td class="center-align">17</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Nov</td><td class="left-align">A</td><td class="center-align">10</td><td class="center-align">12</td><td class="center-align">16</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Dec</td><td class="left-align">A</td><td class="center-align">11</td><td class="center-align">12</td><td class="center-align">15</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Jan</td><td class="left-align">B</td><td class="center-align">0</td><td class="center-align">13</td><td class="center-align">19</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Feb</td><td class="left-align">B</td><td class="center-align">1</td><td class="center-align">13</td><td class="center-align">25</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Mar</td><td class="left-align">B</td><td class="center-align">2</td><td class="center-align">13</td><td class="center-align">29</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Apr</td><td class="left-align">B</td><td class="center-align">3</td><td class="center-align">13</td><td class="center-align">30</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">May</td><td class="left-align">B</td><td class="center-align">4</td><td class="center-align">13</td><td class="center-align">30</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Jun</td><td class="left-align">B</td><td class="center-align">5</td><td class="center-align">13</td><td class="center-align">31</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Jul</td><td class="left-align">B</td><td class="center-align">6</td><td class="center-align">13</td><td class="center-align">30</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Aug</td><td class="left-align">B</td><td class="center-align">7</td><td class="center-align">13</td><td class="center-align">29</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Sep</td><td class="left-align">B</td><td class="center-align">8</td><td class="center-align">13</td><td class="center-align">29</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Oct</td><td class="left-align">B</td><td class="center-align">9</td><td class="center-align">13</td><td class="center-align">28</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Nov</td><td class="left-align">B</td><td class="center-align">10</td><td class="center-align">13</td><td class="center-align">27</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">Dec</td><td class="left-align">B</td><td class="center-align">11</td><td class="center-align">13</td><td class="center-align">24</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">A</td><td class="left-align">C</td><td class="center-align">12</td><td class="center-align">14</td><td class="center-align">205</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">B</td><td class="left-align">C</td><td class="center-align">13</td><td class="center-align">14</td><td class="center-align">335</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Jan</td><td class="center-align">14</td><td class="center-align">15</td><td class="center-align">17</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Feb</td><td class="center-align">14</td><td class="center-align">16</td><td class="center-align">18</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Mar</td><td class="center-align">14</td><td class="center-align">17</td><td class="center-align">19</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Apr</td><td class="center-align">14</td><td class="center-align">18</td><td class="center-align">20</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">May</td><td class="center-align">14</td><td class="center-align">19</td><td class="center-align">23</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Jun</td><td class="center-align">14</td><td class="center-align">20</td><td class="center-align">30</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Jul</td><td class="center-align">14</td><td class="center-align">21</td><td class="center-align">21</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Aug</td><td class="center-align">14</td><td class="center-align">22</td><td class="center-align">19</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Sep</td><td class="center-align">14</td><td class="center-align">23</td><td class="center-align">19</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Oct</td><td class="center-align">14</td><td class="center-align">24</td><td class="center-align">18</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Nov</td><td class="center-align">14</td><td class="center-align">25</td><td class="center-align">18</td><td class="center-align">A</td></tr>
+            <tr><td class="left-align">C</td><td class="left-align">Dec</td><td class="center-align">14</td><td class="center-align">26</td><td class="center-align">18</td><td class="center-align">A</td></tr>
+        </tbody>
+    </table>
+</div>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+nodes <- data.frame(name = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", 
+                             "Aug", "Sep", "Oct", "Nov", "Dec", "A", "B", "C", 
+                             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", 
+                             "Aug", "Sep", "Oct", "Nov", "Dec"))
+nodes$group <- as.factor("my_grey_group")
+my_color <- 'd3.scaleOrdinal()
+  .domain(["my_grey_group"])
+  .range(["lightgrey"])'
+links<-read.csv("links.csv")
+sankeyNetwork(Links = links, Nodes = nodes, Source = "Idsource",
+              Target = "Idtarget", Value = "value", NodeID = "name",
+              sinksRight=TRUE, fontSize = 24,  NodeGroup = "group",
+              LinkGroup = "linkgroup", colourScale = my_color)
+</div>
+
+<h2>Unit Graph</h2>
+    <p>This is a waffle graph, which is what you get when data decides to express itself through tiny, evenly sized shapes. Think of it as a pixel‑art version of your dataset. In the 10×10 waffle setup shown in Figure 8, a solid 53% of the items land in the 10–19 range, which is noticeably higher than the counts in the other two ranges. Basically, that range is doing all the heavy lifting while the others are just along for the ride.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_8.jpeg" alt="Figure 8: Unit Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 8.</strong> Unit Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free unit graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+remotes::install_github("liamgilbey/ggwaffle")
+group <- c("10-19","20-29","30-39")
+value <- c(53, 30, 17)
+waffle_matrix <- matrix(nrow=100, ncol=3)
+colnames(waffle_matrix) <- c("x", "y", "range")
+i <- 1; j <- 1; k <- 1
+counter <- value[1]
+name1 <- group[1]
+for (l in 1:counter){
+  waffle_matrix[k,] <- c(i, j, name1)
+  k <- k+1
+  if(i<10) {i <- i+1} 
+  else {
+    i <-1
+    if(j<10) {j <- j+1} else (j <-1)
+  }
+}
+counter <- value[2]
+name1 <- group[2]
+for (l in 1:counter){
+  waffle_matrix[k,] <- c(i, j, name1)
+  k <- k+1
+  if(i<10) {i <- i+1} 
+  else {
+    i <-1
+    if(j<10) {j <- j+1} else (j <-1)
+  }
+}
+counter <- value[3]
+name1 <- group[3]
+for (l in 1:counter){
+  waffle_matrix[k,] <- c(i, j, name1)
+  k <- k+1
+  if(i<10) {i <- i+1} 
+  else {
+    i <-1
+    if(j<10) {j <- j+1} else (j <-1)
+  }
+}
+df2 <- as.data.frame(waffle_matrix) %>% mutate(across(c(x, y), as.integer))
+plot8 <- ggplot(df2, aes(x, y, fill = range)) + 
+  ggwaffle::geom_waffle() +
+  scale_fill_manual(values = c("#cccccc", "#969892", "#3b444b")) +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank()) +
+  expand_limits(x = 12)
+text1 <- group[1]; text2 <- group[2]; text3 <- group[3]
+plot8 + geom_text(data = NULL, x = 11.5, y = 3, label = text1, size=6, fontface = "bold") +
+  geom_text(data = NULL, x = 11.5, y = 7, label = text2, size=6, fontface = "bold") +
+  geom_text(data = NULL, x = 11.5, y = 9.5, label = text3, size=6, fontface = "bold") +
+  coord_cartesian(clip = "off")
+</div>
+
+<h2>Waterfall Graph</h2>
+    <p>This is basically the storytelling bar graph. It walks you through how an initial value gets nudged up by the good stuff, dragged down by the not‑so‑good stuff, and finally lands on a grand total. In Figure 9, you can see items A and B adding to the pile, item C subtracting from it, and the whole thing settling at a neat net total of 307 counts. It’s like watching your data balance its checkbook.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="comparison_9.jpeg" alt="Figure 9: Waterfall Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 9.</strong> Waterfall Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free waterfall graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+Items <- c("A", "B", "C")
+Amount <- c(216, 331, -240)
+df_water <- data.frame(Items, Amount)
+color_vector <- c("#f0f0f0", "#e0e0e0")
+waterfall(df_water, 
+          calc_total = TRUE, 
+          fill_by_sign = FALSE, # Disable automatic sign coloring
+          fill_colours = color_vector, # Apply custom colors
+          total_axis_text = "Net", 
+          total_rect_color = "grey",
+          rect_text_size = 3,
+          draw_lines = FALSE,
+          draw_axis.x = "none") +  
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+</div>
+</body>
+</html>
+
