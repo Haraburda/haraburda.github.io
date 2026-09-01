@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Scott Haraburda">
+    <title>Lead-Time Volatility & Time-Series Diagnostics</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color, #2d3748);
+            background-color: var(--bg-color, #ffffff);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--container-bg, #ffffff);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color, #3182ce);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color, #3182ce);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        h2 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        /* Linked Section Header Class Explicitly to CSS */
+        .section-header, h3 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Linked Main Impact Box Explicitly to CSS to Enforce Containment */
+        .main-impact {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .keywords {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+    .table-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .table-title {
+        font-size: 1.15rem;
+        font-weight: normal;
+        margin-bottom: 2px;
+        text-align: left;
+    }
+    .table-subtitle {
+        font-size: 1rem;
+        font-style: italic;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+    th, td {
+        padding: 5px 8px;
+        font-weight: normal;
+    }
+    /* Academic top and bottom structural borders */
+    thead tr.top-border th {
+        border-top: 2px solid #000;
+    }
+    thead tr.bottom-border th {
+        border-bottom: 1px solid #000;
+    }
+    /* Specific line boundary separating the core data from the summary metrics */
+    tbody tr.summary-start td {
+        border-top: 1px solid #000;
+    }
+    tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+    }
+    /* Text layout alignments */
+    .left-align { text-align: left; }
+    .center-align { text-align: center; }
+    .right-align { text-align: right; }
+    
+    /* Footer formatting for Notes and Sources */
+    .table-footer {
+        font-size: 0.85rem;
+        text-align: left;
+        line-height: 1.4;
+    }
+    .table-footer p {
+        margin: 6px 0 0 0;
+    }
+    .r-script-section {
+        background-color: #000000;  /* Pure black background */
+        color: #00FF00;             /* Matrix-style neon green text */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.95rem;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+        white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+        border: 1px solid #333;
+    }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container"> 
+    <header>
+        <h1>Lead-Time Volatility & Time-Series Diagnostics</h1>
+        <h4 class="author">Scott S. Haraburda</h4>
+        <h4 class="date">8 April 2025</h4>
+    </header>
+
+    <div class="main-impact">
+        <!-- FIXED: Added closing </span> tag below to prevent global browser text stream blowout -->
+        <p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">Think of time graphs as a biography for your data, tracking how your favorite metrics change as the clock ticks. To keep things orderly, Father Time always hangs out on the horizontal x-axis, while whatever you are actually measuring takes the vertical y-axis elevator. The time-tracking family is surprisingly large, featuring everything from classic line graphs and Gantt charts to wilder relatives like horizon graphs, sparklines, and streamgraphs. We are going to audition each of them using data from Table 1.</span></p>
+    </div>
+
+<p></p>
+<p style="text-align: center;"><b>Table 1</b>. Generic Data for Graphing</p>
+<p></p>
+
+    <div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>Counts for all items peak during summer</b></div>
+    <div class="table-subtitle">Largest numbers occur in 2nd quarter</div>
+
+    <table>
+        <thead>
+            <!-- First Header Row (Top Level) -->
+            <tr class="top-border">
+                <!-- Added explicit border-bottom styles to connect the lines directly across -->
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Quarter</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Month</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">County</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2" class="center-align" style="border-bottom: 1px solid #000; padding-bottom: 2px;">Relation of C to sum of all three items</th>
+            </tr>
+            <!-- Second Header Row (Bottom Level Alignment) -->
+            <tr class="bottom-border">
+                <th class="center-align" style="font-weight: bold;">A<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">B<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">C<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align">A + B + C</th>
+                <th class="center-align">% of C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 1st Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">1st</td>
+                <td class="left-align">Jan</td>
+                <td class="left-align">Newton</td>
+                <td class="center-align">18</td>
+                <td class="center-align">19</td>
+                <td class="center-align">17</td>
+                <td class="center-align">54</td>
+                <td class="center-align">31.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Feb</td>
+                <td class="left-align">Lake</td>
+                <td class="center-align">16</td>
+                <td class="center-align">25</td>
+                <td class="center-align">18</td>
+                <td class="center-align">59</td>
+                <td class="center-align">30.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Mar</td>
+                <td class="left-align">Porter</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">19</td>
+                <td class="center-align">65</td>
+                <td class="center-align">29.2</td>
+            </tr>
+            <!-- 2nd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">2nd</td>
+                <td class="left-align">Apr</td>
+                <td class="left-align">LaPorte</td>
+                <td class="center-align">21</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">19</td>
+                <td class="center-align">70</td>
+                <td class="center-align">27.1</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">May</td>
+                <td class="left-align">St Joseph</td>
+                <td class="center-align">17</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">20</td>
+                <td class="center-align">67</td>
+                <td class="center-align">29.9</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Jun</td>
+                <td class="left-align">Marshall</td>
+                <td class="center-align">18</td>
+                <td class="center-align"><b>31</b></td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">79</td>
+                <td class="center-align">38.0</td>
+            </tr>
+            <!-- 3rd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">3rd</td>
+                <td class="left-align">Jul</td>
+                <td class="left-align">Starke</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">29</td>
+                <td class="center-align">21</td>
+                <td class="center-align">80</td>
+                <td class="center-align">26.3</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Aug</td>
+                <td class="left-align">Jasper</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">30</td>
+                <td class="center-align">76</td>
+                <td class="center-align">39.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Sep</td>
+                <td class="left-align">White</td>
+                <td class="center-align">17</td>
+                <td class="center-align">30</td>
+                <td class="center-align">19</td>
+                <td class="center-align">66</td>
+                <td class="center-align">28.8</td>
+            </tr>
+            <!-- 4th Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">4th</td>
+                <td class="left-align">Oct</td>
+                <td class="left-align">Pulaski</td>
+                <td class="center-align">17</td>
+                <td class="center-align">28</td>
+                <td class="center-align">18</td>
+                <td class="center-align">63</td>
+                <td class="center-align">28.6</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Nov</td>
+                <td class="left-align">Fulton</td>
+                <td class="center-align">16</td>
+                <td class="center-align">27</td>
+                <td class="center-align">18</td>
+                <td class="center-align">61</td>
+                <td class="center-align">29.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Dec</td>
+                <td class="left-align">Cass</td>
+                <td class="center-align">14</td>
+                <td class="center-align">24</td>
+                <td class="center-align">18</td>
+                <td class="center-align">56</td>
+                <td class="center-align">32.1</td>
+            </tr>
+            <!-- Aggregated Data Summary Tier -->
+            <tr class="summary-start">
+                <td></td>
+                <td></td>
+                <td class="right-align">total</td>
+                <td class="center-align">218</td>
+                <td class="center-align">331</td>
+                <td class="center-align">247</td>
+                <td class="center-align">796</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">average</td>
+                <td class="center-align">18.2</td>
+                <td class="center-align">27.6</td>
+                <td class="center-align">20.6</td>
+                <td class="center-align">66.3</td>
+                <td class="center-align">31.0</td>
+            </tr>
+            <tr>
+                <td></td>
+                <!-- Merged the Month and County columns for cleaner text space -->
+                <td colspan="2" class="right-align">population variance</td>
+                <td class="center-align">15.1</td>
+                <td class="center-align">10.7</td>
+                <td class="center-align">18.7</td>
+                <td class="center-align">67.4</td>
+                <td class="center-align">14.8</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Documentation & Explanatory Metadata Footer -->
+    <div class="table-footer">
+        <p><strong>Source:</strong> Doe, J. (2026). Impact of Table Designs. <i>Journal of Data Visualization</i>, 15(2), 100-110. Accessed www.example-data-source.org on January 14, 2026.</p>
+        <p><strong>Notes:</strong> This table is for illustrative purposes only. Actual results may vary depending on localized variables.</p>
+
+ <h2>Area Graph</h2>
+    <p>This graph takes a standard, skinny line chart and gives it a glow-up by coloring in the empty space below the line. This shading does not just look pretty; it tricks our brains into focusing on the big picture and overall trends rather than obsessing over every single tiny dot. For example, Figure 1 makes it incredibly obvious that our summer numbers absolutely skyrocketed.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_1.jpeg" alt="Figure 1: Area Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 1.</strong> Area Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free area graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(ggplot2, ggrepel, pdftools, stringr, tidyverse, cowplot,
+               geomtextpath, ggHoriPlot, patchwork, ggthemes, ggspark, sinkr)
+df1 <- read.csv("comparison.csv")
+df1$Item <- factor(df1$Item, levels = c("A", "B", "C")) 
+# Calculate the precise vertical middle points for December (the 12th position)
+df_text_labels <- data.frame(
+  X_Pos = c(12.3, 12.3, 12.3), 
+  Label_Y = c(
+    14 / 2,                  # Midpoint of Light Grey Area A (Y = 7.0)
+    14 + (24 / 2),           # Midpoint of Grey Area B (Y = 26.0)
+    14 + 24 + (18 / 2)       # Midpoint of Dark Grey Area C (Y = 47.0)
+  ),
+  Label_Text = c("A", "B", "C")
+)
+custom_order <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                  "Sep", "Oct", "Nov", "Dec")
+df1 <- df1 %>%
+  mutate(Month = fct_relevel(Month, custom_order))
+df_area <- df1 %>%
+  mutate(Month_Num = as.numeric(Month))
+# Single-letter month factor abbreviation mapping array from J to D
+single_letters <- c("J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D")
+plot1 <- ggplot(df_area, aes(x = Month_Num, y = Count, fill = Item, 
+                             group = fct_rev(Item))) +
+  geom_area(alpha = 0.9) +
+  scale_fill_manual(values = c(
+    "A" = "#E0E0E0", # Bottom: Light grey
+    "B" = "#A0A0A0", # Middle: Grey
+    "C" = "#707070"  # Top:    Dark grey
+  )) +
+  geom_text(data = df_text_labels, aes(x = X_Pos, y = Label_Y, label = Label_Text),
+            inherit.aes = FALSE, color = "#000000", fontface = "bold", size = 5, 
+            hjust = 0, vjust = 0.5) +
+  scale_x_continuous(breaks = 1:12, labels = single_letters, expand = expansion(mult = c(0, 0.08))) +
+  scale_y_continuous(breaks = c(0, 20, 40, 60, 80), limits = c(0, 85), expand = c(0, 0)) +
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 14),
+        axis.text.y = element_text(angle = 0,
+                                   vjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 14),
+        legend.position = "none", 
+        panel.background = element_blank(),
+        axis.line.x = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks = element_blank())
+plot1
+    </div>
+
+ <h2>Bump Graph</h2>
+    <p>This is essentially a line chart that stopped caring about raw numbers and started obsessing over social status. Instead of tracking values, it tracks rankings. Think of it as a racetrack for your metrics. Looking at Figure 2, item B is absolutely cruising in first place, while Item A is unfortunately bringing up the rear. Things got a little dramatic in the first half of the year when Items A and C kept swapping positions like aggressive go-kart drivers, with each miraculously snagging the crown in June and August.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_2.jpeg" alt="Figure 2: Bump Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 2.</strong> Bump Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free bump graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df_bump <- df1 %>%
+  mutate(Month_Factor = factor(Month, levels = month.abb),
+         Month_Numeric = as.numeric(Month_Factor)) %>%
+  filter(!is.na(Month_Numeric))
+single_letter_months <- substr(month.abb[min_month:max_month], 1, 1)
+num_items <- length(unique(df_bump$Item))
+min_month <- min(df_bump$Month_Numeric)
+max_month <- max(df_bump$Month_Numeric)
+gray_palette <- c(
+  "A" = "#D3D3D3",  # Light grey
+  "B" = "#808080",  # Grey
+  "C" = "#A9A9A9"   # Dark grey / Darker tint
+)
+# Native R Spline Interpolation: Generates 100 smooth points per line
+df_smooth <- df_bump %>%
+  group_by(Item) %>%
+  do({
+    s <- spline(.$Month_Numeric, .$Rank, n = 100, method = "natural")
+    data.frame(Month_Numeric = s$x, Rank = s$y)
+  }) %>%
+  ungroup()
+plot2 <- ggplot() +
+  geom_line(data = df_smooth, aes(x = Month_Numeric, y = Rank, color = Item, 
+                                  group = Item), linewidth = 2, alpha = 0.9) +
+  geom_point(data = df_bump, aes(x = Month_Numeric, y = Rank, color = Item), 
+             size = 4, alpha = 1) +
+  geom_text(data = df_bump %>% filter(Month_Numeric == min_month),
+            aes(x = min_month - 0.15, y = Rank, label = Item), hjust = 1, 
+            size = 5, 
+            fontface = "bold", color = "black") +
+  geom_text(data = df_bump %>% filter(Month_Numeric == max_month),
+            aes(x = max_month + 0.15, y = Rank, label = Item), hjust = 0, 
+            size = 5, 
+            fontface = "bold", color = "black") +
+  scale_x_continuous(breaks = min_month:max_month, 
+                     labels = single_letter_months, 
+                     limits = c(min_month - 0.5, max_month + 0.5)) +
+  scale_y_reverse(breaks = 1:num_items) +
+  scale_color_manual(values = gray_palette) +
+  theme_minimal(base_family = "sans") +
+  theme(
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.text.x = element_text(face = "bold", size = 15, color = "#333333"),
+    axis.text.y = element_text(face = "bold", size = 12, color = "#333333"),
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    plot.margin = margin(t = 10, r = 20, b = 10, l = 10, unit = "pt"),
+    legend.position = "none" 
+  )
+plot2
+    </div>
+
+ <h2>Cycle Graph</h2>
+    <p>The cycle graph is for data that experiences a bit of déjà vu, mapping out short-term sprints (like weeks or months) across a marathon multi-year timeline. It is great for spotting seasonal patterns or habits your data just cannot break. Now, Figure 3 cheats a tiny bit as it breaks things down by quarters but only covers a single year. Even so, it loudly sounds the alarm that Quarter 3 is absolute chaos for Items A and C, showing some seriously wild mood swings.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_3.jpeg" alt="Figure 3: Cycle Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 3.</strong> Cycle Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free cycle graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df_quarters <- df1 %>%
+  mutate(
+    Month_Factor = factor(Month, levels = month.abb),
+    Month_Numeric = as.numeric(Month_Factor)
+  ) %>%
+  filter(!is.na(Month_Numeric)) %>%
+  # Assign quarters based on numeric month thresholds
+  mutate(
+    Quarter = case_when(
+      Month_Numeric %in% 1:3   ~ "1st Qtr",
+      Month_Numeric %in% 4:6   ~ "2nd Qtr",
+      Month_Numeric %in% 7:9   ~ "3rd Qtr",
+      Month_Numeric %in% 10:12 ~ "4th Qtr"
+    ),
+    Quarter = factor(Quarter, levels = c("1st Qtr", "2nd Qtr", "3rd Qtr", "4th Qtr"))
+  )
+num_items <- length(unique(df_quarters$Item))
+df_quarters <- df_quarters %>%
+  mutate(Single_Letter = substr(Month, 1, 1))
+gray_palette <- c(
+  "A" = "#D3D3D3",  # Light grey
+  "B" = "#808080",  # Grey
+  "C" = "#404040"   # Dark grey
+)
+plot3 <- ggplot(df_quarters, aes(x = Month_Numeric, y = Count, color = Item, group = Item)) +
+  geom_line(linewidth = 1.5, alpha = 0.9) +
+  geom_point(size = 3.5, alpha = 1) +
+  geom_text(data = df_quarters %>% 
+              group_by(Quarter, Item) %>% 
+              filter(Month_Numeric == max(Month_Numeric)) %>% 
+              ungroup(),
+            aes(label = Item, x = Month_Numeric + 0.15), 
+            hjust = 0, size = 3.8, fontface = "bold", color = "black") +
+ scale_x_continuous(
+    breaks = 1:12,
+    labels = substr(month.abb, 1, 1)
+  ) +
+    scale_y_continuous() + 
+  scale_color_manual(values = gray_palette) +
+  facet_wrap(~ Quarter, nrow = 2, ncol = 2, scales = "free_x") +
+  theme_minimal(base_family = "sans") +
+  theme(
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.text.x = element_text(face = "bold", size = 11, color = "#333333"),
+    axis.text.y = element_text(face = "bold", size = 11, color = "#333333"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    strip.text = element_text(face = "bold", size = 12, color = "black", hjust = 0.5),
+    strip.background = element_blank(),
+    panel.spacing = unit(2, "lines"),
+    plot.margin = margin(t = 15, r = 25, b = 15, l = 15, unit = "pt"),
+    legend.position = "none"
+  )
+plot3
+    </div>
+
+ <h2>Gannt Chart</h2>
+    <p>This chart is the project manager’s best friend and every slacker’s worst nightmare. It lays out every single task on a strict timeline, mapping out exactly when things need to start, how long they are allowed to drag on, and how one delay will ruin everyone else’s week. Figure 4 gives us a quarterly look at our items, complete with handy arrows stretching from the finish line of one quarter to the starting block of the next. As a bonus, it slaps the actual count value right inside the bar lines so nobody has to guess the numbers.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_4.jpeg" alt="Figure 4: Gannt Chart" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 4.</strong> Gannt Chart.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free Gannt chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity. This requires the data in Table 2, generated from Table 1.</p>
+    </div>
+
+<p></p>
+<div class="table-container">
+<!-- Main Titles -->
+    <div class="table-title"><b>Task distribution analysis data for Gannt chart</b></div>
+    <div class="table-subtitle">Using data from Table 1</div>
+
+        <table>
+            <thead>
+                <!-- Double structural entry row maps to split academic rule criteria -->
+                <tr class="top-border bottom-border">
+                    <th class="left-align">Month_Start</th>
+                    <th class="left-align">Month_End</th>
+                    <th class="left-align">Task</th>
+                    <th class="center-align">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="left-align">Jan</td>
+                    <td class="left-align">Mar</td>
+                    <td class="left-align">A1</td>
+                    <td class="center-align">51</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Apr</td>
+                    <td class="left-align">Jun</td>
+                    <td class="left-align">A2</td>
+                    <td class="center-align">56</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Jul</td>
+                    <td class="left-align">Sep</td>
+                    <td class="left-align">A3</td>
+                    <td class="center-align">64</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Oct</td>
+                    <td class="left-align">Dec</td>
+                    <td class="left-align">A4</td>
+                    <td class="center-align">47</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Jan</td>
+                    <td class="left-align">Mar</td>
+                    <td class="left-align">B1</td>
+                    <td class="center-align">73</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Apr</td>
+                    <td class="left-align">Jun</td>
+                    <td class="left-align">B2</td>
+                    <td class="center-align">91</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Jul</td>
+                    <td class="left-align">Sep</td>
+                    <td class="left-align">B3</td>
+                    <td class="center-align">88</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Oct</td>
+                    <td class="left-align">Dec</td>
+                    <td class="left-align">B4</td>
+                    <td class="center-align">79</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Jan</td>
+                    <td class="left-align">Mar</td>
+                    <td class="left-align">C1</td>
+                    <td class="center-align">54</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Apr</td>
+                    <td class="left-align">Jun</td>
+                    <td class="left-align">C2</td>
+                    <td class="center-align">69</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Jul</td>
+                    <td class="left-align">Sep</td>
+                    <td class="left-align">C3</td>
+                    <td class="center-align">70</td>
+                </tr>
+                <tr>
+                    <td class="left-align">Oct</td>
+                    <td class="left-align">Dec</td>
+                    <td class="left-align">C4</td>
+                    <td class="center-align">54</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df3 <- read.csv("comparison3.csv")
+df3$M1 <- paste(df3$Month_S, "01 2026")
+df3$M1 <- as.Date(df3$M1, format = "%b %d %Y")
+df3$M2 <- paste(df3$Month_E, "01 2026")
+df3$M2 <- as.Date(df3$M2, format = "%b %d %Y")
+df3$Task <- factor(df3$Task)
+
+plot4 <- ggplot(df3, aes(x = M1, xend = M2, y = fct_rev(Task), yend = Task, label=Count)) +
+  geom_textsegment(color = "#808080", linewidth = 12) +
+  geom_segment(aes(x=M2[1], xend=M1[2], y=Task[1], yend=Task[2]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[2], xend=M1[3], y=Task[2], yend=Task[3]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[3], xend=M1[4], y=Task[3], yend=Task[4]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[1], xend=M1[2], y=Task[5], yend=Task[6]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[2], xend=M1[3], y=Task[6], yend=Task[7]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[3], xend=M1[4], y=Task[7], yend=Task[8]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[1], xend=M1[2], y=Task[9], yend=Task[10]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[2], xend=M1[3], y=Task[10], yend=Task[11]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  geom_segment(aes(x=M2[3], xend=M1[4], y=Task[11], yend=Task[12]),
+               arrow = arrow(length = unit(0.3, "cm"), ends = "last", type = "closed"),
+               color = "black", size = 1) +
+  scale_x_date(date_labels = "%b") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=15),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=15),
+        axis.ticks = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot4
+    </div>
+
+
+ <h2>Horizon Graph</h2>
+    <p>This chart is built for packing an overwhelming mountain of fast-moving data into a tiny space. To save room, it chops your data into equal-height sections and stacks them right on top of one another like a game of Tetris, all sharing the exact same floor baseline. It does get a little weird with negative numbers by flipping them upside down to keep things compact, but Figure 5 plays it straight by keeping the percentage changes from our average exactly as they are. Looking closely at the layout, it is painfully obvious that Item A suffered some pretty brutal, ice-cold drops during the summer months..</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_5.jpeg" alt="Figure 5: Horizon Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 5.</strong> Horizon Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free horizon graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df1 <- df1 %>%
+  mutate(M1 = as.numeric(Month)) %>%
+  group_by(Item) %>%
+  mutate(Count1 = 100 * (Count - mean(Count)) / Count) %>%
+  ungroup() %>%
+  mutate(sign = ifelse(Count1 >= 0, "Positive", "Negative"))
+plot5 <- ggplot(df1, aes(x = M1, y = Count1)) +
+  geom_area(fill="#cccccc") +
+  facet_grid(Item ~., switch = "y") + # Creates panels stacked vertically
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), 
+    labels = c("J","F","M","A","M","J","J","A","S","O","N","D") 
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=18),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.y.left = element_text(size = 14, angle = 0, hjust = 0, 
+                                         face="bold"),
+        strip.background.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot5
+</div>
+
+
+
+
+</body>
+</html>
+
