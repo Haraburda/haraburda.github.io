@@ -24,30 +24,55 @@ Throughout my career - spanning <b>global military logistics theater command, fe
 
 ---
 
-## 🔬 Enterprise Analytics & Predictive Modeling Projects
+<h2>🔬 Enterprise Analytics & Predictive Modeling Projects</h2>
 
-Explore the underlying codebase frameworks built to leverage statistical programming, resolve network bottlenecks, and optimize resource allocation.
+<p>Explore the underlying codebase frameworks built to leverage statistical programming, resolve network bottlenecks, and optimize resource allocation.</p>
 
-### 🔮 1. Multi-Node Demand Planning & Commodity Consumption Architecture
-* **Operational Framework:** Built a multi-variate statistical profiling engine to ingest extensive national longitudinal supply datasets. The model cross-references demographics, regional allocations, and consumption velocity to map demand patterns across complex distribution nodes.
-* **Supply Chain Impact:** Provides producers with actionable demand-sensing intelligence to align production planning, mitigate inventory holding risks, and stabilize supply network flows.
-* **📊 Live Analytical Application:** **[Launch Interactive SIOP Demand Sensing Dashboard](https://haraburda.github.io/Haraburda/)**
-* **📂 Code Base:** [View Commodity Analysis Code](project/commodity_consumption.html)
+<hr />
 
-### 🏢 2. Predictive Capacity & Infrastructure Forecasting for U.S. Army Facilities
-* **Operational Framework:** Engineered an predictive data asset to forecast and categorize facility code distributions across deep defense infrastructure matrices.
-* **Supply Chain Impact:** Enabled macro-level master production scheduling (MPS) and facility asset readiness tracking, ensuring industrial base capabilities match tactical deployment cadences.
-* **📂 Code Base:**  *(Currently updating script)*
+<h3>🔮 1. Multi-Node Demand Planning & Commodity Consumption Architecture</h3>
+<ul>
+  <li><strong>Operational Framework:</strong> Built a multi-variate statistical profiling engine to ingest extensive national longitudinal supply datasets. The model cross-references demographics, regional allocations, and consumption velocity to map demand patterns across complex distribution nodes.</li>
+  <li><strong>Supply Chain Impact:</strong> Provides producers with actionable demand-sensing intelligence to align production planning, mitigate inventory holding risks, and stabilize supply network flows.</li>
+  <li>📊 <strong>Live Analytical Application:</strong> <strong><a href="https://github.io" target="_blank">Launch Interactive SIOP Demand Sensing Dashboard</a></strong></li>
+  <li>📂 <strong>Code Base:</strong> <a href="project/commodity_consumption.html">View Commodity Analysis Code</a></li>
+</ul>
 
-### 🛡️ 3. Crisis Operations Resilience & Advanced Workforce Capacity Engine (COVID-19)
-* **Operational Framework:** Deployed an agile, R-based analytics framework for a major DoD Organic Industrial Base (CAAA) during critical pandemic disruptions. Implemented automated script layers featuring trailing rolling averages and multi-variable exponential smoothing models to track risk, workforce decay, and manufacturing throughput constraints.
-* **Supply Chain Impact:** Armed the Crisis Management Team (CMT) with predictive operational visibility, preserving shop-floor capacity, balancing weather/safety leave adjustments, and maintaining high-velocity munitions manufacturing continuity under extreme disruptions.
-* **📂 Code Base:** [View Operational Resilience Code](project/COVID.html)
+<hr />
 
-### 🛡️ 4. Autonomous System Guardrails & Real-Time Production Containment Framework
-* **Operational Framework:** Engineered an active runtime containment architecture built into native compilation layers to secure edge-deployed autonomous platforms against real-world telemetry drift, data corruption, and adversarial jamming. Implemented a programmatic, 6-Zone Defensive Architecture that replaces passive post-hoc auditing with machine-velocity software friction to evaluate semantic sanity and freeze out-of-bounds calculations prior to platform actuation.
-* **Supply Chain Impact:** Neutralizes the "Velocity Hazard" by ensuring high-speed predictive propulsion engines (spanning classical time series, decentralized clustering, deep neural transformers, and reinforcement loops) operate under strict, rule-based containment. Provides defense program managers with a zero-trust procurement benchmark to enforce structural safety limits, preventing catastrophic platform failure and mitigating multi-million-dollar supply chain or asset paralysis.
-* **📂 Code Base:** [View Real-Time Containment Implementation](project/autonomous_guardrails.html)
+<h3>🚚 2. Geospatial Freight Logistics Risk Architecture & Safety Hotspot Mitigation Engine</h3>
+<ul>
+  <li><strong>Operational Framework:</strong> Engineered an enterprise geospatial pipeline analyzing longitudinal transportation networks (spanning over 600,000 transit incidents and 70 million lines of raw unstructured text). Developed custom Python-based data-cleaning layers to execute multi-variable data imputation on spatial coordinate drift, missing records, and systemic database shifting. Replaced basic density heuristics with a dual-index mathematical matrix calculating a localized Crash Frequency Index (ICF) and a standard deviation-adjusted Crash Cost Index (ICC).</li>
+  <li><strong>Supply Chain Impact:</strong> Neutralizes multi-million dollar inbound freight transit risks, cargo loss hazards, and logistical network paralysis. Empowers corporate logistics directors to identify hidden transit infrastructure constraints, establish zero-trust tier-1 routing alternatives, and run objective "what-if" simulations to optimize distribution-lane resilience.</li>
+  <li>📂 <strong>Code Base:</strong> <a href="project/geospatial_freight_risk.html">View Logistics Risk Mitigation Code</a></li>
+</ul>
+
+<hr />
+
+<h3>🛡️ 3. Crisis Operations Resilience & Advanced Workforce Capacity Engine (COVID-19)</h3>
+<ul>
+  <li><strong>Operational Framework:</strong> Deployed an agile, R-based analytics framework for a major DoD Organic Industrial Base (CAAA) during critical pandemic disruptions. Implemented automated script layers featuring trailing rolling averages and multi-variable exponential smoothing models to track risk, workforce decay, and manufacturing throughput constraints.</li>
+  <li><strong>Supply Chain Impact:</strong> Armed the Crisis Management Team (CMT) with predictive operational visibility, preserving shop-floor capacity, balancing weather/safety leave adjustments, and maintaining high-velocity munitions manufacturing continuity under extreme disruptions.</li>
+  <li>📂 <strong>Code Base:</strong> <a href="project/COVID.html">View Operational Resilience Code</a></li>
+</ul>
+
+<hr />
+
+<h3>🏢 4. Predictive Capacity & Infrastructure Forecasting for U.S. Army Facilities</h3>
+<ul>
+  <li><strong>Operational Framework:</strong> Engineered an predictive data asset to forecast and categorize facility code distributions across deep defense infrastructure matrices.</li>
+  <li><strong>Supply Chain Impact:</strong> Enabled macro-level master production scheduling (MPS) and facility asset readiness tracking, ensuring industrial base capabilities match tactical deployment cadences.</li>
+  <li>📂 <strong>Code Base:</strong> <code>(Currently updating script)</code></li>
+</ul>
+
+<hr />
+
+<h3>🛡️ 5. Autonomous System Guardrails & Real-Time Production Containment Framework</h3>
+<ul>
+  <li><strong>Operational Framework:</strong> Engineered an active runtime containment architecture built into native compilation layers to secure edge-deployed autonomous platforms against real-world telemetry drift, data corruption, and adversarial jamming. Implemented a programmatic, 6-Zone Defensive Architecture that replaces passive post-hoc auditing with machine-velocity software friction to evaluate semantic sanity and freeze out-of-bounds calculations prior to platform actuation.</li>
+  <li><strong>Supply Chain Impact:</strong> Neutralizes the "Velocity Hazard" by ensuring high-speed predictive propulsion engines operate under strict, rule-based containment. Provides defense program managers with a zero-trust procurement benchmark to enforce structural safety limits, preventing catastrophic platform failure and mitigating multi-million-dollar supply chain or asset paralysis.</li>
+  <li>📂 <strong>Code Base:</strong> <a href="project/autonomous_guardrails.html">View Real-Time Containment Implementation</a></li>
+</ul>
 
 <p></p>
 [click to view project codes](https://github.com/Haraburda/project_codes.git)
