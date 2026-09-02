@@ -173,6 +173,18 @@
             border-left: 2px solid #e2e8f0;
             padding-left: 15px;
         }
+        .r-script-section {
+            background-color: #000000;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre;
+            border: 1px solid #333;
+        }
 
         .references p {
             text-align: left;
@@ -200,7 +212,7 @@
     <header>
         <h1>Hardening the Loop: Designing Software Guardrails for High-Velocity Autonomous Military Platforms</h1>
         <h4 class="author">Scott S. Haraburda</h4>
-        <h4 class="date">31 August 2026</h4>
+        <h4 class="date"><i>31 August 2026</i></h4>
     </header>
 
     <div class="abstract">
@@ -712,13 +724,8 @@ Standardize RFP and SOW Language: Procurement officers must systematically elimi
         <h2>Supplementary Attachment 2: Guardrail Reference Implementation</h2>
 This reference script provides a standardized Python implementation of the Zone 1 Structural Gateway and the Zone 6 Defensive Recovery Mechanism. Program management offices can use this template to establish baseline code-containment clauses within contractor software deliverables.
 
-<pre><code class="language-python">
-import os
-import re
-import csv
-import math
-import time
-import logging
+<div class="r-script-section">
+import os, re, csv, math, time, logging
 from multiprocessing import Pool, cpu_count
 
 # Set working directory for the data
@@ -1171,4 +1178,4 @@ if __name__ == "__main__":
             writer.writerow(["REC_002", "Safe_Environmental_Telemetry_Payload_Beta", "24.98", "195.07", "1"])
             
     execute_cdl_pipeline(mock_file)
-</code></pre>
+</div>
