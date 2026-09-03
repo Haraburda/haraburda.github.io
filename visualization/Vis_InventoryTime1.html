@@ -783,9 +783,8 @@ plot4 <- ggplot(df3, aes(x = M1, xend = M2, y = fct_rev(Task), yend = Task, labe
 plot4
     </div>
 
-
  <h2>Horizon Graph</h2>
-    <p>This chart is built for packing an overwhelming mountain of fast-moving data into a tiny space. To save room, it chops your data into equal-height sections and stacks them right on top of one another like a game of Tetris, all sharing the exact same floor baseline. It does get a little weird with negative numbers by flipping them upside down to keep things compact, but Figure 5 plays it straight by keeping the percentage changes from our average exactly as they are. Looking closely at the layout, it is painfully obvious that Item A suffered some pretty brutal, ice-cold drops during the summer months..</p>
+    <p>This chart is built for packing an overwhelming mountain of fast-moving data into a tiny space. To save room, it chops your data into equal-height sections and stacks them right on top of one another like a game of Tetris, all sharing the exact same floor baseline. It does get a little weird with negative numbers by flipping them upside down to keep things compact, but Figure 5 plays it straight by keeping the percentage changes from our average exactly as they are. Looking closely at the layout, it is painfully obvious that Item A suffered some pretty brutal, ice-cold drops during the summer months.</p>
 
 <figure style="display: flex; flex-direction: column; align-items: center;">
     <img src="time_5.jpeg" alt="Figure 5: Horizon Graph" width="600">
@@ -836,8 +835,222 @@ plot5 <- ggplot(df1, aes(x = M1, y = Count1)) +
 plot5
 </div>
 
+ <h2>Line Graph</h2>
+    <p>This graph is the old-school, reliable patriarch of the chart family. It works by taking your standalone data points — fondly known as markers — and playing a game of connect-the-dots using crisp, straight lines. It has one primary job in life: tracking how your values behave over a stretch of time. If you take a look at Figure 6, it becomes blindingly obvious that all three of our items had a major summer vacation moment, peaking simultaneously during the warmest months of the year.</p>
 
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_6.jpeg" alt="Figure 6: Line Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 6.</strong> Line Graph.</figcaption>
+</figure>
 
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free line graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df_plot <- df1 %>%
+  mutate(Month_Factor = factor(Month, levels = month.abb),
+         Month_Numeric = as.numeric(Month_Factor)) %>%
+  filter(!is.na(Month_Numeric))
+min_month  <- min(df_plot$Month_Numeric)
+max_month  <- max(df_plot$Month_Numeric)
+single_letter_months <- substr(month.abb[min_month:max_month], 1, 1)
+gray_palette <- c(
+  "A" = "#D3D3D3",  # Light grey
+  "B" = "#808080",  # Grey
+  "C" = "#404040"   # Dark grey
+)
+plot6 <- ggplot(df_plot, aes(x = Month_Numeric, y = Count, color = Item, 
+                             group = Item)) +
+  geom_line(linewidth = 1.5, alpha = 0.95) +
+  geom_point(size = 3.5, alpha = 1) +
+  geom_text(data = df_plot %>% filter(Month_Numeric == max_month),
+            aes(label = Item), x = max_month + 0.15, hjust = 0, size = 4.5, 
+            fontface = "bold", color = "black") +
+  scale_x_continuous(breaks = min_month:max_month, 
+                     labels = single_letter_months, 
+                     limits = c(min_month - 0.2, max_month + 0.6)) +
+  scale_y_continuous() +
+  scale_color_manual(values = gray_palette) +
+  theme_minimal(base_family = "sans") +
+  theme(
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.text.x = element_text(face = "bold", size = 11, color = "#333333"),
+    axis.text.y = element_text(face = "bold", size = 11, color = "#333333"),
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    plot.margin = margin(t = 15, r = 25, b = 15, l = 15, unit = "pt"),
+    legend.position = "none" 
+  )
+plot6
+</div>
+
+ <h2>Slope Graph</h2>
+    <p>This skips the boring daily details and focuses entirely on the grand finale. It is designed to compare data points across exactly two categories or time periods, acting like a direct "before and after" snapshot. Each entity gets just two dots on the page, aggressively connected by a single line to show whether they climbed the mountain or fell off a cliff. According to Figure 7, items B and C spent the year putting in the work, showing a beautiful upward climb from their January baseline to their December wrap-up. Item A, on the other hand, spent the year on a steep, chaotic downhill ski slope, suffering a pretty significant drop.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_7.jpeg" alt="Figure 7: Slope Graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 7.</strong> Slope Graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free line graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df_slope <- df1 %>%
+  filter(Month %in% c("Jan", "Dec")) %>%
+  mutate(Month1 = factor(Month1, levels = c("Jan", "Dec")))
+df_labels_left <- df_slope %>% 
+  filter(Month == "Jan") %>%
+  mutate(Label_Text = paste0(Item, "  ", Count))
+df_labels_right <- df_slope %>% 
+  filter(Month == "Dec") %>%
+  mutate(Label_Text = paste0(Count, "  ", Item))
+gray_palette <- c(
+  "A" = "#D3D3D3",  # Light grey
+  "B" = "#808080",  # Grey
+  "C" = "#404040"   # Dark grey
+)
+plot7 <- ggplot(df_slope, aes(x = Month, y = Count, color = Item, 
+                              group = Item)) +
+  geom_line(linewidth = 1.5, alpha = 0.95) +
+  geom_point(size = 3.5, alpha = 1) +
+  geom_text(data = df_labels_left,
+            aes(label = Label_Text), x = 0.92, hjust = 1, size = 4.5, 
+            fontface = "bold", color = "black") +
+  geom_text(data = df_labels_right,
+            aes(label = Label_Text), x = 2.08, hjust = 0, size = 4.5, 
+            fontface = "bold", color = "black") +
+  scale_x_discrete(expand = c(0.4, 0.4)) +
+  scale_y_continuous() +
+  scale_color_manual(values = gray_palette) +
+  theme_minimal(base_family = "sans") +
+  theme(
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.text.y = element_text(face = "bold", size = 13, color = "#111111", 
+                               margin = margin(t = 10)),  
+    axis.text.x = element_text(face = "bold", size = 13, color = "#111111", 
+                               margin = margin(t = 10)),
+    panel.grid.major.x = element_blank(), 
+    panel.grid.minor.x = element_blank(), 
+    panel.grid.major.y = element_blank(), 
+    panel.grid.minor.y = element_blank(), 
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    plot.margin = margin(t = 20, r = 40, b = 20, l = 40, unit = "pt"),
+    legend.position = "none"
+  )
+plot7
+</div>
+
+ <h2>Sparkline</h2>
+    <p>These visuals are the pocket-sized heroes of the chart world, specifically engineered to squeeze right into your regular text or live inside a single spreadsheet cell. They give you a quick, no-nonsense look at your trends without hogging all the screen real estate or demanding the high-maintenance setup of a full-scale graph. Figure 8 delivers a bite-sized view of our monthly changes, even tossing in a handy shaded zone to show you exactly where the data usually likes to hang out</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_8.jpeg" alt="Figure 8: Sparkline" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 8.</strong> Sparkline.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free sparkline by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+plot8 <- ggplot(df1, aes(M1, Count, group = Item)) + 
+  stat_interquartilerange(aes(ymin = after_stat(ymin) * 0.99,
+                              ymax = after_stat(ymax) * 1.01),
+    geom = "ribbon", show.legend = FALSE) +
+  geom_line() + 
+  stat_sparklabels(geom = "point", label_fun = \(x) round(x, 0),
+                   show.legend = FALSE) + 
+  stat_sparklabels(geom = "text_repel", label_fun = \(x) round(x, 0),
+                   show.legend = FALSE) + 
+  scale_colour_manual("", values = c("black", "black", "black")) + 
+  facet_grid(Item~., switch = "y", scales="free_y") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), 
+    labels = c("J","F","M","A","M","J","J","A","S","O","N","D") 
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=18),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.y.left = element_text(size = 14, angle = 0, hjust = 0, 
+                                         face="bold"),
+        strip.background.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank()) 
+plot8
+</div>
+
+<h2>Streamgraph</h2>
+    <p>This is essentially a stacked area chart that threw away its rigid, flat baseline and decided to live its best, fluid life. Instead of being anchored to the bottom of the page, its colorful layers flow and dance around a wavy, moving central axis. It is perfect for seeing how different categories vibe together over time. If you glance at Figure 9, the organic waves make it smooth and easy to spot our big traffic surges, highlighting collective peaks from June to August, the summer months./p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="time_9.jpeg" alt="Figure 9: Streamgraph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 9.</strong> Streamgraph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free streamgraph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+remotes::install_github("marchtaylor/sinkr")
+library(sinkr)
+x <- 1:12
+y <- df1 %>%
+  select(M1, Item, Count) %>%
+  pivot_wider(names_from = Item, values_from = Count) %>%
+  tibble::column_to_rownames(var = "M1") %>%
+  as.matrix()
+cols <- c("#D3D3D3", "#808080", "#404040")
+set.seed(1)
+plotStream(x, y, frac.rand = 0.0, spar = 0.0, order.method = "max", border=NA,
+           bty="n", axes=FALSE, col=cols)
+axis(1, at = 1:12, labels = c("J","F","M","A","M","J","J","A","S","O","N","D"),
+     tick=FALSE, font=2, cex.axis = 1.2, line = -3)
+text(.75, 25, labels = "A", font = 2, cex.axis = 1.6)
+text(.75, 0, labels = "B", font = 2, cex.axis = 1.6)
+text(.75, -25, labels = "C", font = 2, cex.axis = 1.6)
+</div>
 
 </body>
 </html>
