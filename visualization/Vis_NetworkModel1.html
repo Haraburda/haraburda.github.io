@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Scott Haraburda">
+    <title>Multivariate Supply Chain Network Relationship Modeling</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color, #2d3748);
+            background-color: var(--bg-color, #ffffff);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--container-bg, #ffffff);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color, #3182ce);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color, #3182ce);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        h2 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        /* Linked Section Header Class Explicitly to CSS */
+        .section-header, h3 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Linked Main Impact Box Explicitly to CSS to Enforce Containment */
+        .main-impact {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .keywords {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+    .table-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .table-title {
+        font-size: 1.15rem;
+        font-weight: normal;
+        margin-bottom: 2px;
+        text-align: left;
+    }
+    .table-subtitle {
+        font-size: 1rem;
+        font-style: italic;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+    th, td {
+        padding: 5px 8px;
+        font-weight: normal;
+    }
+    /* Academic top and bottom structural borders */
+    thead tr.top-border th {
+        border-top: 2px solid #000;
+    }
+    thead tr.bottom-border th {
+        border-bottom: 1px solid #000;
+    }
+    /* Specific line boundary separating the core data from the summary metrics */
+    tbody tr.summary-start td {
+        border-top: 1px solid #000;
+    }
+    tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+    }
+    /* Text layout alignments */
+    .left-align { text-align: left; }
+    .center-align { text-align: center; }
+    .right-align { text-align: right; }
+    
+    /* Footer formatting for Notes and Sources */
+    .table-footer {
+        font-size: 0.85rem;
+        text-align: left;
+        line-height: 1.4;
+    }
+    .table-footer p {
+        margin: 6px 0 0 0;
+    }
+    .r-script-section {
+        background-color: #000000;  /* Pure black background */
+        color: #00FF00;             /* Matrix-style neon green text */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.95rem;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+        white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+        border: 1px solid #333;
+    }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container"> 
+    <header>
+        <h1>Multivariate Supply Chain Network Relationship Modeling</h1>
+        <h4 class="author">Scott S. Haraburda</h4>
+        <h4 class="date">11 August 2025</h4>
+    </header>
+
+    <div class="main-impact">
+        <!-- FIXED: Added closing </span> tag below to prevent global browser text stream blowout -->
+        <p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">Welcome to the ultimate social network for data points. Unlike regular charts that are completely obsessed with raw numbers, relationship graphs focus entirely on the connections, dependencies, and subtle drama happening between different entities. To map out who is talking to whom, we have an extensive toolbox of visual matchmaking options, including arc graphs, bubble plots, chord diagrams, correlation matrices, linear and non-linear regressions, parallel coordinates plots, radar charts, spider charts, and scatterplots. We are going to dive into each of these graphs below, using the exact same dataset from Table 1 to show you how these elements interact.</span></p>
+    </div>
+
+<p></p>
+<p style="text-align: center;"><b>Table 1</b>. Generic Data for Graphing</p>
+<p></p>
+
+    <div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>Counts for all items peak during summer</b></div>
+    <div class="table-subtitle">Largest numbers occur in 2nd quarter</div>
+
+    <table>
+        <thead>
+            <!-- First Header Row (Top Level) -->
+            <tr class="top-border">
+                <!-- Added explicit border-bottom styles to connect the lines directly across -->
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Quarter</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Month</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">County</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2" class="center-align" style="border-bottom: 1px solid #000; padding-bottom: 2px;">Relation of C to sum of all three items</th>
+            </tr>
+            <!-- Second Header Row (Bottom Level Alignment) -->
+            <tr class="bottom-border">
+                <th class="center-align" style="font-weight: bold;">A<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">B<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">C<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align">A + B + C</th>
+                <th class="center-align">% of C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 1st Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">1st</td>
+                <td class="left-align">Jan</td>
+                <td class="left-align">Newton</td>
+                <td class="center-align">18</td>
+                <td class="center-align">19</td>
+                <td class="center-align">17</td>
+                <td class="center-align">54</td>
+                <td class="center-align">31.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Feb</td>
+                <td class="left-align">Lake</td>
+                <td class="center-align">16</td>
+                <td class="center-align">25</td>
+                <td class="center-align">18</td>
+                <td class="center-align">59</td>
+                <td class="center-align">30.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Mar</td>
+                <td class="left-align">Porter</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">19</td>
+                <td class="center-align">65</td>
+                <td class="center-align">29.2</td>
+            </tr>
+            <!-- 2nd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">2nd</td>
+                <td class="left-align">Apr</td>
+                <td class="left-align">LaPorte</td>
+                <td class="center-align">21</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">19</td>
+                <td class="center-align">70</td>
+                <td class="center-align">27.1</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">May</td>
+                <td class="left-align">St Joseph</td>
+                <td class="center-align">17</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">20</td>
+                <td class="center-align">67</td>
+                <td class="center-align">29.9</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Jun</td>
+                <td class="left-align">Marshall</td>
+                <td class="center-align">18</td>
+                <td class="center-align"><b>31</b></td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">79</td>
+                <td class="center-align">38.0</td>
+            </tr>
+            <!-- 3rd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">3rd</td>
+                <td class="left-align">Jul</td>
+                <td class="left-align">Starke</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">29</td>
+                <td class="center-align">21</td>
+                <td class="center-align">80</td>
+                <td class="center-align">26.3</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Aug</td>
+                <td class="left-align">Jasper</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">30</td>
+                <td class="center-align">76</td>
+                <td class="center-align">39.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Sep</td>
+                <td class="left-align">White</td>
+                <td class="center-align">17</td>
+                <td class="center-align">30</td>
+                <td class="center-align">19</td>
+                <td class="center-align">66</td>
+                <td class="center-align">28.8</td>
+            </tr>
+            <!-- 4th Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">4th</td>
+                <td class="left-align">Oct</td>
+                <td class="left-align">Pulaski</td>
+                <td class="center-align">17</td>
+                <td class="center-align">28</td>
+                <td class="center-align">18</td>
+                <td class="center-align">63</td>
+                <td class="center-align">28.6</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Nov</td>
+                <td class="left-align">Fulton</td>
+                <td class="center-align">16</td>
+                <td class="center-align">27</td>
+                <td class="center-align">18</td>
+                <td class="center-align">61</td>
+                <td class="center-align">29.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Dec</td>
+                <td class="left-align">Cass</td>
+                <td class="center-align">14</td>
+                <td class="center-align">24</td>
+                <td class="center-align">18</td>
+                <td class="center-align">56</td>
+                <td class="center-align">32.1</td>
+            </tr>
+            <!-- Aggregated Data Summary Tier -->
+            <tr class="summary-start">
+                <td></td>
+                <td></td>
+                <td class="right-align">total</td>
+                <td class="center-align">218</td>
+                <td class="center-align">331</td>
+                <td class="center-align">247</td>
+                <td class="center-align">796</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">average</td>
+                <td class="center-align">18.2</td>
+                <td class="center-align">27.6</td>
+                <td class="center-align">20.6</td>
+                <td class="center-align">66.3</td>
+                <td class="center-align">31.0</td>
+            </tr>
+            <tr>
+                <td></td>
+                <!-- Merged the Month and County columns for cleaner text space -->
+                <td colspan="2" class="right-align">population variance</td>
+                <td class="center-align">15.1</td>
+                <td class="center-align">10.7</td>
+                <td class="center-align">18.7</td>
+                <td class="center-align">67.4</td>
+                <td class="center-align">14.8</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Documentation & Explanatory Metadata Footer -->
+    <div class="table-footer">
+        <p><strong>Source:</strong> Doe, J. (2026). Impact of Table Designs. <i>Journal of Data Visualization</i>, 15(2), 100-110. Accessed www.example-data-source.org on January 14, 2026.</p>
+        <p><strong>Notes:</strong> This table is for illustrative purposes only. Actual results may vary depending on localized variables.</p>
+
+ <h2>Arc Graph</h2>
+    <p>Think of the this graph as a highly stylized subway map for your data. This layout takes a network of nodes and lines them up in a perfectly straight row, using elegant, curved lines to leap across the page and show how they connect. To keep things informative, the thickness of each arc tells you exactly how heavy that connection is. As we can see in Figure 1, items A and B leap over to connect with item C, which then bridges the gap to the Net, beautifully tying all twelve values together. Item B is clearly the heavyweight champion of the group, boasting the boldest, thickest line on the block.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_1.jpeg" alt="Figure 1: Arc graph" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 1.</strong> Arc graph.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free arc graph by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+pacman::p_load(ggbump, ggplot2, ggrepel, pdftools, stringr, tidyverse, cowplot,
+               geomtextpath, ggHoriPlot, patchwork, ggthemes, ggspark, sinkr,
+               tidyquant, scales, ggridges, ggfan, gridExtra, ggdist)
+df1 <- read.csv("comparison.csv")
+df1$Item <- factor(df1$Item, levels = c("A", "B", "C")) 
+edges <- data.frame(from = c("A", "B", "C"), to = c("C", "C", "Net"))
+graph <- graph_from_data_frame(edges)
+weight <- df1 %>%
+  group_by(Item) %>%
+  summarise(Total = sum(Count), .groups = "drop") %>%
+  mutate(Scaled = round(10 * Total / max(Total), 0)) %>%
+  pull(Scaled)
+plot1 <- ggraph(graph, layout = "linear") + 
+  geom_edge_arc(aes(width = weight), strength = 1, color="grey") + 
+  scale_edge_width(range = c(2, 5)) +
+  geom_node_point(size = 10, color="grey") +
+  geom_node_text(aes(label = name), nudge_y = -0.1, size=8, fontface="bold") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot1
+    </div>
+
+ <h2>Bubble Plot</h2>
+    <p>This chart is essentially a regular scatter plot that decided to level up and add a third dimension. Even though the chart sits flat on a 2D page, it cleverly sneaks in a third metric by shrinking or blowing up the size of each data point like a balloon. The bigger the bubble, the more massive the value. Looking at Figure 2, item B completely dominates the field, blowing up into the biggest bubble on the chart to show everyone who holds the highest value.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_2.jpeg" alt="Figure 2: Bubble plot" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 2.</strong> Bubble plot.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free bubble plot by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df2 <- df1 %>%
+  group_by(Item) %>%
+  summarise(mean1 = mean(Count, na.rm = TRUE), .groups = "drop")
+plot2 <- ggplot(df2, aes(x = Item, y = mean1, size = mean1)) +
+  geom_point(colour = "grey", shape = 16) + 
+  scale_size(range = c(15,25))  +
+  scale_y_continuous(limits = c(15, 30)) +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = .5, 
+                                   face="bold",
+                                   color="black",
+                                   size=15),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=15),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot2
+    </div>
+
+ <h2>Chord Diagram</h2>
+    <p>If you want to visualize your data running in circles, in a good way, this diagram is your best bet. This circular layout is perfect for showing exactly how different elements in a dataset relate to one another and how values flow between them. Think of it as a musical symphony where everything ties together. As Figure 3 beautifully illustrates, items A and B pool their efforts to feed right into item C, which then seamlessly links up with the Net to complete the circle of life for your data.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_3.jpeg" alt="Figure 3: Chord diagram" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 3.</strong> Chord diagram.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free chord diagram by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Define a 3-column data frame: from, to, and value
+df3 <- df1 %>%
+  group_by(Item) %>%
+  summarise(value = sum(Count, na.rm = TRUE), .groups = "drop") %>%
+  rename(from = Item) %>%
+  mutate(to = c("C", "C", "Net")) %>%
+  select(from, to, value)
+
+# Customize with colors and transparency
+grid_cols <- c(A = "#cccccc", B = "#969892", C = "#3b444b", Net = "black")
+
+# Create chord diagram
+circos.par(canvas.xlim = c(-1.1, 1.1), canvas.ylim = c(-1.1, 1.1))
+chordDiagram(df3, grid.col = grid_cols, , annotationTrack = "grid",
+             transparency = 0.3) # 0 is opaque, 1 is invisible
+circos.track(track.index = 1, panel.fun = function(x, y) {
+  circos.text(CELL_META$xcenter, 
+              CELL_META$ylim[1] + 2.5, 
+              CELL_META$sector.index, 
+              facing = "downward", 
+              niceFacing = TRUE, 
+              adj = c(0.5, 0),
+              cex = 1.5,     # Custom font size for names
+              font = 2) },  # Bold font
+  bg.border = NA)
+circos.clear()  # use this to clear the chord diagram from environment
+    </div>
+
+ <h2>Correlation Matrix</h2>
+    <p>This is a perfectly square table that acts like a mathematical matchmaking app, grading the relationship between every possible pair of numeric variables on a scale from -1 to 1. The score of 1 means they are inseparable soulmates, while -1 means they run in opposite directions. Taking a quick peek at Figure 4, the coefficients are all hovering awkwardly near zero, which is the data equivalent of a shrug. It turns out there is absolutely no correlation whatsoever for any item when compared to the month.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_4.jpeg" alt="Figure 4: Correlation matrix" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 4.</strong> Correlation matrix.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free correlation matrix by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df1$M1 <- match(df1$Month, month.abb)
+gray_palette <- c(
+  "A" = "#D3D3D3",  # Light grey
+  "B" = "#808080",  # Grey
+  "C" = "#404040"   # Dark grey
+)
+
+# Define a shared minimal theme
+matrix_theme <- theme(
+  plot.title = element_blank(),
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  axis.ticks = element_blank(),
+  axis.text.x = element_text(color = "black", size = 12),
+  axis.text.y = element_text(color = "black", size = 12),
+  legend.position = "none",
+  panel.background = element_blank(),
+  panel.grid = element_blank()
+)
+
+# -------------------------------------------------------------------------
+# PANEL 1 (Top Left): Bar Chart of Item by M1
+# -------------------------------------------------------------------------
+df1$Item <- factor(df1$Item, levels = c("C", "B", "A"))
+jan_data <- df1 %>% 
+  filter(M1 == 1) %>% 
+  arrange(Item) %>% 
+  mutate(
+    Prop = Count / sum(Count),
+    Cum_Prop = cumsum(Prop),
+    Mid_Prop = Cum_Prop - (Prop / 2) 
+  )
+p1 <- ggplot(df1, aes(x = factor(M1), y = Count)) +
+  geom_col(aes(fill = as.character(Item)), position = "fill", width = 0.7) +
+  scale_fill_manual(values = c(
+    "A" = "#D3D3D3",  # Light grey
+    "B" = "#808080",  # Grey
+    "C" = "#404040"   # Dark grey
+  )) +
+  geom_text(data = jan_data, aes(x = 0.4, y = Mid_Prop, label = Item), 
+            color = "black", size = 5, hjust = 1) +
+  annotate("text", x = 6.5, y = 1.15, label = "Month", 
+           color = "black", size = 5, fontface = "bold", hjust = 0.5) +
+  coord_cartesian(ylim = c(0, 1.2), clip = "off") +
+  scale_x_discrete(expand = expansion(add = c(1, 0.6))) +
+  matrix_theme +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        plot.margin = margin(t = 30, r = 5, b = 5, l = 5, unit = "pt"))
+
+# -------------------------------------------------------------------------
+# PANEL 2 (Top Right): List of Correlation Values (Text Display)
+# -------------------------------------------------------------------------
+corr_all <- round(cor(df1$M1, df1$Count), 2)
+corr_A   <- round(cor(df1$M1[df1$Item == "A"], df1$Count[df1$Item == "A"]), 2)
+corr_B   <- round(cor(df1$M1[df1$Item == "B"], df1$Count[df1$Item == "B"]), 2)
+corr_C   <- round(cor(df1$M1[df1$Item == "C"], df1$Count[df1$Item == "C"]), 2)
+text_labels <- paste0(
+  "corr = ", corr_all, "\n\n", 
+  "A: ", corr_A, "\n\n", 
+  "B: ", corr_B, "\n\n", 
+  "C: ", corr_C
+)
+p2 <- ggplot() +
+  geom_text(aes(x = 1, y = 0.8, label = text_labels), size = 4, color = "black", hjust = 0.5) +
+  annotate("text", x = 1.04, y = 1.15, label = "Count", 
+           color = "black", size = 5, fontface = "bold", hjust = 0.5) +
+  annotate("text", x = 1.8, y = 0.8, label = "Month", 
+           color = "black", size = 5, fontface = "bold", vjust = 0.5) +
+  coord_cartesian(xlim = c(0.5, 1.8), ylim = c(0.5, 1.2), clip = "off") +
+  matrix_theme +
+  theme(
+    axis.text.x = element_blank(), 
+    axis.text.y = element_blank(),
+    plot.margin = margin(t = 30, r = 50, b = 5, l = 5, unit = "pt")
+  )
+
+# -------------------------------------------------------------------------
+# PANEL 3 (Bottom Left): Confidence Levels of Count by M1
+# -------------------------------------------------------------------------
+month_labels <- df1 %>% 
+  distinct(M1, Month1) %>% 
+  arrange(M1) %>% 
+  pull(Month1)
+p3 <- ggplot(df1, aes(x = M1, y = Count, color = Item, fill = Item)) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, alpha = 0.15, linewidth = 1) +
+  scale_color_manual(values = gray_palette) +
+  scale_fill_manual(values = gray_palette) +
+  scale_x_continuous(breaks = 1:12, labels = month_labels) +
+  matrix_theme + 
+  theme(
+    axis.text.x = element_text(face = "bold", color = "black", size = 12),
+    axis.text.y = element_text(face = "bold", color = "black", size = 12))
+
+# -------------------------------------------------------------------------
+# PANEL 4 (Bottom Right): Histogram of Quantity by Count
+# -------------------------------------------------------------------------
+p4 <- ggplot(df1, aes(x = Count, fill = Item)) +
+  geom_histogram(binwidth = 2, position = "stack", color = "white", 
+                 linewidth = 0.2) +
+  scale_fill_manual(values = gray_palette) +
+  annotate("text", x = 34.5, y = 4, label = "Count", 
+           color = "black", size = 5, angle = 0, fontface = "bold", hjust = 0.5) +
+  coord_cartesian(xlim = c(14, 35), clip = "off") +
+  scale_x_continuous(breaks = seq(15, 30, by = 5)) +
+  matrix_theme +
+  theme(
+    axis.text.x = element_text(face = "bold", color = "black", size = 12),
+    axis.text.y = element_blank(),
+    plot.margin = margin(t = 5, r = 35, b = 5, l = 5, unit = "pt")
+  )
+
+# -------------------------------------------------------------------------
+# COMBINE INTO A SQUARE MATRIX (2x2 Grid)
+# -------------------------------------------------------------------------
+plot4 <- (p1 + p2) / (p3 + p4)
+plot4
+    </div>
+
+ <h2>Linear Regression</h2>
+    <p>This scatter plot is essentially your data’s attempt to draw a straight line through a messy situation. It slaps a "line of best fit" right over the top of your data points to highlight the connection between two variables, wrapping it in a cozy confidence band to show the statistical uncertainty of that line. In this case, the plot uses linear regression to try and force a meaningful relationship between the passing months and the counts for each item. To tell you how successful this math experiment is, it proudly displays the equation and the R-squared (R<sup>2</sup>) value, which is supposed to reflect how well our model explains the crazy variations in the data. Unfortunately, for all three items shown in Figure 5, the R<sup>2</sup> value is hovering painfully close to zero, which is the mathematical equivalent of a shrug indicating that this straight line is definitely not a good fit.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_5.jpeg" alt="Figure 5: Linear regression" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 5.</strong> Linear regression.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free linear regression by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df1$Item <- factor(df1$Item, levels = c("A", "B", "C"))
+label_coords <- data.frame(
+  series = c("A", "B", "C"),
+  x_pos = c(5, 5, 5), # Specific x values
+  y_pos = c(15, 20, 15) # Specific y values
+)
+plot5 <- ggplot(df1, aes(x = M1, y = Count)) +
+  geom_point() +
+  # Add the linear regression line for each facet
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  stat_regline_equation(aes(label =  paste(..eq.label.., 
+                                           ..rr.label.., sep = "~~~~")),
+                        label.x = 3, label.y.npc = "top",
+                        size = 6, fontface = "bold") +
+  facet_grid(Item ~., switch = "y", scales="free") + # Creates panels stacked vertically
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), # The original integer values to be replaced
+    labels = c("J","F","M","A","M","J","J","A","S","O","N","D")      # The new text labels
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=18),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.y.left = element_text(size = 14, angle = 0, hjust = 0, face="bold"),
+        strip.background.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank()) 
+plot5
+    </div>
+
+ <h2>Linear Regression (2<sup>nd</sup> order)</h2>
+    <p>When a straight line completely fails your data, it is time to throw a curveball. Just like its linear sibling, the second-order non-linear regression graph tries to find a path through the chaos, but it uses a flexible, polynomial curved line instead. This math technique maps out how the months relate to the counts for each items by letting the line bend to the data’s whims. Taking a peek at Figure 6, the R<sup>2</sup> values for two items, A and C, are still sitting frustratingly near zero. While the curve technically performs a tiny bit better than the rigid straight line before it, the math proves that this bendy line still doesn’t fit our chaotic data very well at all.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_6.jpeg" alt="Figure 6: Linear regression (2<sup>nd</sup> order)" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 6.</strong> Linear regression (2<sup>nd</sup> order).</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free linear regression (2<sup>nd</sup> order) by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+plot6 <- ggplot(df1, aes(x = M1, y = Count)) +
+  geom_point(size=2) +
+  # Add the linear regression line for each facet
+  geom_smooth(method = "lm", se = TRUE, color = "black",
+              formula = y ~ poly(x, 2)) +
+  stat_regline_equation(aes(label =  paste(..eq.label.., 
+                                           ..rr.label.., sep = "~~~~")),
+                        label.x.npc = 0.2, label.y.npc = 0.1,
+                        size = 6, fontface = "bold", formula = y ~ poly(x, 2)) +
+  facet_grid(Item ~., switch = "y", scales="free") + # Creates panels stacked vertically
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), # The original integer values to be replaced
+    labels = c("J","F","M","A","M","J","J","A","S","O","N","D")      # The new text labels
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=18),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.y.left = element_text(size = 14, angle = 0, hjust = 0, face="bold"),
+        strip.background.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank()) 
+plot6
+    </div>
+
+ <h2>Linear Regression (9<sup>th</sup> order)</h2>
+    <p>If at first a straight line or a gentle curve doesn’t fit your data, you can always try using an absolute sledgehammer of math: the ninth-order polynomial regression. By using a wildly intricate model that lets the line bend, twist, and loop for each item, we can finally force our R<sup>2</sup> values to climb beautifully close to a perfect one. As Figure 7 shows, this ultra-flexible model captures every single zig and zag in the dataset with absolute perfection. However, there is a catch: because it is trying way too hard to please this specific set of numbers, it suffers from a massive case of overfitting. The moment you try to feed it a different dataset, this overly complex model will likely panic and completely fall apart.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_7.jpeg" alt="Figure 7: Linear regression (9<sup>th</sup> order)" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 7.</strong> Linear regression (9<sup>th</sup> order).</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free linear regression (9<sup>th</sup> order) by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+plot7 <- ggplot(df1, aes(x = M1, y = Count)) +
+  geom_point(size=2) +
+  geom_smooth(method = "lm", se = TRUE, color = "black",
+              formula = y ~ poly(x, 9)) +
+  stat_regline_equation(aes(label =  paste(..eq.label.., 
+                                           ..rr.label.., sep = "~~~~")),
+                        label.x.npc = 0, label.y.npc = 0,
+                        size = 3.5, fontface = "bold", formula = y ~ poly(x, 9)) +
+  facet_grid(Item ~., switch = "y", scales="free") + # Creates panels stacked vertically
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), # The original integer values to be replaced
+    labels = c("J","F","M","A","M","J","J","A","S","O","N","D")      # The new text labels
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=18),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.y.left = element_text(size = 14, angle = 0, hjust = 0, face="bold"),
+        strip.background.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank()) 
+plot7
+    </div>
+
+ <h2>Parallel Coordinates</h2>
+    <p>This graph is the ultimate multi-tasker, allowing us to eyeball an entire handful of different variables all at once on a flat, two-dimensional plane. Instead of the usual two intersecting X and Y axes that force you to choose, this layout lines up several vertical, parallel lines side-by-side like a barcode, with each line tracking a completely different metric. Figure 8 puts this into practice by charting the average, median, standard deviation, and the maximum and minimum values for each item over a 12-month stretch. Item B completely flexes on the competition here, consistently claiming the highest numbers across all five categories.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_8.jpeg" alt="Figure 8: Parallel coordinates" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 8.</strong> Parallel coordinates.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free parallel coordinates by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+all_stat <- df1 %>%
+  group_by(Item) %>%
+  summarise(
+    mean   = mean(Count, na.rm = TRUE),
+    median = median(Count, na.rm = TRUE),
+    sd     = sd(Count, na.rm = TRUE),
+    max    = max(Count, na.rm = TRUE),
+    min    = min(Count, na.rm = TRUE)
+  )
+all_stat_long <- all_stat %>%
+  pivot_longer(
+    cols = 2:6, 
+    names_to = "Metric", 
+    values_to = "Value"
+  ) %>%
+  mutate(Metric = factor(Metric, levels = colnames(all_stat)[2:6]))
+last_metric <- levels(all_stat_long$Metric)[length(levels(all_stat_long$Metric))]
+label_data <- all_stat_long %>%
+  filter(Metric == last_metric)
+plot8 <- ggplot(all_stat_long, aes(x = Metric, y = Value, group = Item, 
+                                   color = Item)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
+  geom_text(data = label_data, aes(label = Item), color = "black",
+            fontface = "bold", size = 6, hjust = -0.5, vjust = 0.5) +
+  scale_color_manual(values = gray_palette) +
+  scale_y_continuous(
+    breaks = c(10, 20, 30),
+    limits = c(min(10, min(all_stat_long$Value)), 
+               max(30, max(all_stat_long$Value)))
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=18),
+        axis.text.y = element_text(vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=18),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.y.left = element_text(size = 14, angle = 0, hjust = 0, 
+                                         face="bold"),
+        strip.background.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot8
+    </div>
+
+ <h2>Radar Chart</h2>
+    <p>This chart is essentially a data web that lets you compare anywhere from three to eight different variables all at once on a circular, radial grid. Instead of standard horizontal and vertical axes, it uses spokes that shoot out from a single center point like a bicycle wheel. In Figure 9, the chart keeps a totally uniform scale ranging from 0 to 31 across all the spokes. While it clearly shows that item B is stretching its legs and standing out from the crowd, the visual layout makes it a bit tough to spot the subtle drama happening down at the lower end of the scale, especially when it comes to the standard deviation (sd) values.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="relationship_9.jpeg" alt="Figure 9: Radar chart" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 9.</strong> Radar chart.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free radar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+colnames(all_stat)[1] <- "group"
+max1 <- max(all_stat$max, na.rm = TRUE)
+mid1 <- max1 / 2
+
+# Calculate grid label positions along the 'sd' axis line
+sd_angle <- 1.7 * pi
+grid_labels <- data.frame(
+  val_numeric = c(0, mid1, max1),
+  val_text    = c("0", round(mid1, 1), round(max1, 1))
+) %>%
+  mutate(
+    x_coord = val_numeric * cos(sd_angle),
+    y_coord = val_numeric * sin(sd_angle)
+  )
+
+# Calculate text coordinates midpoint between Mean and Median axes
+item_angle <- 0.3 * pi
+item_labels <- all_stat %>%
+  mutate(
+    mid_val = (mean + median) / 2,
+    x_coord = mid_val * cos(item_angle),
+    y_coord = mid_val * sin(item_angle)
+  )
+
+# Calculate bold black positions for the spoke labels
+axis_names <- c("mean", "median", "sd", "max", "min")
+axis_angles <- c(0.5, 0.1, 1.7, 1.3, 0.9) * pi
+outer_buffer <- max1 * 1.3                     
+axis_labels_df <- data.frame(
+  label = axis_names,
+  angle = axis_angles
+) %>%
+  mutate(
+    x_coord = outer_buffer * cos(angle),
+    y_coord = outer_buffer * sin(angle)
+  )
+
+plot9 <- ggradar(plot.data = all_stat, plot.legend = FALSE, grid.min = 0, 
+  grid.mid = mid1, grid.max = max1, values.radar = c("", "", ""),
+  axis.label.size = 0.01, group.point.size = 3, group.line.width = 1.5,          
+  background.circle.colour = "white", 
+  group.colours = c("#cccccc", "#969892", "#3b444b") ) +
+  geom_text(data = grid_labels, aes(x = x_coord, y = y_coord, label = val_text),
+    color = "black", fontface = "bold", size = 5, vjust = 1.4, hjust = 0.4) +
+  geom_text(data = item_labels, aes(x = x_coord, y = y_coord, label = group),
+    color = "black", fontface = "bold", size = 5, vjust = 0.5, hjust = 0.5) +
+  geom_text(data = axis_labels_df, aes(x = x_coord, y = y_coord, label = label),
+    color = "black", fontface = "bold", size = 6.5, vjust = 0.5, hjust = 0.5) +
+  theme(
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.title = element_text(face = "bold", size = 20),
+    plot.margin = margin(30, 30, 30, 30)
+  )
+plot9
+    </div>
+
+
+</body>
+</html>
+
