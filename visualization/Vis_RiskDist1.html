@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Scott Haraburda">
+    <title>Sub-Tier Operational Risk Distribution Diagnostics</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color, #2d3748);
+            background-color: var(--bg-color, #ffffff);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--container-bg, #ffffff);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color, #3182ce);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color, #3182ce);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        h2 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        /* Linked Section Header Class Explicitly to CSS */
+        .section-header, h3 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Linked Main Impact Box Explicitly to CSS to Enforce Containment */
+        .main-impact {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .keywords {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+    .table-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .table-title {
+        font-size: 1.15rem;
+        font-weight: normal;
+        margin-bottom: 2px;
+        text-align: left;
+    }
+    .table-subtitle {
+        font-size: 1rem;
+        font-style: italic;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+    th, td {
+        padding: 5px 8px;
+        font-weight: normal;
+    }
+    /* Academic top and bottom structural borders */
+    thead tr.top-border th {
+        border-top: 2px solid #000;
+    }
+    thead tr.bottom-border th {
+        border-bottom: 1px solid #000;
+    }
+    /* Specific line boundary separating the core data from the summary metrics */
+    tbody tr.summary-start td {
+        border-top: 1px solid #000;
+    }
+    tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+    }
+    /* Text layout alignments */
+    .left-align { text-align: left; }
+    .center-align { text-align: center; }
+    .right-align { text-align: right; }
+    
+    /* Footer formatting for Notes and Sources */
+    .table-footer {
+        font-size: 0.85rem;
+        text-align: left;
+        line-height: 1.4;
+    }
+    .table-footer p {
+        margin: 6px 0 0 0;
+    }
+    .r-script-section {
+        background-color: #000000;  /* Pure black background */
+        color: #00FF00;             /* Matrix-style neon green text */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.95rem;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+        white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+        border: 1px solid #333;
+    }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container"> 
+    <header>
+        <h1>Sub-Tier Operational Risk Distribution Diagnostics</h1>
+        <h4 class="author">Scott S. Haraburda</h4>
+        <h4 class="date">21 May 2025</h4>
+    </header>
+
+    <div class="main-impact">
+        <!-- FIXED: Added closing </span> tag below to prevent global browser text stream blowout -->
+        <p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">Think of distribution graphs as the ultimate map for your data points, showing exactly how they like to spread out and mingle across a range of values. Instead of staring at a boring wall of numbers, these charts instantly reveal how often things actually happen, where the "center of gravity" sits (your trusty mean and median), how chaotic the variance is, and who the weird outliers are. To map this out, we have a whole toolbox of visual options: box-and-whisker plots, candlestick charts, histograms, pyramid charts, raincloud plots, ridgeline plots, and statistical uncertainty. We are going to break down each chart type below using the exact same dataset from our previous comparison tables. We are going to audition each of them using data from Table 1.</span></p>
+    </div>
+
+<p></p>
+<p style="text-align: center;"><b>Table 1</b>. Generic Data for Graphing</p>
+<p></p>
+
+    <div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>Counts for all items peak during summer</b></div>
+    <div class="table-subtitle">Largest numbers occur in 2nd quarter</div>
+
+    <table>
+        <thead>
+            <!-- First Header Row (Top Level) -->
+            <tr class="top-border">
+                <!-- Added explicit border-bottom styles to connect the lines directly across -->
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Quarter</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Month</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">County</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2" class="center-align" style="border-bottom: 1px solid #000; padding-bottom: 2px;">Relation of C to sum of all three items</th>
+            </tr>
+            <!-- Second Header Row (Bottom Level Alignment) -->
+            <tr class="bottom-border">
+                <th class="center-align" style="font-weight: bold;">A<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">B<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">C<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align">A + B + C</th>
+                <th class="center-align">% of C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 1st Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">1st</td>
+                <td class="left-align">Jan</td>
+                <td class="left-align">Newton</td>
+                <td class="center-align">18</td>
+                <td class="center-align">19</td>
+                <td class="center-align">17</td>
+                <td class="center-align">54</td>
+                <td class="center-align">31.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Feb</td>
+                <td class="left-align">Lake</td>
+                <td class="center-align">16</td>
+                <td class="center-align">25</td>
+                <td class="center-align">18</td>
+                <td class="center-align">59</td>
+                <td class="center-align">30.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Mar</td>
+                <td class="left-align">Porter</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">19</td>
+                <td class="center-align">65</td>
+                <td class="center-align">29.2</td>
+            </tr>
+            <!-- 2nd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">2nd</td>
+                <td class="left-align">Apr</td>
+                <td class="left-align">LaPorte</td>
+                <td class="center-align">21</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">19</td>
+                <td class="center-align">70</td>
+                <td class="center-align">27.1</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">May</td>
+                <td class="left-align">St Joseph</td>
+                <td class="center-align">17</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">20</td>
+                <td class="center-align">67</td>
+                <td class="center-align">29.9</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Jun</td>
+                <td class="left-align">Marshall</td>
+                <td class="center-align">18</td>
+                <td class="center-align"><b>31</b></td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">79</td>
+                <td class="center-align">38.0</td>
+            </tr>
+            <!-- 3rd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">3rd</td>
+                <td class="left-align">Jul</td>
+                <td class="left-align">Starke</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">29</td>
+                <td class="center-align">21</td>
+                <td class="center-align">80</td>
+                <td class="center-align">26.3</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Aug</td>
+                <td class="left-align">Jasper</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">30</td>
+                <td class="center-align">76</td>
+                <td class="center-align">39.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Sep</td>
+                <td class="left-align">White</td>
+                <td class="center-align">17</td>
+                <td class="center-align">30</td>
+                <td class="center-align">19</td>
+                <td class="center-align">66</td>
+                <td class="center-align">28.8</td>
+            </tr>
+            <!-- 4th Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">4th</td>
+                <td class="left-align">Oct</td>
+                <td class="left-align">Pulaski</td>
+                <td class="center-align">17</td>
+                <td class="center-align">28</td>
+                <td class="center-align">18</td>
+                <td class="center-align">63</td>
+                <td class="center-align">28.6</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Nov</td>
+                <td class="left-align">Fulton</td>
+                <td class="center-align">16</td>
+                <td class="center-align">27</td>
+                <td class="center-align">18</td>
+                <td class="center-align">61</td>
+                <td class="center-align">29.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Dec</td>
+                <td class="left-align">Cass</td>
+                <td class="center-align">14</td>
+                <td class="center-align">24</td>
+                <td class="center-align">18</td>
+                <td class="center-align">56</td>
+                <td class="center-align">32.1</td>
+            </tr>
+            <!-- Aggregated Data Summary Tier -->
+            <tr class="summary-start">
+                <td></td>
+                <td></td>
+                <td class="right-align">total</td>
+                <td class="center-align">218</td>
+                <td class="center-align">331</td>
+                <td class="center-align">247</td>
+                <td class="center-align">796</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">average</td>
+                <td class="center-align">18.2</td>
+                <td class="center-align">27.6</td>
+                <td class="center-align">20.6</td>
+                <td class="center-align">66.3</td>
+                <td class="center-align">31.0</td>
+            </tr>
+            <tr>
+                <td></td>
+                <!-- Merged the Month and County columns for cleaner text space -->
+                <td colspan="2" class="right-align">population variance</td>
+                <td class="center-align">15.1</td>
+                <td class="center-align">10.7</td>
+                <td class="center-align">18.7</td>
+                <td class="center-align">67.4</td>
+                <td class="center-align">14.8</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Documentation & Explanatory Metadata Footer -->
+    <div class="table-footer">
+        <p><strong>Source:</strong> Doe, J. (2026). Impact of Table Designs. <i>Journal of Data Visualization</i>, 15(2), 100-110. Accessed www.example-data-source.org on January 14, 2026.</p>
+        <p><strong>Notes:</strong> This table is for illustrative purposes only. Actual results may vary depending on localized variables.</p>
+
+ <h2>Box-and-whisker</h2>
+    <p>If you want to see data spread and skewness at a glance, this is your go-to chart. Picture a neat little box with two lines, the whiskers, stretching out from the sides to show you exactly what your data is up to. The center line represents the median, splitting your data right down the middle, while the cozy boundary of the box packs in the middle 50% of your total data. Stretching out from there, the whiskers act as arms that reach to a standard length of 1.5 times your interquartile range to capture the rest of the normal data pool. Anything sitting completely outside those whiskers is officially an oddball outlier. For instance, if you take a peek at Figure 1, item C clearly has a rogue outlier photobombing the chart all the way up near 30.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="dist_1.jpeg" alt="Figure 1: Box-and-whisker" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 1.</strong> Box-and-whisker.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free box-and-whisker by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+pacman::p_load(ggbump, ggplot2, ggrepel, pdftools, stringr, tidyverse, cowplot,
+               geomtextpath, ggHoriPlot, patchwork, ggthemes, ggspark, sinkr,
+               tidyquant, scales, ggridges, ggfan, gridExtra, ggdist)
+df1 <- read.csv("comparison.csv")
+df1$Item <- factor(df1$Item, levels = c("A", "B", "C")) 
+plot1 <- ggplot(df1, aes(x = Item, y = Count)) +
+  geom_boxplot(lwd=1, outlier.size=3) +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        legend.position = "none",
+        panel.background = element_blank())
+plot1
+    </div>
+
+ <h2>Candlestick Chart</h2>
+    <p>While these usually pop up when people are stressing over financial data, you can think of these charts as the slightly fancier cousins of the box-and-whisker plot. The "wicks" stretching out from the top and bottom show you the absolute highest and lowest values achieved during that time frame. Meanwhile, the main body of the candle represents your opening and closing values, with a light or white candle acting as a green light to show that the closing value finished higher than the opening one. If you take a peek at Figure 2, you can see that the lowest Count value for each of the three items either occured at the beginning or end of the year since there is no line extending below the box.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="dist_2.jpeg" alt="Figure 2: Candlestick chart" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 2.</strong> Candlestick chart.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free candlestick chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df1$M1 <- match(df1$Month, month.abb)
+ohlc <- df1 %>%
+  group_by(Item) %>%
+  summarise(
+    open1  = Count[M1 == 1],
+    high1  = max(Count),
+    low1   = min(Count),
+    close1 = Count[M1 == 12],
+    .groups = "drop"
+  ) %>%
+  mutate(Item = factor(Item, levels = c("A", "B", "C")))
+gray_palette <- c(
+  "A" = "#D3D3D3",  # Light grey
+  "B" = "#808080",  # Grey
+  "C" = "#404040"   # Dark grey
+)
+plot2 <- ggplot(ohlc, aes(x = Item)) + 
+  geom_linerange(aes(ymin = low1, ymax = high1), 
+                 color = "black", linewidth = 0.8) +
+  geom_rect(aes(xmin = as.numeric(Item) - 0.25, xmax = as.numeric(Item) + 0.25, 
+                ymin = pmin(open1, close1), ymax = pmax(open1, close1), 
+                fill = Item), color = "black") +
+  scale_fill_manual(values = gray_palette) +
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 20),
+        axis.text.y = element_text(angle = 0,
+                                   vjust = 0.5, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 20),
+        legend.position = "none",
+        panel.background = element_blank(),
+        panel.grid.major.y = element_blank())
+plot2
+    </div>
+
+ <h2>Histogram</h2>
+    <p>If you want to see exactly how your data aggregates, a histogram is your perfect match. This chart takes all your chaotic data points and neatly organizes them into specific "bins" or ranges, using connected bars to show you how often your data chooses to hang out in each bucket. It is a fantastic tool for instantly revealing patterns like center, spread, and overall shape. Looking closely at Figure 3, none of the items have a beautiful, symmetric normal distribution, with all of the Items being slightly skewed to the right with a large variance.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="dist_3.jpeg" alt="Figure 3: Histogram" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 3.</strong> Histogram.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free histogram by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+b_width <- 2 # bin width
+plot3 <- ggplot(df1, aes(x = Count)) +
+  geom_histogram(aes(fill = Item), binwidth = b_width) +
+  scale_fill_manual(values = gray_palette) +
+  stat_function(
+    fun = function(x, mean, sd, n) { 
+      dnorm(x, mean = mean, sd = sd) * b_width * n 
+    },
+    args = list(
+      mean = mean(df1$Count), 
+      sd   = sd(df1$Count), 
+      n    = 12 
+    ),
+    color = "black", 
+    linewidth = 1.2
+  ) +
+  facet_wrap(~ Item, strip.position = "bottom") +
+  labs(x = NULL, y = NULL) + 
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_text(hjust = 1, 
+                                   face = "bold",
+                                   color = "black",
+                                   size = 15),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(), 
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.x.bottom = element_text(size = 20, angle = 0, hjust = .5, face = "bold"),
+        strip.background.x = element_blank(),
+        strip.placement = "outside",
+        legend.position = "none",
+        panel.background = element_blank())
+plot3
+</div>
+
+ <h2>Pyramid Chart</h2>
+    <p>Think of the pyramid chart as the ultimate data showdown. It is essentially a diverging bar graph that pits two different groups against each other, with the zero-axis sitting right in the middle like a referee. The bars stretch out to both the left and the right, which occasionally confuses people into thinking the left side represents negative values, but it is just a friendly side-by-side comparison. For a perfect example, take a look at Figure 4. Items A and B claim the left side while item C holds down the right, beautifully highlighting some completely unrelated data lengths for the months of June, July, and August.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="dist_4.jpeg" alt="Figure 4: Pyramid chart" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 4.</strong> Pyramid chart.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free pyramid chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+custom_order <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                  "Sep", "Oct", "Nov", "Dec")
+df1 <- df1 %>%
+  mutate(Month = fct_relevel(Month, custom_order))
+df2 <- df1 %>%
+  filter(Item %in% c("A", "B")) %>%
+  group_by(Month, Month1, M1) %>%
+  summarise(
+    Count = sum(Count),
+    Rank = min(Rank), 
+    .groups = "drop"
+  ) %>%
+  mutate(Item = "AB") %>%
+  bind_rows(
+    df1 %>% filter(Item == "C")
+  ) %>%
+  arrange(M1, Item) %>%
+  mutate(Index = row_number()) %>%
+  select(Index, Item, Month, Month1, Count, Rank, M1)
+plot4 <- ggplot(df2, aes(x = fct_rev(Month), 
+                        y = ifelse(Item == "AB", -Count, Count), 
+                        fill = Item)) +
+  geom_col(width = 0.7) +
+  coord_flip() +
+  scale_y_continuous(
+    breaks = scales::breaks_pretty(n = 6),
+    labels = abs
+  ) +
+  scale_fill_manual(values = c("AB" = "#969892", "C" = "#f0f0f0")) +
+  geom_label(data=NULL, x=12, y=-15, label = "AB", linewidth=0,
+             fontface = "bold", size=10, fill="white") +
+  geom_label(data=NULL, x=12, y=10, label = "C", linewidth=0,
+             fontface = "bold", size=10, fill="white") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        legend.position = "none",
+        panel.background = element_blank())
+plot4
+</div>
+
+ <h2>Raincloud Plot</h2>
+    <p>If you prefer to strip away the mystery and just let the raw numbers speak for themselves, the raincloud plot is your best friend. This layout simply puts the data on full display to highlight exactly how it chooses to scatter across three visual elements for each item: a smooth density cloud, a classic box-and-whisker summary, and the actual data points falling as rain directly underneath. Taking a gander at Figure 5, the math shows that item A is living its best life with a dense cloud and rain dots tightly packed around 17 (except for that lone spike up to 30), whereas the other two items are marching to their own beat with noticeably skewed distributions, stretched summary boxes, and distinct mid-year rain outliers.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="dist_5.jpeg" alt="Figure 5: Raincloud plot" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 5.</strong> Raincloud plot.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free raincloud plot by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+plot5 <- ggplot(df1, aes(x = Count, y=Item)) +
+  scale_y_discrete(limits = rev) +
+  # 1. The Cloud (Half-Violin)
+  stat_halfeye(adjust = 0.5, justification = -0.2, 
+    .width = 0, point_colour = NA) +
+  # 2. The Summary (Boxplot)
+  geom_boxplot(width = 0.1, outlier.shape = NA, 
+    alpha = 0.5, lwd = 1 ) +
+  # 3. The Rain (Dotplot)
+  stat_dots(side = "left", justification = 1.1, 
+    binwidth = .5) +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.75, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot5
+</div> 
+
+ <h2>Ridgeline Plot</h2>
+    <p>If you want your data to look less like a spreadsheet and more like a majestic mountain range, the ridgeline plot is your go-to style. This chart cleverly stacks multiple density plots or histograms right on top of each other, making it incredibly easy to compare how a numeric variable behaves across completely different categories. Looking at Figure 6, you can see this landscape in action as it perfectly highlights the heavily skewed distributions of items A and B, while letting you see exactly how they stack up against the bi-modal peaks of item A.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="dist_6.jpeg" alt="Figure 6: Ridgeline plot" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 6.</strong> Ridgeline plot.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free ridgeline plot by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+plot6 <- ggplot(df1, aes(x = Count, y = Item, fill = Item)) +
+  geom_density_ridges(fill = "#f0f0f0", color = "black", alpha = 0.7) +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_y_discrete(limits = rev) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 1, 
+                                   face="bold",
+                                   color="black",
+                                   size=20),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.y = unit(0, "lines"),
+        strip.text.y.left = element_text(size = 14, angle = 0, hjust = 0, face="bold"),
+        strip.background.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+plot6
+</div>
+
+ <h2>Statistical Uncertainty</h2>
+    <p>This is basically your data’s way of saying, "Give or take a little." To show this wiggle room visually, we dress up our charts with error bars, confidence intervals, fan graphs, or smooth color gradients that highlight just how much the data set likes to fluctuate. We can see a full parade of these safety nets in Figure 7, which tracks our quarterly counts. The top graph features error bars keeping item A in check, the middle graph wraps item B in a cozy confidence interval, and the bottom graph unleashes a dynamic fan graph to map out the possibilities for item C.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="dist_7.jpeg" alt="Figure 7: Statistical uncertainty" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 7.</strong> Statistical uncertainty.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free statistical uncertainty by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+df_stat <- df1 %>%
+  mutate(
+    seq = (M1 - 1) %/% 3 + 1,
+    qtr = case_when(
+      seq == 1 ~ "1st Qtr",
+      seq == 2 ~ "2nd Qtr",
+      seq == 3 ~ "3rd Qtr",
+      seq == 4 ~ "4th Qtr"
+    )
+  ) %>%
+  group_by(Item, qtr, seq) %>%
+  summarise(
+    mean = mean(Count, na.rm = TRUE),
+    sd   = sd(Count, na.rm = TRUE),
+    max  = mean + sd, # Custom formula: mean plus standard deviation
+    min  = mean - sd, # Custom formula: mean minus standard deviation
+    .groups = "drop"
+  ) %>%
+  arrange(Item, seq) %>%
+  select(Item, qtr, seq, mean, sd, max, min)
+
+# Error bars
+
+plot7a <- ggplot(filter(df_stat, Item == "A"), aes(x = qtr, y = mean)) +
+  geom_col(fill="grey") + # Use geom_col() for pre-calculated heights
+  geom_errorbar(aes(ymin = min, ymax = max), width = 0.2) +
+  geom_label(data=NULL, x=2.5, y=27, label = "A", linewidth=0,
+             fontface = "bold", size=9, fill="white") +
+  scale_x_discrete(expand = expansion(add = c(0.65, 0.8))) +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=15),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=12),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+
+
+# Confidence interval
+
+plot7b <- ggplot(filter(df_stat, Item == "B"), aes(x = seq, y = mean)) +
+  geom_point() +
+  geom_smooth(se = FALSE, color="black") +
+  geom_ribbon(aes(ymin = min, ymax = max), alpha = 0.1) +
+  geom_label(data=NULL, x=2.55, y=24, label = "B", linewidth=0,
+             fontface = "bold", size=9, fill="white") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4), # The original integer values to be replaced
+    labels = qtr,      # The new text labels
+    expand = expansion(mult = c(0.05, 0.1)) 
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=15),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=12),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+
+# Fan chart
+
+plot7c <- ggplot(filter(df_stat, Item == "C"), aes(x = seq, y = mean)) +
+  # Outer Fan: +/- 2 SD (approx. 95% interval)
+  geom_ribbon(aes(ymin = mean - 2*sd, ymax = mean + 2*sd), 
+              fill = "black", alpha = 0.1) +
+  # Inner Fan: +/- 1 SD (approx. 68% interval)
+  geom_ribbon(aes(ymin = mean - 1*sd, ymax = mean + 1*sd), 
+              fill = "black", alpha = 0.2) +
+  # Central Trend Line
+  geom_point() +
+  geom_smooth(se = FALSE, color="black") +
+  geom_label(data=NULL, x=2.55, y=23, label = "C", linewidth=0,
+             fontface = "bold", size=9, fill="white") +
+  labs(x = NULL, y = NULL) + # Removes both x and y axis titles
+  scale_x_continuous(
+    breaks = c(1, 2, 3, 4), # The original integer values to be replaced
+    labels = qtr,      # The new text labels
+    expand = expansion(mult = c(0.05, 0.1)) 
+  ) +
+  theme(plot.title = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=15),
+        axis.text.y = element_text(angle=0,
+                                   vjust = 0.5, 
+                                   face="bold",
+                                   color="black",
+                                   size=12),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank())
+
+# plot all three graphs vertically
+  
+grid.arrange(plot7a, plot7b, plot7c, ncol = 1)
+</div>
+
+</body>
+</html>
+
