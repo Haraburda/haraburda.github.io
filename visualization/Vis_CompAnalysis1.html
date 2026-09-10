@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Scott Haraburda">
+    <title>Longitudinal Market Share & Composition Variance Analysis</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color, #2d3748);
+            background-color: var(--bg-color, #ffffff);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--container-bg, #ffffff);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color, #3182ce);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color, #3182ce);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        h2 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        /* Linked Section Header Class Explicitly to CSS */
+        .section-header, h3 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Linked Main Impact Box Explicitly to CSS to Enforce Containment */
+        .main-impact {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .keywords {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+    .table-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .table-title {
+        font-size: 1.15rem;
+        font-weight: normal;
+        margin-bottom: 2px;
+        text-align: left;
+    }
+    .table-subtitle {
+        font-size: 1rem;
+        font-style: italic;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+    th, td {
+        padding: 5px 8px;
+        font-weight: normal;
+    }
+    /* Academic top and bottom structural borders */
+    thead tr.top-border th {
+        border-top: 2px solid #000;
+    }
+    thead tr.bottom-border th {
+        border-bottom: 1px solid #000;
+    }
+    /* Specific line boundary separating the core data from the summary metrics */
+    tbody tr.summary-start td {
+        border-top: 1px solid #000;
+    }
+    tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+    }
+    /* Text layout alignments */
+    .left-align { text-align: left; }
+    .center-align { text-align: center; }
+    .right-align { text-align: right; }
+    
+    /* Footer formatting for Notes and Sources */
+    .table-footer {
+        font-size: 0.85rem;
+        text-align: left;
+        line-height: 1.4;
+    }
+    .table-footer p {
+        margin: 6px 0 0 0;
+    }
+    .r-script-section {
+        background-color: #000000;  /* Pure black background */
+        color: #00FF00;             /* Matrix-style neon green text */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.95rem;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+        white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+        border: 1px solid #333;
+    }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container"> 
+    <header>
+        <h1>Longitudinal Market Share & Composition Variance Analysis</h1>
+        <h4 class="author">Scott S. Haraburda</h4>
+        <h4 class="date">9 November 2025</h4>
+    </header>
+
+    <div class="main-impact">
+        <!-- FIXED: Added closing </span> tag below to prevent global browser text stream blowout -->
+        <p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">This special section dives into a wildly popular yet deeply flawed visualization: the pie chart. In its classic form, it is a circular graph sliced into wedges, with each piece supposedly showing its share of the whole. Over the years, this concept has mutated into even stranger variants. We have the "exploded" pie chart, where a few slices are dramatically pulled out to highlight their importance, and the donut chart, which is just a regular pie chart with a giant hole punched through the middle. The most perplexing mutant of all is definitely the 3D pie chart, which adds artificial depth and makes reading the data an absolute nightmare. To sum it up: they all have major issues, and frankly, they can be downright evil.</p>
+    </div>
+
+<p></p>
+<p>While a “bad” tool is just unhelpful, an “evil” one actively works to cause harm, and pie charts are clearly out for blood. Someone at Microsoft really needs to consider removing them from Excel entirely, if only to save unsuspecting users from accidentally unleashing these wicked visuals onto the world. For a clear demonstration of this pure chart malevolence, look no further than Figure 1, which features a pie chart tracking six items labeled A through F. Just try staring at it and guessing what exact percentage item E represents without getting a headache; it is a task so brutal it would make the Impossible Mission Force pack up and go home.</p>
+<p></p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="pie_1.jpeg" alt="Figure 1: Basic pie chart" width="200">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 1.</strong> Basic pie chart.</figcaption>
+</figure>
+
+<p></p>
+    <p>Because this particular pie chart is an absolute riddle, your first instinct might be to fire the legend and slap labels directly onto each individual slice. It sounds like a solid rescue plan, right? Unfortunately, this "fix" completely backfires in Figure 2. Instead of a clean, intuitive graphic, you end up with a chaotic, shape-shifting circular spreadsheet overflowing with text and numbers. It completely defeats the purpose of using a chart in the first place, proving once again that you can’t dress up an inherently evil visualization layout and expect it to behave.<p>
+<p></p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="pie_2.jpeg" alt="Figure 2: Basic pie chart with labels" width="200">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 2.</strong> Basic pie chart with labels.</figcaption>
+</figure>
+
+<p></p>
+    <p>If you want to save yourself the visual gymnastics, a simple table makes reading the exact same information infinitely easier (as beautifully demonstrated in Table 1). It turns out that plain old rows and columns can easily out-perform a chaotic data circle any day of the week, proving that sometimes, skipping the fancy graphics is the ultimate power move.<p>
+<p></p>
+
+<p></p>
+<p style="text-align: center;"><b>Table 1</b>. Generic Data for Pie Graphs</p>
+<p></p>
+
+    <div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>Items B and C have most of the data</b></div>
+    <div class="table-subtitle">This data was listed in decreasing order by percentage</div>
+
+    <table>
+        <thead>
+            <tr class="bottom-border">
+                <th class="center-align" style="font-weight: bold;">Item</th>
+		<th class="center-align" style="font-weight: bold;">Percentage (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="center-align">B</td>
+                <td class="center-align">40</td>
+            </tr>
+            <tr>
+                <td class="center-align">C</td>
+                <td class="center-align">25</td>
+            </tr>
+            <tr>
+                <td class="center-align">D</td>
+                <td class="center-align">17</td>
+            </tr>
+            <tr>
+                <td class="center-align">A</td>
+                <td class="center-align">10</td>
+            </tr>
+            <tr>
+                <td class="center-align">E</td>
+                <td class="center-align">7</td>
+            </tr>
+            <tr>
+                <td class="center-align">F</td>
+                <td class="center-align">1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Documentation & Explanatory Metadata Footer -->
+    <div class="table-footer">
+        <p><strong>Notes:</strong> This table could have been listed in alphabetical order by Item, but that would have made it difficult to determine which Item had the fifth percentage.</p>
+</div>
+<p></p>
+
+<p>If you actually want to show this data visually without causing a minor corporate crisis, a horizontal bar chart like the one in Figure 3 works infinitely better. This beautiful graphic lets you instantly compare how each item stacks up against the competition, doing away with the visual chaos by using a single, sophisticated shade of grey. Instead of assaulting your audience’s eyes with six different neon colors like a box of melted crayons, it keeps things classy with just one. It turns out less really is more when you want people to actually understand your data.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="pie_3.jpeg" alt="Figure 3: Bar chart from a pie chart" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 3.</strong> Bar chart from a pie chart.</figcaption>
+</figure>
+
+<p></p>
+    <p>The legendary data guru Edward Tufte famously declared that the only thing worse than a single pie chart is a whole army of them. He pointed out that stacking them up forces viewers to compare quantities that are completely scrambled, both inside each individual circle and across the entire lineup (Edward Tufte, <i>The Visual Display of Quantitative Information</i>, Graphics Press, 1983, p. 178. doi: 10.5555/33404). Figure 4 perfectly illustrates this chaotic scenario by throwing four separate pie charts at us, each tracking the same six items over four different years. Instead of giving us a clean look at annual trends, this layout turns basic trend-spotting into an exhausting game of visual hide-and-seek, meaning you essentially need a minor miracle to see if an item is growing, shrinking, or just spinning in circles.<p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="pie_4.jpeg" alt="Figure 4: Four sequential pie charts" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 4.</strong> Four sequential pie charts.</figcaption>
+</figure>
+
+<p></p>
+    <p>Ditching those chaotic, multi-colored pie charts and converting them into the four clean, no-nonsense, black-and-white horizontal bar charts in Figure 5 is like turning off a loud siren in a quiet room. Instantly, the visual noise vanishes, the formatting gets out of the way, and your metrics can finally speak for themselves. It turns out that trading a rainbow kaleidoscope for simple, data-driven bars is the ultimate shortcut to making your insights perfectly clear to anyone looking at the page.<p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="pie_5.jpeg" alt="Figure 5: Four sequential bar charts from pie charts" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 5.</strong> Four sequential bar charts from pie charts.</figcaption>
+</figure>
+
+<p></p>
+    <p>Let’s be honest: since this data is tracking a timeline, a simple line graph is the undisputed champion for the job. In the line graph featured in Figure 6, the story practically tells itself without any visual gymnastics. The reader can instantly spot that Product B, proudly rocking a bold black line, consistently holds the crown for the largest market share every single year, even though its value is currently in a spectacular, rapid freefall. It is clean, it is obvious, and nobody needs a magnifying glass to see exactly where the business is heading.<p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="pie_6.jpeg" alt="Figure 6: One line graph from four sequential pie charts" width="400">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 6.</strong> One line graph from four sequential pie charts.</figcaption>
+</figure>
+
+</body>
+</html>
+
