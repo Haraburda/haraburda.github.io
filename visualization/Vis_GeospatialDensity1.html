@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Scott Haraburda">
+    <title>Theater Logistics & Density Geospatial Analysis</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color, #2d3748);
+            background-color: var(--bg-color, #ffffff);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--container-bg, #ffffff);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color, #3182ce);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color, #3182ce);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        h2 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        /* Linked Section Header Class Explicitly to CSS */
+        .section-header, h3 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Linked Main Impact Box Explicitly to CSS to Enforce Containment */
+        .main-impact {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .keywords {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+    .table-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .table-title {
+        font-size: 1.15rem;
+        font-weight: normal;
+        margin-bottom: 2px;
+        text-align: left;
+    }
+    .table-subtitle {
+        font-size: 1rem;
+        font-style: italic;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-size: 0.95rem;
+    }
+    th, td {
+        padding: 5px 8px;
+        font-weight: normal;
+    }
+    /* Academic top and bottom structural borders */
+    thead tr.top-border th {
+        border-top: 2px solid #000;
+    }
+    thead tr.bottom-border th {
+        border-bottom: 1px solid #000;
+    }
+    /* Specific line boundary separating the core data from the summary metrics */
+    tbody tr.summary-start td {
+        border-top: 1px solid #000;
+    }
+    tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+    }
+    /* Text layout alignments */
+    .left-align { text-align: left; }
+    .center-align { text-align: center; }
+    .right-align { text-align: right; }
+    
+    /* Footer formatting for Notes and Sources */
+    .table-footer {
+        font-size: 0.85rem;
+        text-align: left;
+        line-height: 1.4;
+    }
+    .table-footer p {
+        margin: 6px 0 0 0;
+    }
+    .r-script-section {
+        background-color: #000000;  /* Pure black background */
+        color: #00FF00;             /* Matrix-style neon green text */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.95rem;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+        white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+        border: 1px solid #333;
+    }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container"> 
+    <header>
+        <h1>Theater Logistics & Density Geospatial Analysis</h1>
+        <h4 class="author">Scott S. Haraburda</h4>
+        <h4 class="date">21 October 2025</h4>
+    </header>
+
+    <div class="main-impact">
+        <!-- FIXED: Added closing </span> tag below to prevent global browser text stream blowout -->
+        <p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">Think of geospatial plots as standard maps that went to grad school. Instead of just showing you where a city or river sits, these plots treat locations like nodes and connections like edges, tying everything to real-world coordinates on Earth. By blending traditional graph databases with spatial data, we get to see how our data behaves in its natural habitat. It goes way beyond a basic map, adding context to help us spot deep trends and make much smarter decisions.</p>
+    </div>
+
+<p></p>
+<p>To help us visualize all this, we rely on a trusty lineup of visual tools. Cartograms act like a fun-house mirror, warping geographic sizes based on data instead of actual land mass. Choropleth maps take a classic color-coded approach, using shades to show data concentration. Density maps are perfect for pinpointing exactly where data points are tightly packed, while flow maps create visual networks showing how things move from Point A to Point B. We will break down each of these plots using the exact same geospatial data from our comparison graphs table.</p>
+<p></p>
+<p>For the heavy lifting, we bring out the big guns like ArcGIS and AutoCAD Map 3D. These software powerhouses use thousands of geoprocessing tools to reveal hidden patterns you’d normally miss, like predicting crime hotspots or finding the absolute perfect location to open a new business. Plus, they let us build interactive 2D maps and immersive 3D scenes, making complex datasets look downright beautiful. We are going to dive into each of these graphs below, using the exact same dataset from Table 1 to show you how these elements interact.</span></p>
+
+<p></p>
+<p style="text-align: center;"><b>Table 1</b>. Generic Data for Graphing</p>
+<p></p>
+
+    <div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>Counts for all items peak during summer</b></div>
+    <div class="table-subtitle">Largest numbers occur in 2nd quarter</div>
+
+    <table>
+        <thead>
+            <!-- First Header Row (Top Level) -->
+            <tr class="top-border">
+                <!-- Added explicit border-bottom styles to connect the lines directly across -->
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Quarter</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">Month</th>
+                <th rowspan="2" class="left-align" style="vertical-align: bottom; border-bottom: 1px solid #000;">County</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="2" class="center-align" style="border-bottom: 1px solid #000; padding-bottom: 2px;">Relation of C to sum of all three items</th>
+            </tr>
+            <!-- Second Header Row (Bottom Level Alignment) -->
+            <tr class="bottom-border">
+                <th class="center-align" style="font-weight: bold;">A<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">B<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align" style="font-weight: bold;">C<br><span style="font-weight: normal;">(count)</span></th>
+                <th class="center-align">A + B + C</th>
+                <th class="center-align">% of C</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 1st Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">1st</td>
+                <td class="left-align">Jan</td>
+                <td class="left-align">Newton</td>
+                <td class="center-align">18</td>
+                <td class="center-align">19</td>
+                <td class="center-align">17</td>
+                <td class="center-align">54</td>
+                <td class="center-align">31.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Feb</td>
+                <td class="left-align">Lake</td>
+                <td class="center-align">16</td>
+                <td class="center-align">25</td>
+                <td class="center-align">18</td>
+                <td class="center-align">59</td>
+                <td class="center-align">30.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Mar</td>
+                <td class="left-align">Porter</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">19</td>
+                <td class="center-align">65</td>
+                <td class="center-align">29.2</td>
+            </tr>
+            <!-- 2nd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">2nd</td>
+                <td class="left-align">Apr</td>
+                <td class="left-align">LaPorte</td>
+                <td class="center-align">21</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">19</td>
+                <td class="center-align">70</td>
+                <td class="center-align">27.1</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">May</td>
+                <td class="left-align">St Joseph</td>
+                <td class="center-align">17</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">20</td>
+                <td class="center-align">67</td>
+                <td class="center-align">29.9</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Jun</td>
+                <td class="left-align">Marshall</td>
+                <td class="center-align">18</td>
+                <td class="center-align"><b>31</b></td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">79</td>
+                <td class="center-align">38.0</td>
+            </tr>
+            <!-- 3rd Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">3rd</td>
+                <td class="left-align">Jul</td>
+                <td class="left-align">Starke</td>
+                <td class="center-align"><b>30</b></td>
+                <td class="center-align">29</td>
+                <td class="center-align">21</td>
+                <td class="center-align">80</td>
+                <td class="center-align">26.3</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Aug</td>
+                <td class="left-align">Jasper</td>
+                <td class="center-align">17</td>
+                <td class="center-align">29</td>
+                <td class="center-align">30</td>
+                <td class="center-align">76</td>
+                <td class="center-align">39.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Sep</td>
+                <td class="left-align">White</td>
+                <td class="center-align">17</td>
+                <td class="center-align">30</td>
+                <td class="center-align">19</td>
+                <td class="center-align">66</td>
+                <td class="center-align">28.8</td>
+            </tr>
+            <!-- 4th Quarter Data -->
+            <tr>
+                <td class="bold-text left-align">4th</td>
+                <td class="left-align">Oct</td>
+                <td class="left-align">Pulaski</td>
+                <td class="center-align">17</td>
+                <td class="center-align">28</td>
+                <td class="center-align">18</td>
+                <td class="center-align">63</td>
+                <td class="center-align">28.6</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Nov</td>
+                <td class="left-align">Fulton</td>
+                <td class="center-align">16</td>
+                <td class="center-align">27</td>
+                <td class="center-align">18</td>
+                <td class="center-align">61</td>
+                <td class="center-align">29.5</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="left-align">Dec</td>
+                <td class="left-align">Cass</td>
+                <td class="center-align">14</td>
+                <td class="center-align">24</td>
+                <td class="center-align">18</td>
+                <td class="center-align">56</td>
+                <td class="center-align">32.1</td>
+            </tr>
+            <!-- Aggregated Data Summary Tier -->
+            <tr class="summary-start">
+                <td></td>
+                <td></td>
+                <td class="right-align">total</td>
+                <td class="center-align">218</td>
+                <td class="center-align">331</td>
+                <td class="center-align">247</td>
+                <td class="center-align">796</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="right-align">average</td>
+                <td class="center-align">18.2</td>
+                <td class="center-align">27.6</td>
+                <td class="center-align">20.6</td>
+                <td class="center-align">66.3</td>
+                <td class="center-align">31.0</td>
+            </tr>
+            <tr>
+                <td></td>
+                <!-- Merged the Month and County columns for cleaner text space -->
+                <td colspan="2" class="right-align">population variance</td>
+                <td class="center-align">15.1</td>
+                <td class="center-align">10.7</td>
+                <td class="center-align">18.7</td>
+                <td class="center-align">67.4</td>
+                <td class="center-align">14.8</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Documentation & Explanatory Metadata Footer -->
+    <div class="table-footer">
+        <p><strong>Source:</strong> Doe, J. (2026). Impact of Table Designs. <i>Journal of Data Visualization</i>, 15(2), 100-110. Accessed www.example-data-source.org on January 14, 2026.</p>
+        <p><strong>Notes:</strong> This table is for illustrative purposes only. Actual results may vary depending on localized variables.</p>
+
+<p></p>
+<p></p>
+
+    <p>But before our grad-school maps can run any of these sophisticated models, they require a strict data passport: Federal Information Processing Series numbers, or FIPS codes. If geospatial plots are maps with advanced degrees, FIPS codes are their standardized student ID numbers. While humans prefer reading county names, mapping software is notoriously terrible at reading handwriting or interpreting local geography. To a computer, text is messy. If your dataset spells a location as "LaPorte," but your base map labels it "La Porte," or if your script encounters "Washington County" and has to guess which of the 31 different Washington Counties in the United States you actually mean, the entire visualization breaks down.<p>
+<p></p>
+<p>FIPS codes solve this identity crisis by replacing ambiguous text with a unique five-digit numeric fingerprint. The first two digits lock in the state, and the final three pinpoint the exact county. By stripping away text spelling variations and duplicate names, these numbers give software like ArcGIS a flawless, universal anchor to join tabular spreadsheet records directly to real-world boundary shapes. Without them, your data remains stuck in a spreadsheet, completely blind to its own geography. To ensure your script maps everything flawlessly without any regional identity crises, Table 2 lists the specific FIPS codes for the 13 counties in the LaPorte district for Indiana.</p>
+
+<p></p>
+<p style="text-align: center;"><b>Table 2</b>. County FIPS Numbers</p>
+<p></p>
+
+    <div class="table-container">
+    <!-- Main Titles -->
+    <div class="table-title"><b>FIPS numbers are needed for geospatial analyses</b></div>
+    <div class="table-subtitle">These are the numbers for the 13 counties in northwest Indiana</div>
+
+    <table>
+        <thead>
+            <tr class="bottom-border">
+                <th class="center-align" style="font-weight: bold;">County</th>
+		<th class="center-align" style="font-weight: bold;">FIPS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="left-align">Carroll</td>
+                <td class="center-align">18015</td>
+            </tr>
+            <tr>
+                <td class="left-align">Cass</td>
+                <td class="center-align">18017</td>
+            </tr>
+            <tr>
+                <td class="left-align">Fulton</td>
+                <td class="center-align">18049</td>
+            </tr>
+            <tr>
+                <td class="left-align">Jasper</td>
+                <td class="center-align">18073</td>
+            </tr>
+            <tr>
+                <td class="left-align">Lake</td>
+                <td class="center-align">18089</td>
+            </tr>
+            <tr>
+                <td class="left-align">LaPorte</td>
+                <td class="center-align">18091</td>
+            </tr>
+            <tr>
+                <td class="left-align">Marshall</td>
+                <td class="center-align">18099</td>
+            </tr>
+            <tr>
+                <td class="left-align">Newton</td>
+                <td class="center-align">18111</td>
+            </tr>
+            <tr>
+                <td class="left-align">Porter</td>
+                <td class="center-align">18127</td>
+            </tr>
+            <tr>
+                <td class="left-align">Pulaski</td>
+                <td class="center-align">18131</td>
+            </tr>
+            <tr>
+                <td class="left-align">StJoseph</td>
+                <td class="center-align">18141</td>
+            </tr>
+            <tr>
+                <td class="left-align">Starke</td>
+                <td class="center-align">18149</td>
+            </tr>
+            <tr>
+                <td class="left-align">White</td>
+                <td class="center-align">18181</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Documentation & Explanatory Metadata Footer -->
+    <div class="table-footer">
+        <p><strong>Notes:</strong> This table is for the FIPS numbers, which is needed to plotting of the counties using geospatial codes.</p>
+</div>
+
+ <h2>Cartogram</h2>
+    <p>Think of a this as a map that values data over geography. It swaps out actual land borders for geometric shapes like circles or squares, scaling their sizes to match the data numbers rather than the actual physical dimensions. Take a look at Figure 1, which uses circles to represent the total counts across the INDOT LaPorte district. While the circle sizes might play a bit of a trick on your eyes by looking pretty uniform, the sneaky-smart color shading tells the real story. The darker gray hues over Jasper, Marshall, and Starke Counties instantly signal that these three areas are pulling in the heaviest numbers.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="geo_1.jpeg" alt="Figure 1: Cartogram" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 1.</strong> Cartogram.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free cartogram by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+pacman::p_load(ggplot2, pacman, choroplethr, choroplethrMaps, data.table, dplyr, 
+               flextable, forcats, forecast, geosphere, ggmap, ggrepel, 
+               ggthemes, httr, mapdata, maps, sp, matrixStats, officer, 
+               png, readxl, sp, stringr, tidyr, tidyverse, cartogram, ggplot2,
+               sf, ggnewscale, flowmapper)
+laporte_in <- read.csv("laporte_indiana.csv")           # data for Indiana
+
+df1 <- read.csv("comparison.csv")
+custom_order <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                  "Sep", "Oct", "Nov", "Dec") 
+df1 <- df1 %>%
+  mutate(Month = fct_relevel(Month, custom_order))
+df4 <- df1 %>%
+  group_by(County) %>%
+  summarise(Count = sum(Count, na.rm = TRUE), .groups = "drop") %>%
+  # Safely processes the entire column vector at once
+  mutate(County1 = tolower(County))
+ 
+# Cartogram
+options(tigris_class = "sf")
+indiana_shapes <- counties(state = "18", cb = TRUE) %>%
+  rename(FIPS = GEOID) # GEOID contains the 5-digit FIPS code
+
+# Filter down to your specific 13 LaPorte district FIPS codes
+fips_vector <- laporte_in$FIPS 
+district_shapes_projected <- indiana_shapes %>%
+  filter(FIPS %in% fips_vector) %>%
+  st_transform(crs = 2967) # This is the EPSG for Indiana mapping
+
+# Calculate Centroids by separating geometry from attributes
+centroids_geo <- district_shapes_projected %>%
+  st_geometry() %>% 
+  st_point_on_surface() %>% 
+  st_transform(crs = 4326)
+coord_matrix <- st_coordinates(centroids_geo)
+centroids <- data.frame(
+  FIPS   = district_shapes_projected$FIPS,
+  County = district_shapes_projected$NAME,
+  Long   = coord_matrix[, "X"],
+  Lat    = coord_matrix[, "Y"]
+)
+
+df1_with_centroids <- df1 %>%
+  left_join(centroids, by = "County")
+df4_with_centroids <- df4 %>%
+  left_join(centroids, by = "County")
+
+# Merge your numeric summary table to the actual spatial POLYGONS
+polygon_data_projected <- district_shapes_projected %>%
+  left_join(df4_with_centroids %>% select(FIPS, Count), by = "FIPS") %>%
+  mutate(Count = ifelse(is.na(Count), 0, Count))
+
+# Execute the Dorling cartogram using the POLYGON object
+dorling_carto <- cartogram_dorling(polygon_data_projected, 
+                                   weight = "Count", k = 10)
+plot1 <- ggplot(dorling_carto) +
+  geom_sf(aes(fill = Count), color = "white") +
+  geom_sf_text(aes(label = NAME), size = 4, color = "black", fontface = "bold") +
+  scale_size_continuous(range = c(1, 10), guide = "none") + 
+  scale_fill_gradient2(low = "white", mid = "#cccccc", high = "#3b444b", 
+                       midpoint = 65, limits = c(50, 80),
+                       oob = scales::oob_censor, na.value = "white" ) +
+  theme(legend.title = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 10, face = "bold"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.background = element_blank())
+plot1
+ </div>
+
+ <h2>Choropleth</h2>
+    <p>This map is essentially a high-level game of color-coding for boundaries like countries, states, or counties. Instead of guessing the metrics, the map uses specific colors, shades, or patterns to tell you exactly who is winning the data race. Zooming into the LaPorte district in Figure 2, Jasper, Marshall, and Starke counties proudly wear the darkest shade of gray, making it obvious they hold the top slots. Meanwhile, Carroll County stands out by fading into pure white, which is just our map’s polite way of saying, "Data missing, please try again later".</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="geo_2.jpeg" alt="Figure 2: Choropleth" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 2.</strong> Choropleth.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free choropleth by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+countyMap <- map_data("county")
+countyMap <- subset (countyMap, region == "indiana")
+countyMap <- rename(countyMap, "County" = "subregion")        # rename column
+countyMap <- countyMap %>%
+  mutate(County = case_when(
+    County == "la porte"    ~ "laporte",
+    County == "st joseph" ~ "st. joseph",
+    .default               = County  # Keeps all other county names unchanged
+  ))
+countyMap <- countyMap[countyMap$County %in% df4$County1, ]
+countyMap <- rename(countyMap, "state" = "region")            # rename column
+countyMap <- countyMap %>%
+  mutate(County = str_to_title(County))
+df4 <- df4 %>%
+  mutate(County = str_to_title(County))
+choropleth <- merge(countyMap, df4, by = "County", all.x = TRUE, sort = FALSE)
+centroids <- aggregate(cbind(long, lat) ~ County, data = choropleth, FUN = mean)
+centroids$County <- tools::toTitleCase(centroids$County)
+
+plot2 <- ggplot() +
+  geom_polygon(data=choropleth, aes(long,lat, group=group, fill=Count),
+               color="black",linewidth=.2) +
+  scale_fill_gradient2(low = "white", mid = "#cccccc", high = "#3b444b", 
+                       midpoint = 65, limits = c(50,80), 
+                       oob = scales::oob_censor, na.value = "white") +
+  geom_text(x=centroids$long, y=centroids$lat, 
+            aes(label = centroids$County, group = NULL), size = 4) +
+  coord_fixed(1.3) +
+  labs(x="", y="", fill="Count") + 
+  theme(legend.title = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 10, face = "bold"),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        panel.background = element_blank()
+        )
+plot2
+ </div>
+
+ <h2>Density Map</h2>
+    <p>Think of this map as a visual radar for crowds. It uses dots that dynamically shift in size and color to show exactly where the data is throwing a party and where things are quiet. Figure 3 is essentially a clever mashup, a "remix" if you will, of our friends the cartogram and the choropleth. It takes the best of both worlds to deliver the exact same information for our three items, just wearing two different outfits so you can appreciate the data from every angle.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="geo_3.jpeg" alt="Figure 3: Density map" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 3.</strong> Density map.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free density map by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+countyMap <- district_shapes_projected %>%
+  left_join(df4, by = c("NAME" = "County"))
+
+plot3 <- ggplot() +
+  geom_sf(data = countyMap, fill = "white", color = "black") +
+  coord_sf(crs = 4326) + # Set the projection (WGS84)
+  new_scale_fill() +
+  geom_sf(data=dorling_carto, aes(fill = Count), color = "white") +
+  geom_sf_text(data=dorling_carto, aes(label = NAME), size = 4, color = "black",
+               fontface = "bold") +
+  scale_fill_gradient2(low = "white", mid = "#cccccc", high = "#3b444b", 
+                       midpoint = 65, limits = c(50,80), 
+                       oob = scales::oob_censor, na.value = "white") +
+  labs(x="", y="", fill="Count") + 
+  theme(legend.title = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 10, face = "bold"),
+        axis.ticks.y = element_blank(),axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),axis.text.x = element_blank(),
+        panel.background = element_blank() )
+plot3
+ </div>
+
+ <h2>Flow Map</h2>
+    <p>If you have ever wondered how data actually gets around, this map is your answer. It maps out movement and quantity across different locations, using handy arrows to show you exactly which way the traffic is heading. To make things even clearer, the lines get thicker when there is a serious crowd moving along that path. Take a look at  Figure 4: the whole journey kicks off in Newton and wraps up over in Carroll County, with a very busy, high-traffic connection lighting up between Marshall and White Counties along the way.</p>
+
+<figure style="display: flex; flex-direction: column; align-items: center;">
+    <img src="geo_4.jpeg" alt="Figure 4: Flow map" width="600">
+    <figcaption style="text-align: center; margin-top: 10px; font-size: 0.95rem;"><strong>Figure 4.</strong> Flow map.</figcaption>
+</figure>
+
+<p></p>
+<p></p>
+<p style="text-align: center;"><b>R Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following optimized <code>ggplot2</code> framework generates a clean, warning-free flow map by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Fix Core Centroids Coordinates (Projected EPSG: 2967)
+centroids_geo <- district_shapes_projected %>%
+  st_geometry() %>% 
+  st_point_on_surface() # Keeping coordinates in projected layout
+coord_matrix <- st_coordinates(centroids_geo)
+centroids <- data.frame(
+  FIPS   = district_shapes_projected$FIPS,
+  County = district_shapes_projected$NAME,
+  long   = coord_matrix[, "X"], 
+  lat    = coord_matrix[, "Y"]  
+)
+centroids$County <- tools::toTitleCase(centroids$County)
+
+# Use centroids2 for Sequenced Flows Sort df4 by numeric sequence
+df4_sorted <- df4 %>%
+  mutate(County = case_when(County == "Laporte"    ~ "LaPorte",
+                            .default               = County)) %>%
+  mutate(Order = coalesce(Order, 13)) %>%
+  arrange(Order)
+centroids2 <- centroids
+centroids2 <- centroids2[match(df4_sorted$County, centroids2$County), ]
+
+# Inject your flow data attributes
+centroids2$flow_ab <- df4_sorted$Count
+centroids2$flow_ba <- 0
+centroids2 <- centroids2 %>%
+  rename("xa" = "long", "ya" = "lat", "id_a" = "County")
+
+# Create sequential destinations ("b") matching the temporal flow sequence
+centroids2$xb <- c(centroids2$xa[-1], centroids2$xa[1])
+centroids2$yb <- c(centroids2$ya[-1], centroids2$ya[1])
+centroids2$id_b <- c(centroids2$id_a[-1], centroids2$id_a[1])
+df_flow <- head(centroids2, -1)
+
+# Create Flow Lines with Matching CRS
+sf_flow <- flowmap_sf(flowdat = df_flow,
+                      edge_width_factor = 1,   
+                      edge_offset_factor = 1,  
+                      arrow_point_angle = 30,
+                      crs = 2967)
+
+plot4 <- ggplot() + 
+  geom_sf(data = countyMap, fill = "white", color = "#495057", 
+          linewidth = 0.3) +
+  geom_sf(data = sf_flow$edges, aes(fill = flow), color = NA, alpha = 0.6) + 
+  geom_text(data = centroids, aes(x = long, y = lat, label = County), 
+            size = 3.5, fontface = "bold", inherit.aes = FALSE) +
+  scale_fill_gradient(low = "#cccccc", high = "#3b444b") +
+  coord_sf(expand = TRUE, default_crs = sf::st_crs(2967)) + 
+  theme_void() +
+  theme(legend.position = "none")
+plot4
+ </div>
+
+</body>
+</html>
+
