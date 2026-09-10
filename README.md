@@ -157,6 +157,9 @@ This section contains a deep catalog of production-grade statistical architectur
 * **Theater Logistics & Density Geospatial Analysis:** 
   * *Operational Impact:* Overlays computational throughput matrices directly onto territorial coordinate systems, utilizing proportional Cartograms, Choropleths, and point-source Density heat maps to identify lane stress profiles independent of political boundaries.
   * **🔗 View R Script:** [Geospatial Density Mapping Script](visualization/Vis_GeospatialDensity1.html)
+* **Longitudinal Market Share & Composition Variance Analysis:** 
+  * *Operational Impact:* Safeguards executive decision intelligence from severe visual distortions caused by poor angular and area estimation models (such as multi-layer, 3D, or exploded pie frameworks). Deploys single-hue horizontal bar matrices and continuous time-series line vectors to isolate rapid product freefalls and shifting market-dominance signatures across multi-year procurement horizons.
+  * **🔗 View R Script:** [Composition Variance Analysis Script](visualization/Vis_CompAnalysis1.html)
 * **Executive Data Presentation Optimization Engine:** 
   * *Operational Impact:* Maximizes executive decision velocity by applying Gestalt visual grouping mechanics and inline structural explainers to data tables while systematically clearing out cognitive barriers like moiré vibrations, cross-hatching, and literal graphic chartjunk.
   * **🔗 View R Script:** [Presentation Optimization Engine Script](visualization/Vis_DataOptimization1.html)
