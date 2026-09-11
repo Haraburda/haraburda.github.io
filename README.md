@@ -34,7 +34,7 @@ Throughout my career - spanning <b>global military logistics theater command, fe
 <ul>
   <li><strong>Operational Framework:</strong> Built a multi-variate statistical profiling engine to ingest extensive national longitudinal supply datasets. The model cross-references demographics, regional allocations, and consumption velocity to map demand patterns across complex distribution nodes.</li>
   <li><strong>Supply Chain Impact:</strong> Provides producers with actionable demand-sensing intelligence to align production planning, mitigate inventory holding risks, and stabilize supply network flows.</li>
-  <li>📊 <strong>Live Analytical Application:</strong> <strong><a href="https://github.io" target="_blank">Launch Interactive SIOP Demand Sensing Dashboard</a></strong></li>
+  <li>📊 <strong>Live Analytical Application:</strong> <strong><a href="https://haraburda.github.io/Haraburda/" target="_blank">Launch Interactive SIOP Demand Sensing Dashboard</a></strong></li>
   <li>📂 <strong>Code Base:</strong> <a href="project/commodity_consumption.html">View Commodity Analysis Code</a></li>
 </ul>
 
