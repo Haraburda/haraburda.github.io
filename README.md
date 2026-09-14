@@ -2,23 +2,23 @@
 
 ## EXECUTIVE PROFILE
 
-<img src="haraburda_photo.jpg" align="left" width="100px"/> <b>Highly analytical, OPM-Certified Senior Executive Service (SES) Candidate</b> and registered <b>Professional Engineer (PE)</b> with 30+ years of industrial leadership at the intersection of <b>multi-billion-dollar ERP systems, predictive data science, and macro SIOP/S&OP frameworks</b>.
+<img src="haraburda_photo.jpg" align="left" width="100px"/> Highly analytical, OPM-Certified Senior Executive Service (SES) Candidate and registered <b>Professional Engineer (PE) with 30+ years of industrial leadership at the intersection of <b>multi-billion-dollar ERP systems, predictive data science, and macro SIOP/S&OP frameworks.
 
-Vetted at the highest federal level for corporate-equivalent governance across all five Executive Core Qualifications (ECQs), my career is defined by <b>migrating legacy, spreadsheet-heavy information silos into unified, synchronized, and highly automated data ecosystems<b>. As a retired <b>U.S. Army Colonel</b>, I combine command-level operational scale with deep technical, engineering, and predictive analytical disciplines.
+Vetted at the highest federal level for corporate-equivalent governance across all five Executive Core Qualifications (ECQs), my career is defined by <b>migrating legacy, spreadsheet-heavy information silos into unified, synchronized, and highly automated data ecosystems</b>. As a retired <b>U.S. Army Colonel</b>, I combine command-level operational scale with deep technical, engineering, and predictive analytical disciplines.
 
 <b>CORE EXECUTIVE COMPETENCIES & TECHNICAL ANCHORS:</b>
 
-* <b>SUPPLY CHAIN ANALYTICS and TRANSFORMATION</b>: Network-level <b>SIOP governance, master production scheduling (MPS)</b>, multi-site <b>ERP modernizations</b>, data synchronization, and <b>SAP framework integrations</b>.
+* <b>SUPPLY CHAIN ANALYTICS and TRANSFORMATION</b>: Network-level SIOP governance, master production scheduling (MPS), multi-site <b>ERP modernizations</b>, data synchronization, and SAP framework integrations.
 
-* <b>PREDICTIVE DATA SCIENCE</b>: Advanced logistics data modeling, statistical simulation (<b>Python, FORTRAN, AI/ML, R</b>). Personally engineer end-to-end analytical solutions — such as automated multi-site demand sensing models — backed by fully integrated GitHub Actions CI/CD pipelines to guarantee 100% test coverage and schema enforcement on every deployment. 
+* <b>PREDICTIVE DATA SCIENCE</b>: Advanced logistics data modeling, statistical simulation (Python, FORTRAN, AI/ML, R). Personally engineer end-to-end analytical solutions — such as automated multi-site demand sensing models — backed by fully integrated GitHub Actions CI/CD pipelines to guarantee 100% test coverage and schema enforcement on every deployment. 
 
-* <b>COMPUTATIONAL RIGOR</b>: Strict adherence to data integrity, algorithmic validation, and thorough <b>Verification, Validation, and Accreditation (VVA)</b> to eliminate predictive bias and optimize working capital.
+* <b>COMPUTATIONAL RIGOR</b>: Strict adherence to data integrity, algorithmic validation, and thorough Verification, Validation, and Accreditation (VVA) to eliminate predictive bias and optimize working capital.
 
-* <b>FISCAL & LABOR STEWARDSHIP</b>: Direct <b>P&L oversight of a $50M</b> market-driven revolving fund, lean efficiency optimization via <b>Lean Six Sigma Black Belt</b> methodologies, and collaborative <b>AFGE collective bargaining</b> relations.
+* <b>FISCAL & LABOR STEWARDSHIP</b>: Direct P&L oversight of a $50M</b> market-driven revolving fund, lean efficiency optimization via <b>Lean Six Sigma Black Belt methodologies, and collaborative AFGE collective bargaining relations.
 
-* <b>TURNKEY REGULATORY COMPLIANCE</b>: Master-level adherence to strict <b>ITAR/EAR</b> federal export control mandates, national security protocols, and industrial <b>EPA/OSHA</b> frameworks.
+* <b>TURNKEY REGULATORY COMPLIANCE</b>: Master-level adherence to strict ITAR/EAR federal export control mandates, national security protocols, and industrial EPA/OSHA frameworks.
 
-Throughout my career - spanning <b>global military logistics theater command, federal munitions manufacturing oversight</b>, and private-sector chemical process engineering at <b>GE Plastics and Bayer</b> -I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
+Throughout my career - spanning global military logistics theater command, federal munitions manufacturing oversight, and private-sector chemical process engineering at GE Plastics and Bayer -I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
 
 [click to view Resume](Haraburda_Resume.pdf)
 
@@ -30,7 +30,7 @@ Throughout my career - spanning <b>global military logistics theater command, fe
 
 <hr />
 
-<h3>🔮 1. Multi-Node Demand Planning & Commodity Consumption Architecture</h3>
+<h3>1. Multi-Node Demand Planning & Commodity Consumption Architecture</h3>
 <ul>
   <li><strong>Operational Framework:</strong> Built a multi-variate statistical profiling engine to ingest extensive national longitudinal supply datasets. The model cross-references demographics, regional allocations, and consumption velocity to map demand patterns across complex distribution nodes.</li>
   <li><strong>Supply Chain Impact:</strong> Provides producers with actionable demand-sensing intelligence to align production planning, mitigate inventory holding risks, and stabilize supply network flows.</li>
@@ -40,7 +40,7 @@ Throughout my career - spanning <b>global military logistics theater command, fe
 
 <hr />
 
-<h3>🚚 2. Geospatial Freight Logistics Risk Architecture & Safety Hotspot Mitigation Engine</h3>
+<h3>2. Geospatial Freight Logistics Risk Architecture & Safety Hotspot Mitigation Engine</h3>
 <ul>
   <li><strong>Operational Framework:</strong> Engineered an enterprise geospatial pipeline analyzing longitudinal transportation networks (spanning over 600,000 transit incidents and 70 million lines of raw unstructured text). Developed custom Python-based data-cleaning layers to execute multi-variable data imputation on spatial coordinate drift, missing records, and systemic database shifting. Replaced basic density heuristics with a dual-index mathematical matrix calculating a localized Crash Frequency Index (ICF) and a standard deviation-adjusted Crash Cost Index (ICC).</li>
   <li><strong>Supply Chain Impact:</strong> Neutralizes multi-million dollar inbound freight transit risks, cargo loss hazards, and logistical network paralysis. Empowers corporate logistics directors to identify hidden transit infrastructure constraints, establish zero-trust tier-1 routing alternatives, and run objective "what-if" simulations to optimize distribution-lane resilience.</li>
@@ -49,7 +49,7 @@ Throughout my career - spanning <b>global military logistics theater command, fe
 
 <hr />
 
-<h3>🛡️ 3. Crisis Operations Resilience & Advanced Workforce Capacity Engine (COVID-19)</h3>
+<h3>3. Crisis Operations Resilience & Advanced Workforce Capacity Engine (COVID-19)</h3>
 <ul>
   <li><strong>Operational Framework:</strong> Deployed an agile, R-based analytics framework for a major DoD Organic Industrial Base (CAAA) during critical pandemic disruptions. Implemented automated script layers featuring trailing rolling averages and multi-variable exponential smoothing models to track risk, workforce decay, and manufacturing throughput constraints.</li>
   <li><strong>Supply Chain Impact:</strong> Armed the Crisis Management Team (CMT) with predictive operational visibility, preserving shop-floor capacity, balancing weather/safety leave adjustments, and maintaining high-velocity munitions manufacturing continuity under extreme disruptions.</li>
@@ -58,7 +58,7 @@ Throughout my career - spanning <b>global military logistics theater command, fe
 
 <hr />
 
-<h3>🏢 4. Predictive Capacity & Infrastructure Forecasting for U.S. Army Facilities</h3>
+<h3>4. Predictive Capacity & Infrastructure Forecasting for U.S. Army Facilities</h3>
 <ul>
   <li><strong>Operational Framework:</strong> Engineered an predictive data asset to forecast and categorize facility code distributions across deep defense infrastructure matrices.</li>
   <li><strong>Supply Chain Impact:</strong> Enabled macro-level master production scheduling (MPS) and facility asset readiness tracking, ensuring industrial base capabilities match tactical deployment cadences.</li>
@@ -67,7 +67,7 @@ Throughout my career - spanning <b>global military logistics theater command, fe
 
 <hr />
 
-<h3>🛡️ 5. Autonomous System Guardrails & Real-Time Production Containment Framework</h3>
+<h3>5. Autonomous System Guardrails & Real-Time Production Containment Framework</h3>
 <ul>
   <li><strong>Operational Framework:</strong> Engineered an active runtime containment architecture built into native compilation layers to secure edge-deployed autonomous platforms against real-world telemetry drift, data corruption, and adversarial jamming. Implemented a programmatic, 6-Zone Defensive Architecture that replaces passive post-hoc auditing with machine-velocity software friction to evaluate semantic sanity and freeze out-of-bounds calculations prior to platform actuation.</li>
   <li><strong>Supply Chain Impact:</strong> Neutralizes the "Velocity Hazard" by ensuring high-speed predictive propulsion engines operate under strict, rule-based containment. Provides defense program managers with a zero-trust procurement benchmark to enforce structural safety limits, preventing catastrophic platform failure and mitigating multi-million-dollar supply chain or asset paralysis.</li>
@@ -205,18 +205,18 @@ This research and patented methodology demonstrate a career dedicated to pioneer
 
 ### 📚 Core Supply Chain & Engineering Publications
 
-* Haraburda, Scott S. [review of “Feeding Victory: Innovative Military Logistics from Lake George to Khe Sanh,” by Jobie Turner](https://publications.armywarcollege.edu/pubs/3754.pdf), *Parameters* 51, no. 3 (2021): 139-141.
-* Haraburda, Scott S. [review of “Global Data Shock: Strategic Ambiguity, Deception, and Surprise in an Age of Information Overload,” by Robert Mandell](https://publications.armywarcollege.edu/pubs/3733.pdf), *Parameters* 50, no. 3 (2020): 148-149.
-* Haraburda, Scott S. “[Benefits and Pitfalls of Data-Based Military Decisionmaking](https://smallwarsjournal.com/jrnl/art/benefits-and-pitfalls-data-based-military-decisionmaking),” *Small Wars Journal* 15, no. 11 (November 2019). 
+* Haraburda, Scott S. [review of “Feeding Victory: Innovative Military Logistics from Lake George to Khe Sanh,” by Jobie Turner](https://press.armywarcollege.edu/parameters/vol51/iss3/12/), *Parameters* 51, no. 3 (2021): 139-141, doi:10.55540/0031-1723.3085. <i>Underscores how historical battlefield success relies on analyzing and innovating supply chain transportation capabilities to effectively manage the flow of military logistics across changing technological eras.</i>
+* Haraburda, Scott S. [review of “Global Data Shock: Strategic Ambiguity, Deception, and Surprise in an Age of Information Overload,” by Robert Mandell](https://press.armywarcollege.edu/parameters/vol50/iss3/14/), *Parameters* 50, no. 3 (2020): 148-149, doi:10.55540/0031-1723.2681. <i>Explains that information overload complicates strategic decision-making, emphasizing that organizations must combine critical thinking from qualified analysts with automated data analytic systems to counter data manipulation and deception.</i>
+* Haraburda, Scott S. “[Benefits and Pitfalls of Data-Based Military Decisionmaking](https://archive.smallwarsjournal.com/jrnl/art/benefits-and-pitfalls-data-based-military-decisionmaking),” *Small Wars Journal* 15, no. 11 (November 2019). <i>Highlights how real-time data streaming and advanced analytics offer vast opportunities to optimize military logistics and tracking, while cautioning that a strict reliance on raw numbers without qualitative human insight can lead to severe supply chain blind spots and strategic failures.</i>
 * Haraburda, Scott S. “Thinking Smart: Analysts Crunch Data to Drive Better Decision-Making,” *Army* 68, no. 3 (March 2018): 46-48.
-* Haraburda, Scott S. “[Dateless Discord Dominance in Digital Dreamdorf Domain](http://smallwarsjournal.com/jrnl/art/dateless-discord-dominance-in-digital-dreamdorf-domain),” *Small Wars Journal* 13, no. 8 (August 2017).
-* O'Neall, Casandra E. and Haraburda, Scott S. "[Balanced Scorecards for Supply Chain Management](https://www.waru.edu/sites/default/files/Migrate/DATLFiles/July-August_2017/O%27Neall_Haraburda.pdf), *Defense AT&L* (July-August).
-* Haraburda, Scott S. “[Supply Chain Management Maturity Level Assessment](https://www.dau.edu/library/arj/ARJ/ARJ83/ARJ83%20Article%203%20-%2016-775%20Haraburda.pdf).” *Defense Acquisition Research Journal* 24, no. 4 (2017): 656-681.
-* Haraburda, Scott S. “[Conventional Munitions Industrial Base](https://www.ausa.org/publications/conventional-munitions-industrial-base).” *AUSA Land Warfare Paper* 113 (August 2017).
-* Haraburda, Scott S. “[Transforming Military Support Processes from Logistics to Supply Chain Management](https://www.army.mil/article/162197).” *Army Sustainment* 48, no. 2 (2016): 12-15.
-* Irvine, Robert L.; Haraburda, Scott S.; and Galbis-Reig, Clara. “[Combining SBR Systems for Chemical and Biological Treatment: the Destruction of the Nerve Agent VX](http://wst.iwaponline.com/content/50/10/11),” *Water Science & Technology* 50, no. 10 (2004): 11–18.
-* Haraburda, Scott S. “[Transport Phenomena of Flow through Helium and Nitrogen Plasmas in Microwave Electrothermal Thrusters](https://doi.org/doi:10.25335/M54T6FC9H),” *PhD Dissertation*, Michigan State University, 2001.
-* Haraburda, Scott S. “[Transport Properties of Plasmas in Microwave Electrothermal Thrusters](https://apps.dtic.mil/sti/citations/ADA219408),” *MS Thesis*, Michigan State University, 1990. 
+* Haraburda, Scott S. “[Dateless Discord Dominance in Digital Dreamdorf Domain](https://archive.smallwarsjournal.com/jrnl/art/dateless-discord-dominance-in-digital-dreamdorf-domain),” *Small Wars Journal* 13, no. 8 (August 2017). <i>Highlights that over-reliance on computerized systems and automated decision-making programs can leave military supply chains and tactical operations vulnerable to debilitating cyber attacks.</i>
+* O'Neall, Casandra E. and Haraburda, Scott S. "[Balanced Scorecards for Supply Chain Management](https://www.waru.edu/sites/default/files/Migrate/DATLFiles/July-August_2017/O%27Neall_Haraburda.pdf), *Defense AT&L* (July-August). <i> Demonstrates how the Crane Army Ammunition Activity (CAAA) uses an expanded SIPOCF (Supplier, Input, Process, Output, Customer, and Foundation) analytic framework within a Balanced Scorecard model to track key performance metrics and identify weak links throughout military supply chains.</i>
+* Haraburda, Scott S. “[Supply Chain Management Maturity Level Assessment](https://www.dau.edu/library/arj/ARJ/ARJ83/ARJ83%20Article%203%20-%2016-775%20Haraburda.pdf).” *Defense Acquisition Research Journal* 24, no. 4 (2017): 656-681. <i>Introduces a quantitative analytic framework designed to assess, score, and systematically elevate military supply chain operations across five organizational maturity tiers.</i>
+* Haraburda, Scott S. “[Conventional Munitions Industrial Base](https://www.ausa.org/publications/conventional-munitions-industrial-base).” *AUSA Land Warfare Paper* 113 (August 2017). <i>Traces the historical vulnerabilities of the Conventional Munitions Industrial Base and argues that while manufacturing is handled by a mix of government and commercial plants, the Army must actively analyze production data and retain in-house technical engineering expertise to remain a "smart purchaser."</i>
+* Haraburda, Scott S. “[Transforming Military Support Processes from Logistics to Supply Chain Management](https://www.army.mil/article/162197).” *Army Sustainment* 48, no. 2 (2016): 12-15. <i>Details the transition of military support units from traditional, siloed logistics functions toward an integrated Supply Chain Management (SCM) paradigm, demonstrating how implementing the standardized Supply Chain Operations Reference (SCOR) model allows leaders to leverage operational data analytics to improve warfighter readiness.</i>
+* Irvine, Robert L.; Haraburda, Scott S.; and Galbis-Reig, Clara. “[Combining SBR Systems for Chemical and Biological Treatment: the Destruction of the Nerve Agent VX](http://wst.iwaponline.com/content/50/10/11),” *Water Science & Technology* 50, no. 10 (2004): 11–18. <i>Details the pilot testing of a dual-stage Sequencing Batch Reactor (SBR) framework that combines caustic chemical hydrolysis with activated sludge biological treatment to safely eradicate stockpiled VX nerve agent in compliance with the Chemical Weapons Convention.</i>
+* Haraburda, Scott S. “[Transport Phenomena of Flow through Helium and Nitrogen Plasmas in Microwave Electrothermal Thrusters](https://doi.org/doi:10.25335/M54T6FC9H),” *PhD Dissertation*, Michigan State University, 2001. <i>Introduces a 2D theoretical and computational transport model that maps the fluid, plasma, and radiation phenomena of helium and nitrogen propellants within an electrodeless Microwave Electrothermal Thruster (MET). The analysis establishes a space-dependent parameter equilibrium theory to optimize spacecraft propulsion efficiency and eliminate life-limiting electrode erosion.</i>
+* Haraburda, Scott S. “[Transport Properties of Plasmas in Microwave Electrothermal Thrusters](https://apps.dtic.mil/sti/citations/ADA219408),” *MS Thesis*, Michigan State University, 1990. <i>Evaluates the transport properties of plasmas in Microwave Electrothermal Thrusters (METs), using diagnostic techniques such as calorimetry, photography, and spectroscopy to analyze how energy transfers through electron-propellant collisions within the TM011 and TM012 modes of a microwave cavity.</i>
 
 ---
 
