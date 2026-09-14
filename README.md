@@ -8,15 +8,15 @@ Vetted at the highest federal level for corporate-equivalent governance across a
 
 <b>CORE EXECUTIVE COMPETENCIES & TECHNICAL ANCHORS:</b>
 
-* <b>SUPPLY CHAIN ANALYTICS and TRANSFORMATION</b>: Network-level SIOP governance, master production scheduling (MPS), multi-site ERP modernizations, data synchronization, and SAP framework integrations.
+* <b>Supply Chain Analytics and Transformation</b>: Network-level SIOP governance, master production scheduling (MPS), multi-site ERP modernizations, data synchronization, and SAP framework integrations.
 
-* <b>PREDICTIVE DATA SCIENCE</b>: Advanced logistics data modeling, statistical simulation (Python, FORTRAN, AI/ML, R). Personally engineer end-to-end analytical solutions — such as automated multi-site demand sensing models — backed by fully integrated GitHub Actions CI/CD pipelines to guarantee 100% test coverage and schema enforcement on every deployment. 
+* <b>Predictive Data Science</b>: Advanced logistics data modeling, statistical simulation (Python, FORTRAN, AI/ML, R). Personally engineer end-to-end analytical solutions — such as automated multi-site demand sensing models — backed by fully integrated GitHub Actions CI/CD pipelines to guarantee 100% test coverage and schema enforcement on every deployment. 
 
-* <b>COMPUTATIONAL RIGOR</b>: Strict adherence to data integrity, algorithmic validation, and thorough Verification, Validation, and Accreditation (VVA) to eliminate predictive bias and optimize working capital.
+* <b>Computational Rigor</b>: Strict adherence to data integrity, algorithmic validation, and thorough Verification, Validation, and Accreditation (VVA) to eliminate predictive bias and optimize working capital.
 
-* <b>FISCAL & LABOR STEWARDSHIP</b>: Direct P&L oversight of a $50M market-driven revolving fund, lean efficiency optimization via Lean Six Sigma Black Belt methodologies, and collaborative AFGE collective bargaining relations.
+* <b>Fiscal & Labor Stewardship</b>: Direct P&L oversight of a $50M market-driven revolving fund, lean efficiency optimization via Lean Six Sigma Black Belt methodologies, and collaborative AFGE collective bargaining relations.
 
-* <b>TURNKEY REGULATORY COMPLIANCE</b>: Master-level adherence to strict ITAR/EAR federal export control mandates, national security protocols, and industrial EPA/OSHA frameworks.
+* <b>Turnkey Regulatory Compliance</b>: Master-level adherence to strict ITAR/EAR federal export control mandates, national security protocols, and industrial EPA/OSHA frameworks.
 
 Throughout my career - spanning global military logistics theater command, federal munitions manufacturing oversight, and private-sector chemical process engineering at GE Plastics and Bayer -I have a proven track record of managing massive infrastructure asset pipelines, mitigating enterprise risk, and leading high-performing technical divisions to guarantee absolute capital efficiency and zero-fault supply chains.
 
