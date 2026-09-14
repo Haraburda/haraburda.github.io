@@ -1,4 +1,4 @@
-# Supply Chain Analytics Executive | Predictive Data Scientist | Professional Engineer (PE) | Project Manager (PMP) | PhD | OPM-Certified SES Candidate | Colonel, USA (Ret.)
+# Supply Chain Analytics Executive ● Predictive Data Scientist ● Professional Engineer (PE) ● Project Manager (PMP) ● PhD ● OPM-Certified SES Candidate ● Colonel, USA (Ret.)
 
 ## EXECUTIVE PROFILE
 
