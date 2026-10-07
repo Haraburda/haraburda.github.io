@@ -163,7 +163,20 @@
         white-space: pre;           /* Preserves spaces and tabs exactly as typed */
         border: 1px solid #333;
     }
-
+    .python-script-section {
+    	background-color: #1E293B;  /* Deep slate blue/gray background */
+    	color: #F8FAFC;             /* Crisp, off-white text for high contrast */
+    	font-family: 'Fira Code', 'Consolas', monospace;
+    	font-size: 0.95rem;
+    	padding: 15px;
+    	margin: 20px 0;
+    	border-radius: 6px;         /* Slightly softer, modern corners */
+    	overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+    	white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+    	border-left: 5px solid #38BDF8; /* Vibrant Python-blue accent bar on the left */
+    	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* Subtle shadow for a modern look */
+    }
+	
         @media (max-width: 768px) {
             .container {
                 margin: 0;
@@ -442,6 +455,71 @@ plot1 <- ggplot(df1, aes(x = Item, y = Count, fill = Item)) +
 plot1
     </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+import io
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.graph_objects as go
+import plotly.io as pio
+from pathlib import Path
+from plotnine import (
+    aes,
+    element_blank,
+    element_text,
+    geom_point,
+    geom_col,
+    ggplot,
+    labs,
+    scale_size_continuous,
+    theme,
+    ylim,
+)
+
+# Load the data
+data_dir = Path("./data")
+data_dir.mkdir(exist_ok=True)  # This safely creates the folder if it doesn't exist
+file_path = data_dir / "comparison.csv"
+df1 = pd.read_csv(file_path)
+df1 = df1.dropna(subset=["Item", "Count"])
+
+# Build and style the plot
+plot1 = (
+    ggplot(df1)
+    + geom_col(aes(x="Item", y="Count"), fill="lightgray", width=0.7)
+    + ylim(0, 400)
+    + labs(x=None, y=None)
+    + theme(
+        plot_title=element_text(
+            color="#0000FF", weight="bold", size=15, ha="center"
+        ),
+        axis_title_x=element_blank(),
+        axis_title_y=element_blank(),
+        axis_text_x=element_text(ha="center", weight="bold", color="black", size=20),
+        axis_text_y=element_text(
+            angle=0, va="center", weight="bold", color="black", size=20
+        ),
+        legend_position="none",
+        panel_background=element_blank(),
+        axis_line_x=element_blank(),
+        axis_ticks=element_blank(),
+    )
+)
+
+# Display the plot
+plot1.draw()
+    </div>
+
 <h2>Bubble Graph</h2>
     <p>This is like a scatter plot that decided to level up — it doesn’t just show you two values, it shows you three at once. It’s basically the overachiever of charts. In Figure 2, each bubble shows the size of an item for every month, and the bigger the bubble, the bigger the value. Think of it as data wearing different‑sized helmets so you can tell who’s who at a glance.</p>
 
@@ -518,6 +596,59 @@ plot2 <- ggplot(df1, aes(x = Item, y = fct_rev(Month), size = Count)) +
 plot2
     </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+month_order = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+]
+month_dtype = pd.CategoricalDtype(categories=month_order, ordered=True)
+
+df1["Month"] = df1["Month"].astype(month_dtype)
+reversed_months = month_order[::-1]
+df1["Month_reversed"] = df1["Month"].cat.reorder_categories(
+    reversed_months, ordered=True
+)
+
+# Build and style the dot plot
+plot2 = (
+    ggplot(df1)
+    + geom_point(
+        aes(x="Item", y="Month_reversed", size="Count"),
+        shape="o",
+        color="gray",
+        alpha=0.8,
+    )
+    + scale_size_continuous(range=(1, 10))
+    + labs(x=None, y=None)
+    + theme(
+        plot_title=element_text(
+            color="#0000FF", weight="bold", size=15, ha="center"
+        ),
+        axis_title_x=element_blank(),
+        axis_title_y=element_blank(),
+        axis_text_x=element_text(ha="center", weight="bold", color="black", size=12),
+        axis_text_y=element_text(
+            angle=0, va="center", weight="bold", color="black", size=12
+        ),
+        legend_position="none",
+        panel_background=element_blank(),
+        axis_line_x=element_blank(),
+        axis_ticks=element_blank(),
+    )
+)
+
+plot2.draw()
+    </div>
+
 <h2>Bullet Graph</h2>
     <p>This is like the speedometer on your dashboard; it shows one number on a set scale and looks pretty cool doing it. But when it comes to actually understanding data, the bullet graph is the smarter, more practical cousin. It lays everything out in a clean, straight line so your eyes don’t have to work overtime. In Figure 3, you can see the monthly averages, with item B chilling comfortably in the middle range (20–29), right where the graph says, “Yep, that seems about right”.</p>
 
@@ -577,6 +708,80 @@ plot3 <- ggplot(df_averages) +
 plot3
     </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+df_averages = df1.groupby('Item', as_index=False)['Count'].mean()
+df_averages.rename(columns={'Count': 'Average_Count'}, inplace=True)
+
+# Define region thresholds
+low_region = 20.0
+mid_region = 30.0
+high_region = 40.0
+
+# Replicate the ggplot layout
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Widths matching R's width parameters
+bg_width = 0.6
+bar_width = 0.22
+
+# Plot background ranges (stacked/layered from back to front)
+ax.bar(df_averages['Item'], [high_region] * len(df_averages), color='#707070', width=bg_width, label='High')
+ax.bar(df_averages['Item'], [mid_region] * len(df_averages), color='#A0A0A0', width=bg_width, label='Mid')
+ax.bar(df_averages['Item'], [low_region] * len(df_averages), color='#E0E0E0', width=bg_width, label='Low')
+
+# Plot the actual metrics (Average_Count) in black on top
+ax.bar(df_averages['Item'], df_averages['Average_Count'], color='#000000', width=bar_width)
+
+# Add text labels on top of the bars (mimicking geom_label)
+for i, val in enumerate(df_averages['Average_Count']):
+    ax.text(
+        x=i, 
+        y=val + 1.5, 
+        s=f"{val:.1f}", 
+        color='#000000', 
+        fontweight='bold', 
+        fontsize=12,
+        ha='center', 
+        va='center',
+        bbox=dict(facecolor='#FFFFFF', edgecolor='none', pad=2.0)  # Replicates geom_label
+    )
+
+ax.set_ylim(0, 40)
+
+# Remove axes labels
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+
+# Format ticks (bold font, large size, horizontal)
+ax.set_xticklabels(df_averages['Item'], fontsize=20, fontweight='bold', color='black')
+ax.tick_params(axis='y', labelsize=20, labelcolor='black')
+for tick in ax.get_yticklabels():
+    tick.set_fontweight('bold')
+
+# Wipe out backgrounds, lines, and ticks to match element_blank()
+ax.set_facecolor('none')
+fig.patch.set_facecolor('none')
+ax.spines['top'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.tick_params(axis='both', which='both', length=0)  # No ticks
+
+# Match the plot margin spacing
+plt.tight_layout(pad=2.0)
+
+# Display the final plot
+plt.show()
+    </div>
 
 <h2>Dot Plot</h2>
     <p>This is the “no‑nonsense” chart of the statistics world, just a bunch of dots chilling on a number line, each one representing a data point. When multiple values repeat, the dots politely stack up like they’re waiting in line at a coffee shop. In Figure 4, item A is looking pretty balanced, item B is hanging out on the higher side, and item C is keeping things low‑key on the lower end.</p>
@@ -626,6 +831,57 @@ plot4 <- ggplot(df1, aes(x = Item, fill = Item, y = Count)) +
 plot4
 </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Setup the figure
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Duplicate geom_dotplot(binaxis = "y", stackdir = "center")
+# sns.swarmplot stacks the dots horizontally along the categorical X axis to show distribution density
+sns.swarmplot(
+    data=df1, 
+    x='Item', 
+    y='Count', 
+    color='lightgray',   # Replicates fill = "lightgray"
+    size=8,              # Controls dot size (equivalent to binwidth adjustments)
+    ax=ax
+)
+
+ax.set_ylim(10, 35)
+ax.set_yticks(np.arange(15, 31, 5))  # Creates ticks at [15, 20, 25, 30]
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+
+# Format X and Y axis ticks (bold font, large size)
+ax.set_xticklabels(ax.get_xticklabels(), fontsize=20, fontweight='bold', color='black')
+ax.tick_params(axis='y', labelsize=20, labelcolor='black')
+for tick in ax.get_yticklabels():
+    tick.set_fontweight('bold')
+
+# Wipe out background panel and ticks to match element_blank()
+ax.set_facecolor('none')
+fig.patch.set_facecolor('none')
+ax.tick_params(axis='both', which='both', length=0)  # axis.ticks = element_blank()
+
+# Remove visible borders/spines to cleanly match panel.background = element_blank()
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+# Optimize spacing
+plt.tight_layout()
+
+# Display the final plot
+plt.show()
+    </div>
+
 <h2>Heatmap</h2>
     <p>This is basically the mood ring of data visualization — except way more accurate and far less embarrassing. It uses colors to show how big or small each value is across a dataset. In Figure 5, the colors make it pretty clear that all three items are living their best lives in the summer and taking a long winter nap when the temperatures drop.</p>
 
@@ -667,6 +923,66 @@ plot5 <- ggplot(df1, aes(x = Item, y = Month, fill = Count)) +
         panel.background = element_blank())
 plot5
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Pivot long data to a wide format matrix for the heatmap grid
+heatmap_data = df1.pivot(index="Month", columns="Item", values="Count")
+
+# Replicate R's scale_y_discrete(limits = rev) to put December at the top and January at the bottom
+heatmap_data = heatmap_data.loc[month_order]
+
+# 3. Build and format the plot
+plt.figure(figsize=(6, 8))
+
+# Draw the heatmap
+# - cmap: Custom gradient scaling from light gray (#f0f0f0) to dark gray (#505050)
+# - cbar=False: Emulates legend.position = "none"
+sns.heatmap(
+    heatmap_data,
+    cmap=sns.blend_palette(["#f0f0f0", "#505050"], as_cmap=True),
+    cbar=False,
+)
+
+# Replicate exact axis text formatting (size=20, bold, black, horizontal orientation)
+plt.xticks(
+    rotation=0,
+    ha="center",
+    fontsize=20,
+    weight="bold",
+    color="black",
+)
+
+plt.yticks(
+    rotation=0,
+    va="center",
+    fontsize=20,
+    weight="bold",
+    color="black",
+)
+
+# Remove axis titles (labs(x = NULL, y = NULL))
+plt.xlabel(None)
+plt.ylabel(None)
+
+# Remove axis ticks entirely (axis.ticks = element_blank())
+plt.tick_params(axis="both", which="both", length=0)
+
+# Clear default border spines to mirror panel.background = element_blank()
+for spine in plt.gca().spines.values():
+    spine.set_visible(False)
+
+plt.tight_layout()
+plt.show()
+    </div>
 
 <h2>Marimekko Graph</h2>
     <p>This chart, called a mosaic graph, is basically a stacked chart that decided to go 2‑D and show off. Instead of just stacking things up, it also stretches the columns wider or narrower to show how different categories relate to each other. In Figure 6, item B is clearly the star of the 20–29 range, taking up more space than the other two items and making sure everyone notices.</p>
@@ -743,6 +1059,113 @@ plot6 <- ggplot(df_grouped, aes(x = Item, fill = Group)) +
 plot6
 </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Categorize data entries into three specified group ranges (case_when replacement)
+conditions = [
+    (df1["Count"] >= 0) & (df1["Count"] <= 19),
+    (df1["Count"] >= 20) & (df1["Count"] <= 29),
+    (df1["Count"] >= 30) & (df1["Count"] <= 40),
+]
+choices = ["0-19", "20-29", "30-40"]
+df1["Group"] = np.select(conditions, choices, default=None)
+
+# Convert Group into a strict ordered category for proper stacking alignment
+group_order = ["0-19", "20-29", "30-40"]
+df1["Group"] = pd.Categorical(df1["Group"], categories=group_order, ordered=True)
+
+# Calculate percentages per Item for the 100% stacked bar chart (position="fill")
+df_pivot = pd.crosstab(df1["Item"], df1["Group"], normalize="index")
+# Ensure columns match our explicit factor layout sequence
+df_pivot = df_pivot[group_order]
+
+# Prepare the precise label alignment dataframe matching your R coordinates
+# Matplotlib categorical x-axes use 0-indexed positioning (Item A=0, B=1, C=2)
+# Therefore, your original X position of 3.35 maps perfectly to 2.35 in Python
+df_labels = pd.DataFrame(
+    {
+        "X_Pos": [2.35, 2.35, 2.35],
+        "Label_Y": [
+            0.75 / 2,  # Midpoint of 0-19 section (Y = 0.375)
+            0.75 + (0.0833 / 2),  # Midpoint of 20-29 section (Y = 0.7917)
+            0.75 + 0.0833 + (0.1667 / 2),  # Midpoint of 30-40 section (Y = 0.9167)
+        ],
+        "Label_Text": ["0-19", "20-29", "30-40"],
+    }
+)
+
+# Build the ggplot equivalent figure using Matplotlib
+fig, ax = plt.subplots(figsize=(6, 5), facecolor="white")
+
+# Color mapping matching scale_fill_manual
+colors = {"0-19": "#E0E0E0", "20-29": "#A0A0A0", "30-40": "#707070"}
+color_list = [colors[g] for g in group_order]
+
+# Plot stacked bars (width=0.6, white borders)
+df_pivot.plot(
+    kind="bar",
+    stacked=True,
+    ax=ax,
+    width=0.6,
+    color=color_list,
+    edgecolor="#FFFFFF",
+    linewidth=0.5,
+)
+
+# Custom text geometry overlay matching your geom_text settings
+for _, row in df_labels.iterrows():
+    ax.text(
+        x=row["X_Pos"],
+        y=row["Label_Y"],
+        s=row["Label_Text"],
+        color="#000000",
+        weight="bold",
+        fontsize=11,
+        ha="left",
+        va="center",
+    )
+
+# Axis adjustments & styling mimicking your theme() choices
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+
+# Formatting Y-axis to percentages (scale_y_continuous)
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: f"{int(y*100)}%"))
+
+# Customize axis tick labels to match size and boldness
+ax.set_xticklabels(
+    df_pivot.index, rotation=0, ha="center", weight="bold", color="black", fontsize=15
+)
+ax.tick_params(
+    axis="y", labelsize=15, labelcolor="black", left=False
+)  # Hide y-ticks
+for label in ax.get_yticklabels():
+    label.set_weight("bold")
+
+# scale_x_discrete & scale_y_continuous expansions adjustments
+ax.set_xlim(-0.4, 2.8)
+ax.set_ylim(0, 1.05)
+
+# Clean theme element removals
+ax.legend().set_visible(False)  # legend.position = "none"
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.spines["left"].set_visible(False)
+ax.spines["bottom"].set_visible(False)
+ax.tick_params(axis="both", which="both", length=0)  # axis.ticks = element_blank()
+ax.set_facecolor("none")  # panel.background = element_blank()
+
+plt.tight_layout()
+plt.show()
+ </div>
 
 <h2>Sankey</h2>
     <p>This is like an air‑traffic controller of charts as it shows you exactly where everything is flowing and how much of it is moving around. The thicker the connecting lines (called links), the bigger the flow. It’s perfect for tracking how resources like hours, materials, or general chaos move through different stages, known as nodes. In Figure 7, you can follow the journey as each month sends its flow into items A and B, which then funnel into item C, before everything branches right back out into each month again. It’s basically a very organized data round‑trip.</p>
@@ -842,6 +1265,65 @@ sankeyNetwork(Links = links, Nodes = nodes, Source = "Idsource",
               LinkGroup = "linkgroup", colourScale = my_color)
 </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+pio.renderers.default = "notebook"
+file_path = data_dir / "links.csv"
+links = pd.read_csv(file_path)
+node_names = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  # 0 to 11
+    "A", "B", "C",  # 12, 13, 14
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",  # 15 to 26
+]
+
+node_colors = ["lightgrey"] * len(node_names)
+link_colors = ["rgba(200, 200, 200, 0.4)"] * len(links)
+
+# Create the Interactive Plotly Sankey
+fig = go.Figure(
+    data=[
+        go.Sankey(
+            node=dict(
+                pad=15,
+                thickness=20,
+                line=dict(color="black", width=0.5),
+                label=node_names,
+                color=node_colors,
+            ),
+            link=dict(
+                # MATCHING EXACT CASE SENSITIVITY FROM YOUR IMAGE:
+                source=links["Idsource"].tolist(),
+                target=links["Idtarget"].tolist(),
+                value=links["value"].tolist(),
+                color=link_colors,
+            ),
+        )
+    ]
+)
+
+# Apply clean layout and typography sizing matching fontSize = 24
+fig.update_layout(
+    font_size=24,
+    hovermode="x",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    margin=dict(l=40, r=40, t=40, b=40),
+)
+
+# Display the interactive result
+fig.show()
+ </div>
+
 <h2>Unit Graph</h2>
     <p>This is a waffle graph, which is what you get when data decides to express itself through tiny, evenly sized shapes. Think of it as a pixel‑art version of your dataset. In the 10×10 waffle setup shown in Figure 8, a solid 53% of the items land in the 10–19 range, which is noticeably higher than the counts in the other two ranges. Basically, that range is doing all the heavy lifting while the others are just along for the ride.</p>
 
@@ -920,6 +1402,113 @@ plot8 + geom_text(data = NULL, x = 11.5, y = 3, label = text1, size=6, fontface 
   coord_cartesian(clip = "off")
 </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Define groups and categorize your data dynamically from df1['Count']
+group = ["10-19", "20-29", "30-39"]
+conditions = [
+    (df1["Count"] >= 10) & (df1["Count"] <= 19),
+    (df1["Count"] >= 20) & (df1["Count"] <= 29),
+    (df1["Count"] >= 30) & (df1["Count"] <= 39),
+]
+df1["Group_Range"] = np.select(conditions, group, default=None)
+
+# Calculate percentages and map them to exactly 100 blocks
+counts_map = df1["Group_Range"].value_counts()
+total_records = counts_map.sum()
+
+# Convert each group's fraction into a total out of 100 blocks
+value = [int(round((counts_map.get(g, 0) / total_records) * 100)) for g in group]
+
+# Safety check: Adjust rounding discrepancies to ensure a strict total of 100 blocks
+remainder = 100 - sum(value)
+if remainder != 0:
+    value[0] += remainder  # Absorb minor rounding adjustments into the first group
+
+# Generate the 10x10 coordinate structure matching your R loop logic
+waffle_data = []
+i, j = 1, 1
+for g_idx, val in enumerate(value):
+    name1 = group[g_idx]
+    for _ in range(val):
+        waffle_data.append({"x": i, "y": j, "range": name1})
+
+        if i < 10:
+            i += 1
+        else:
+            i = 1
+            if j < 10:
+                j += 1
+            else:
+                j = 1
+df2 = pd.DataFrame(waffle_data)
+
+# Render the 10x10 Waffle Chart
+fig, ax = plt.subplots(figsize=(7, 6), facecolor="white")
+colors = {"10-19": "#cccccc", "20-29": "#969892", "30-39": "#3b444b"}
+for g in group:
+    df_sub = df2[df2["range"] == g]
+    if not df_sub.empty:
+        ax.scatter(
+            df_sub["x"],
+            df_sub["y"],
+            color=colors[g],
+            marker="s",
+            s=350,  # Grid cell square block sizing
+            edgecolors="white",
+            linewidths=1.5,
+        )
+
+# Dynamic text labels showing both the range and calculated percentage
+ax.text(
+    11.5,
+    3,
+    f"{group[0]} ({value[0]}%)",
+    fontsize=14,
+    weight="bold",
+    va="center",
+    ha="left",
+    color="black",
+)
+ax.text(
+    11.5,
+    7,
+    f"{group[1]} ({value[1]}%)",
+    fontsize=14,
+    weight="bold",
+    va="center",
+    ha="left",
+    color="black",
+)
+ax.text(
+    11.5,
+    9.5,
+    f"{group[2]} ({value[2]}%)",
+    fontsize=14,
+    weight="bold",
+    va="center",
+    ha="left",
+    color="black",
+)
+
+# Apply clean theme properties (mimicking R's theme elements removal)
+ax.set_xlim(0.5, 14)  # Expanded to fit the text additions cleanly
+ax.set_ylim(0.5, 10.5)
+ax.axis("off")
+ax.set_facecolor("none")
+
+plt.tight_layout()
+plt.show()
+ </div>
+
 <h2>Waterfall Graph</h2>
     <p>This is basically the storytelling bar graph. It walks you through how an initial value gets nudged up by the good stuff, dragged down by the not‑so‑good stuff, and finally lands on a grand total. In Figure 9, you can see items A and B adding to the pile, item C subtracting from it, and the whole thing settling at a neat net total of 307 counts. It’s like watching your data balance its checkbook.</p>
 
@@ -968,6 +1557,115 @@ waterfall(df_water,
         legend.position = "none",
         panel.background = element_blank())
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+items = ["A", "B", "C"]
+amount = [216, 331, -240]
+df_water = pd.DataFrame({"Items": items, "Amount": amount})
+
+# Compute the waterfall layout logic manually (calc_total=True tracking)
+# Calculate cumulative sums to find bottoms and tops of bars
+cumulative = df_water["Amount"].cumsum()
+total_val = cumulative.iloc[-1]
+
+# Set the base (bottom) coordinates for each floating bar segment
+bottoms = np.zeros(len(df_water) + 1)
+heights = np.zeros(len(df_water) + 1)
+
+# Populate intermediate bars
+for i in range(len(df_water)):
+    if i == 0:
+        bottoms[i] = 0
+    else:
+        bottoms[i] = cumulative.iloc[i - 1]
+    heights[i] = df_water["Amount"].iloc[i]
+
+# Add the final "Net" total bar layer
+bottoms[-1] = 0
+heights[-1] = total_val
+
+# Prepare final category labels including the net total
+plot_labels = list(df_water["Items"]) + ["Net"]
+
+# Setup the colors (alternating for items, 'grey' for the total)
+# R's waterfall recycles color_vector c("#f0f0f0", "#e0e0e0") across your rows
+color_vector = ["#f0f0f0", "#e0e0e0"]
+bar_colors = [color_vector[i % len(color_vector)] for i in range(len(df_water))]
+bar_colors.append("grey")  # total_rect_color = "grey"
+
+# Generate the Visualization
+fig, ax = plt.subplots(figsize=(8, 6), facecolor="white")
+
+# Render columns using bar()
+bars = ax.bar(
+    plot_labels,
+    heights,
+    bottom=bottoms,
+    color=bar_colors,
+    edgecolor="black",
+    linewidth=0.5,
+    width=0.6,
+)
+
+# Overlay value text inside or on top of the bars (rect_text_size = 3)
+for i, bar in enumerate(bars):
+    # Determine the actual value being drawn
+    val = int(heights[i])
+    # Sign formatting (+ prefix for positive increments)
+    label_text = f"+{val}" if val > 0 and i < len(df_water) else f"{val}"
+
+    # Center text vertically within the floating segment
+    if i == len(df_water):  # For the total bar
+        y_pos = val / 2
+    else:
+        y_pos = bottoms[i] + (heights[i] / 2)
+
+    ax.text(
+        bar.get_x() + bar.get_width() / 2,
+        y_pos,
+        label_text,
+        ha="center",
+        va="center",
+        color="black",
+        fontsize=11,  # Scaled to be clean and visible
+        weight="bold",
+    )
+
+# Apply theme styling matching your R theme properties
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+
+# Format ticks text (bold, black, size=20 font equivalent)
+ax.set_xticklabels(
+    plot_labels, ha="center", weight="bold", color="black", fontsize=20
+)
+ax.tick_params(axis="y", labelsize=20, labelcolor="black")
+for label in ax.get_yticklabels():
+    label.set_weight("bold")
+
+# Clear axis lines and ticks (axis.ticks = element_blank(), panel.background = element_blank())
+ax.tick_params(axis="both", which="both", length=0)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+ax.set_facecolor("none")
+
+# Keep a slight margin spacing above/below values dynamically
+all_endpoints = np.concatenate([bottoms, bottoms + heights])
+ax.set_ylim(min(all_endpoints) - 40, max(all_endpoints) + 40)
+
+plt.tight_layout()
+plt.show()
+ </div>
+
 </body>
 </html>
 
