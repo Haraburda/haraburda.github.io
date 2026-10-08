@@ -163,7 +163,19 @@
         white-space: pre;           /* Preserves spaces and tabs exactly as typed */
         border: 1px solid #333;
     }
-
+    .python-script-section {
+    	background-color: #1E293B;  /* Deep slate blue/gray background */
+    	color: #F8FAFC;             /* Crisp, off-white text for high contrast */
+    	font-family: 'Fira Code', 'Consolas', monospace;
+    	font-size: 0.95rem;
+    	padding: 15px;
+    	margin: 20px 0;
+    	border-radius: 6px;         /* Slightly softer, modern corners */
+    	overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+    	white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+    	border-left: 5px solid #38BDF8; /* Vibrant Python-blue accent bar on the left */
+    	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* Subtle shadow for a modern look */
+    }
         @media (max-width: 768px) {
             .container {
                 margin: 0;
@@ -463,6 +475,116 @@ plot1 <- ggplot(df_area, aes(x = Month_Num, y = Count, fill = Item,
 plot1
     </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+import calendar
+import io
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.graph_objects as go
+import plotly.io as pio
+from pathlib import Path
+from plotnine import (
+    aes,
+    element_blank,
+    element_text,
+    geom_point,
+    geom_col,
+    ggplot,
+    labs,
+    scale_size_continuous,
+    theme,
+    ylim,
+)
+from scipy.interpolate import make_interp_spline
+
+# Load and clean the data
+data_dir = Path("./data")
+data_dir.mkdir(exist_ok=True)  # This safely creates the folder if it doesn't exist
+file_path = data_dir / "comparison.csv"
+df1 = pd.read_csv(file_path)
+df1 = df1.dropna(subset=["Item", "Month", "Month1", "Count", "Rank"])
+df1["Count"] = pd.to_numeric(df1["Count"])
+df1["Rank"] = pd.to_numeric(df1["Rank"])
+
+# Factor/Categorical ordering for Months
+month_order = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+]
+df1["Month"] = pd.Categorical(df1["Month"], categories=month_order, ordered=True)
+
+# Pivot the data to create numerical stacks
+# ggplot's group = fct_rev(Item) places 'A' at the bottom baseline, then 'B', then 'C'
+pivot_df = df1.pivot(index="Month", columns="Item", values="Count").reindex(
+    month_order
+)
+month_nums = np.arange(1, 13)
+
+# Prepare Text Labels (Matched to your R script coordinates)
+df_text_labels = pd.DataFrame(
+    {
+        "X_Pos": [12.3, 12.3, 12.3],
+        "Label_Y": [
+            14 / 2,  # Midpoint of Light Grey Area A (7.0)
+            14 + (24 / 2),  # Midpoint of Grey Area B (26.0)
+            14 + 24 + (18 / 2),  # Midpoint of Dark Grey Area C (47.0)
+        ],
+        "Label_Text": ["A", "B", "C"],
+    }
+)
+
+# Build the Plot
+fig, ax = plt.subplots(figsize=(10, 6))
+colors = ["#E0E0E0", "#A0A0A0", "#707070"]  # A (Light), B (Medium), C (Dark)
+ax.stackplot(
+    month_nums,
+    pivot_df["A"],
+    pivot_df["B"],
+    pivot_df["C"],
+    colors=colors,
+    alpha=0.9,
+)
+for _, row in df_text_labels.iterrows():
+    ax.text(
+        row["X_Pos"],
+        row["Label_Y"],
+        row["Label_Text"],
+        color="#000000",
+        weight="bold",
+        fontsize=14,
+        va="center",
+        ha="left",
+    )
+
+# Apply Aesthetic Styling (Matching your custom ggplot theme)
+single_letters = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
+ax.set_xticks(month_nums)
+ax.set_xticklabels(single_letters, fontsize=14, weight="bold", color="black")
+ax.set_yticks([0, 20, 40, 60, 80])
+ax.set_yticklabels(
+    ["0", "20", "40", "60", "80"], fontsize=14, weight="bold", color="black"
+)
+ax.set_xlim(1, 13.2)  # Extra spacing on the right side for labels
+ax.set_ylim(0, 85)
+ax.tick_params(axis="both", which="both", length=0, pad=8)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+plt.tight_layout()
+plt.show()
+    </div>
+
  <h2>Bump Graph</h2>
     <p>This is essentially a line chart that stopped caring about raw numbers and started obsessing over social status. Instead of tracking values, it tracks rankings. Think of it as a racetrack for your metrics. Looking at Figure 2, item B is absolutely cruising in first place, while Item A is unfortunately bringing up the rear. Things got a little dramatic in the first half of the year when Items A and C kept swapping positions like aggressive go-kart drivers, with each miraculously snagging the crown in June and August.</p>
 
@@ -535,6 +657,112 @@ plot2 <- ggplot() +
     legend.position = "none" 
   )
 plot2
+    </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+df1["Rank"] = pd.to_numeric(df1["Rank"])
+
+# Map months to numeric values (1-12)
+month_abbrs = list(calendar.month_abbr)[1:]  # ['Jan', 'Feb', 'Mar', ...]
+month_to_num = {month: i + 1 for i, month in enumerate(month_abbrs)}
+df_bump = df1.copy()
+df_bump["Month_Numeric"] = df_bump["Month"].map(month_to_num)
+df_bump = df_bump.dropna(subset=["Month_Numeric"])
+df_bump["Month_Numeric"] = df_bump["Month_Numeric"].astype(int)
+
+# Establish parameters from data bounds
+min_month = int(df_bump["Month_Numeric"].min())
+max_month = int(df_bump["Month_Numeric"].max())
+single_letter_months = [month_abbrs[i - 1][0] for i in range(min_month, max_month + 1)]
+gray_palette = {"A": "#D3D3D3", "B": "#808080", "C": "#A9A9A9"}
+
+# Generate Natural Spline Interpolation (100 smooth points per line)
+smooth_data_list = []
+for item, group in df_bump.groupby("Item"):
+    group_sorted = group.sort_values("Month_Numeric")
+    x = group_sorted["Month_Numeric"].values
+    y = group_sorted["Rank"].values
+    x_smooth = np.linspace(x.min(), x.max(), 100)
+    spline_func = make_interp_spline(x, y, k=3, bc_type="natural")
+    y_smooth = spline_func(x_smooth)
+
+    item_df = pd.DataFrame(
+        {"Item": item, "Month_Numeric": x_smooth, "Rank": y_smooth}
+    )
+    smooth_data_list.append(item_df)
+df_smooth = pd.concat(smooth_data_list, ignore_index=True)
+
+# Build the Plot
+fig, ax = plt.subplots(figsize=(10, 6))
+for item in df_bump["Item"].unique():
+    color = gray_palette.get(item, "#000000")
+    item_smooth = df_smooth[df_smooth["Item"] == item]
+    item_raw = df_bump[df_bump["Item"] == item]
+    ax.plot(
+        item_smooth["Month_Numeric"],
+        item_smooth["Rank"],
+        color=color,
+        linewidth=2,
+        alpha=0.9,
+        zorder=1,
+    )
+    ax.scatter(
+        item_raw["Month_Numeric"],
+        item_raw["Rank"],
+        color=color,
+        s=80,
+        alpha=1.0,
+        zorder=2,
+    )
+    left_row = item_raw[item_raw["Month_Numeric"] == min_month]
+    if not left_row.empty:
+        ax.text(
+            min_month - 0.15,
+            left_row["Rank"].values[0],
+            item,
+            color="black",
+            weight="bold",
+            fontsize=14,
+            ha="right",
+            va="center",
+        )
+    right_row = item_raw[item_raw["Month_Numeric"] == max_month]
+    if not right_row.empty:
+        ax.text(
+            max_month + 0.15,
+            right_row["Rank"].values[0],
+            item,
+            color="black",
+            weight="bold",
+            fontsize=14,
+            ha="left",
+            va="center",
+        )
+
+# Styling, Scaling, and Axis Layouts
+ax.set_xticks(range(min_month, max_month + 1))
+ax.set_xticklabels(single_letter_months, color="#333333", weight="bold", fontsize=15)
+ax.set_yticks([1, 2, 3])
+ax.set_yticklabels(["1", "2", "3"], color="#333333", weight="bold", fontsize=12)
+ax.invert_yaxis()
+ax.set_xlim(min_month - 0.5, max_month + 0.5)
+ax.set_ylim(3.5, 0.5)  # Generous padding to prevent labels from cropping
+ax.grid(False)
+ax.tick_params(axis="both", which="both", length=0, pad=8)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+plt.tight_layout()
+plt.show()
     </div>
 
  <h2>Cycle Graph</h2>
@@ -613,6 +841,103 @@ plot3 <- ggplot(df_quarters, aes(x = Month_Numeric, y = Count, color = Item, gro
     legend.position = "none"
   )
 plot3
+    </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+df_quarters = df1.copy()
+df_quarters["Month_Numeric"] = df_quarters["Month"].map(month_to_num)
+df_quarters = df_quarters.dropna(subset=["Month_Numeric"])
+df_quarters["Month_Numeric"] = df_quarters["Month_Numeric"].astype(int)
+
+# Simulating case_when() for Quarters using explicit numeric array bounds
+q1_months = [1, 2, 3]
+q2_months = [4, 5, 6]
+q3_months = [7, 8, 9]
+q4_months = [10, 11, 12]
+conditions = [
+    df_quarters["Month_Numeric"].isin(q1_months),
+    df_quarters["Month_Numeric"].isin(q2_months),
+    df_quarters["Month_Numeric"].isin(q3_months),
+    df_quarters["Month_Numeric"].isin(q4_months),
+]
+choices = ["1st Qtr", "2nd Qtr", "3rd Qtr", "4th Qtr"]
+df_quarters["Quarter"] = np.select(conditions, choices, default=np.nan)
+single_letters = [m[0] for m in month_abbrs]
+gray_palette = {"A": "#D3D3D3", "B": "#808080", "C": "#404040"}
+quarter_order = ["1st Qtr", "2nd Qtr", "3rd Qtr", "4th Qtr"]
+
+# Build the Facet Plot (2 rows, 2 columns)
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(11, 8), sharey=False)
+axes = axes.flatten()  # Flatten matrix to an easy 1D array of subplots
+right_column_indices = [1, 3]
+for i, qtr in enumerate(quarter_order):
+    ax = axes[i]
+    qtr_data = df_quarters[df_quarters["Quarter"] == qtr]
+    local_months = sorted(qtr_data["Month_Numeric"].unique())
+    local_labels = [single_letters[m - 1] for m in local_months]
+    for item, group in qtr_data.groupby("Item"):
+        group_sorted = group.sort_values("Month_Numeric")
+        color = gray_palette.get(item, "#000000")
+        ax.plot(
+            group_sorted["Month_Numeric"],
+            group_sorted["Count"],
+            color=color,
+            linewidth=1.5,
+            alpha=0.9,
+        )
+        ax.scatter(
+            group_sorted["Month_Numeric"],
+            group_sorted["Count"],
+            color=color,
+            s=40,
+            alpha=1.0,
+        )
+        max_month_in_qtr = group_sorted["Month_Numeric"].max()
+        label_row = group_sorted[
+            group_sorted["Month_Numeric"] == max_month_in_qtr
+        ]
+        if not label_row.empty:
+            ax.text(
+                max_month_in_qtr + 0.1,
+                label_row["Count"].values[0],
+                item,
+                color="black",
+                weight="bold",
+                fontsize=11,
+                ha="left",
+                va="center",
+            )
+
+  # Styling subplots and forcing custom Y-axis targets
+    ax.set_title(qtr, fontsize=12, weight="bold", color="black", pad=10)
+    ax.set_xticks(local_months)
+    ax.set_xticklabels(local_labels, color="#333333", weight="bold", fontsize=11)
+    y_tick_positions = [15, 20, 25, 30]
+    ax.set_ylim(10, 35)
+    ax.set_yticks(y_tick_positions)
+    if i in right_column_indices:
+        ax.set_yticklabels([])  # Clear the labels completely
+    else:
+        ax.set_yticklabels(
+            ["15", "20", "25", "30"], color="#333333", weight="bold", fontsize=11
+        )
+    ax.tick_params(axis="both", which="both", length=0, labelsize=11)
+    ax.set_xlim(min(local_months) - 0.2, max(local_months) + 0.6)
+    ax.grid(False)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+plt.subplots_adjust(wspace=0.25, hspace=0.4)
+plt.show()
     </div>
 
  <h2>Gannt Chart</h2>
@@ -783,6 +1108,104 @@ plot4 <- ggplot(df3, aes(x = M1, xend = M2, y = fct_rev(Task), yend = Task, labe
 plot4
     </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+file_path = data_dir / "comparison3.csv"
+df3 = pd.read_csv(file_path)
+df3 = df3.dropna(subset=["Task", "Count"])
+
+# Parse Date Dimensions exactly matching the R format logic (Year 2026)
+df3["M1"] = pd.to_datetime(df3["Month_S"] + " 01 2026", format="%b %d %Y")
+df3["M2"] = pd.to_datetime(df3["Month_E"] + " 01 2026", format="%b %d %Y")
+df3 = df3.sort_values(by="Task", ascending=True).reset_index(drop=True)
+tasks_list = list(df3["Task"].unique())
+num_tasks = len(tasks_list)
+task_to_y = {task: i for i, task in enumerate(tasks_list)}
+df3["Y_Pos"] = df3["Task"].map(task_to_y)
+
+# Build the Plot Workspace
+fig, ax = plt.subplots(figsize=(12, 8))
+for _, row in df3.iterrows():
+    ax.hlines(
+        y=row["Y_Pos"],
+        xmin=row["M1"],
+        xmax=row["M2"],
+        color="#808080",
+        linewidth=12,
+        capstyle="round",
+        alpha=0.9,
+        zorder=1,
+    )
+    midpoint_date = row["M1"] + (row["M2"] - row["M1"]) / 2
+    ax.text(
+        midpoint_date,
+        row["Y_Pos"],
+        str(int(row["Count"])),
+        color="white",
+        weight="bold",
+        fontsize=11,
+        ha="center",
+        va="center",
+        zorder=2,
+    )
+
+# Generate Connection Dependency Arrows using range functions
+group_a_rows = list(range(0, 4))  # Row indices 0, 1, 2, 3 (Group A)
+group_b_rows = list(range(4, 8))  # Row indices 4, 5, 6, 7 (Group B)
+group_c_rows = list(range(8, 12))  # Row indices 8, 9, 10, 11 (Group C)
+all_groups = list([group_a_rows, group_b_rows, group_c_rows])
+loop_steps = list(range(0, 3))  # Iterates positions 0, 1, and 2 safely
+for target_rows in all_groups:
+    for index_position in loop_steps:
+        idx_from = target_rows[index_position]
+        idx_to = target_rows[index_position + 1]
+        x_start = df3.loc[idx_from, "M2"]
+        x_end = df3.loc[idx_to, "M1"]
+        y_start = df3.loc[idx_from, "Y_Pos"]
+        y_end = df3.loc[idx_to, "Y_Pos"]
+        ax.annotate(
+            "",
+            xy=(x_end, y_end),
+            xytext=(x_start, y_start),
+            arrowprops=dict(
+                arrowstyle="-|>",
+                color="black",
+                lw=1.5,
+                mutation_scale=15,
+                facecolor="black",
+            ),
+            zorder=3,
+        )
+
+# Aesthetic Layout and Scale Formatting
+ax.set_yticks(range(num_tasks))
+ax.set_yticklabels(tasks_list, color="black", weight="bold", fontsize=15)
+ax.invert_yaxis()
+ax.xaxis.set_major_locator(mdates.MonthLocator())
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
+plt.draw()  # Forces rendering setup to cleanly fetch auto-labels
+single_letter_labels = [label.get_text()[0] for label in ax.get_xticklabels()]
+ax.set_xticklabels(
+    single_letter_labels, rotation=0, weight="bold", fontsize=15, color="black"
+)
+ax.tick_params(axis="both", which="both", length=0, pad=10)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+ax.set_ylim(num_tasks - 0.5, -0.5)
+
+plt.tight_layout()
+plt.show()
+    </div>
+
  <h2>Horizon Graph</h2>
     <p>This chart is built for packing an overwhelming mountain of fast-moving data into a tiny space. To save room, it chops your data into equal-height sections and stacks them right on top of one another like a game of Tetris, all sharing the exact same floor baseline. It does get a little weird with negative numbers by flipping them upside down to keep things compact, but Figure 5 plays it straight by keeping the percentage changes from our average exactly as they are. Looking closely at the layout, it is painfully obvious that Item A suffered some pretty brutal, ice-cold drops during the summer months.</p>
 
@@ -834,6 +1257,72 @@ plot5 <- ggplot(df1, aes(x = M1, y = Count1)) +
         panel.background = element_blank())
 plot5
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+df1["M1"] = df1["Month"].map(month_to_num)
+df1 = df1.dropna(subset=["M1"])
+df1["M1"] = df1["M1"].astype(int)
+
+# Grouped calculations: 100 * (Count - mean(Count)) / Count
+df1["Mean_Count"] = df1.groupby("Item")["Count"].transform("mean")
+df1["Count1"] = 100 * (df1["Count"] - df1["Mean_Count"]) / df1["Count"]
+df1 = df1.sort_values(by=["Item", "M1"]).reset_index(drop=True)
+items_list = sorted(list(df1["Item"].unique()))
+num_items = len(items_list)
+
+# Build the Facet Grid (Stacked Vertically, Sharing X-axis)
+fig, axes = plt.subplots(
+    nrows=num_items, ncols=1, figsize=(10, 8), sharex=True, sharey=True
+)
+if num_items == 1:
+    axes = [axes]
+single_letters = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
+month_nums = list(range(1, 13))
+for idx, item in enumerate(items_list):
+    ax = axes[idx]
+    item_data = df1[df1["Item"] == item]
+    ax.fill_between(
+        item_data["M1"], item_data["Count1"], y2=0, color="#CCCCCC", alpha=1.0
+    )
+    ax.text(
+        -0.02,
+        0.5,
+        item,
+        transform=ax.transAxes,
+        fontsize=14,
+        weight="bold",
+        ha="right",
+        va="center",
+        color="black",
+    )
+    ax.set_yticklabels([])  # Removes y-axis label text tags
+    ax.tick_params(
+        axis="both", which="both", length=0, labelsize=18
+    )  # Drops ticks markers
+    ax.grid(False)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+# Format X-Axis on the Bottom Plot Only (panel.spacing.y = 0 emulation)
+bottom_ax = axes[-1]
+bottom_ax.set_xticks(month_nums)
+bottom_ax.set_xticklabels(
+    single_letters, color="black", weight="bold", fontsize=18, ha="center"
+)
+bottom_ax.set_xlim(0.8, 12.2)
+
+plt.subplots_adjust(hspace=0.05)
+plt.show()
+    </div>
 
  <h2>Line Graph</h2>
     <p>This graph is the old-school, reliable patriarch of the chart family. It works by taking your standalone data points — fondly known as markers — and playing a game of connect-the-dots using crisp, straight lines. It has one primary job in life: tracking how your values behave over a stretch of time. If you take a look at Figure 6, it becomes blindingly obvious that all three of our items had a major summer vacation moment, peaking simultaneously during the warmest months of the year.</p>
@@ -893,6 +1382,85 @@ plot6 <- ggplot(df_plot, aes(x = Month_Numeric, y = Count, color = Item,
   )
 plot6
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+df_plot = df1.copy()
+df_plot["Month_Numeric"] = df_plot["Month"].map(month_to_num)
+df_plot = df_plot.dropna(subset=["Month_Numeric"])
+df_plot["Month_Numeric"] = df_plot["Month_Numeric"].astype(int)
+
+# Establish parameters from data bounds
+min_month = int(df_plot["Month_Numeric"].min())
+max_month = int(df_plot["Month_Numeric"].max())
+month_range_indices = list(range(min_month, max_month + 1))
+single_letter_months = [month_abbrs[idx - 1][0] for idx in month_range_indices]
+gray_palette = {"A": "#D3D3D3", "B": "#808080", "C": "#404040"}
+
+# Build the Plot Workspace
+fig, ax = plt.subplots(figsize=(10, 6))
+for item, group in df_plot.groupby("Item"):
+    group_sorted = group.sort_values("Month_Numeric")
+    color = gray_palette.get(item, "#000000")
+    ax.plot(
+        group_sorted["Month_Numeric"],
+        group_sorted["Count"],
+        color=color,
+        linewidth=1.5,
+        alpha=0.95,
+        zorder=1,
+    )
+    ax.scatter(
+        group_sorted["Month_Numeric"],
+        group_sorted["Count"],
+        color=color,
+        s=40,
+        alpha=1.0,
+        zorder=2,
+    )
+    label_row = group_sorted[group_sorted["Month_Numeric"] == max_month]
+    if not label_row.empty:
+        ax.text(
+            max_month + 0.15,
+            label_row["Count"].values,
+            item,
+            color="black",
+            weight="bold",
+            fontsize=12,
+            ha="left",
+            va="center",
+        )
+
+# Aesthetic Layout and Axis Scaling (theme_minimal)
+ax.set_xticks(month_range_indices)
+ax.set_xticklabels(single_letter_months, color="#333333", weight="bold", fontsize=11)
+ax.set_ylim(10, 35)
+y_tick_positions = list(range(10, 36, 5))
+ax.set_yticks(y_tick_positions)
+y_tick_labels = list()
+for val in y_tick_positions:
+    if val == 10 or val == 35:
+        y_tick_labels.append("")
+    else:
+        y_tick_labels.append(str(val))
+ax.set_yticklabels(y_tick_labels, color="#333333", weight="bold", fontsize=11)
+ax.tick_params(axis="both", which="both", length=0)
+ax.set_xlim(min_month - 0.2, max_month + 0.6)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+plt.tight_layout()
+plt.show()
+    </div>
 
  <h2>Slope Graph</h2>
     <p>This skips the boring daily details and focuses entirely on the grand finale. It is designed to compare data points across exactly two categories or time periods, acting like a direct "before and after" snapshot. Each entity gets just two dots on the page, aggressively connected by a single line to show whether they climbed the mountain or fell off a cliff. According to Figure 7, items B and C spent the year putting in the work, showing a beautiful upward climb from their January baseline to their December wrap-up. Item A, on the other hand, spent the year on a steep, chaotic downhill ski slope, suffering a pretty significant drop.</p>
@@ -960,6 +1528,57 @@ plot7 <- ggplot(df_slope, aes(x = Month, y = Count, color = Item,
 plot7
 </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Filter data specifically for January and December slope checkpoints
+target_months = ["Jan", "Dec"]
+df_slope = df1[df1["Month"].isin(target_months)].copy()
+month_positions = {"Jan": 1, "Dec": 2}
+df_slope["X_Pos"] = df_slope["Month"].map(month_positions)
+df_slope = df_slope.sort_values(by=["Item", "X_Pos"]).reset_index(drop=True)
+gray_palette = {"A": "#D3D3D3", "B": "#808080", "C": "#404040"}
+
+# Build the Plot Workspace
+fig, ax = plt.subplots(figsize=(10, 6))
+for item, group in df_slope.groupby("Item"):
+    group_sorted = group.sort_values("X_Pos")
+    jan_row = group_sorted[group_sorted["Month"] == "Jan"]
+    dec_row = group_sorted[group_sorted["Month"] == "Dec"]
+    if not jan_row.empty and not dec_row.empty:
+        jan_count = jan_row["Count"].values[0]
+        dec_count = dec_row["Count"].values[0]
+        color = gray_palette.get(item, "#000000")
+        ax.plot([1, 2], [jan_count, dec_count], color=color, linewidth=1.5, alpha=0.95, zorder=1)
+        ax.scatter([1, 2], [jan_count, dec_count], color=color, s=40, alpha=1.0, zorder=2)
+        left_text = f"{item}  {int(jan_count)}"
+        ax.text(0.92, jan_count, left_text, color="black", weight="bold", fontsize=12, ha="right", va="center")
+        right_text = f"{int(dec_count)}  {item}"
+        ax.text(2.08, dec_count, right_text, color="black", weight="bold", fontsize=12, ha="left", va="center")
+
+# Aesthetic Layout and Axis Scaling (theme_minimal)
+ax.set_xticks([1, 2])
+ax.set_xticklabels(["Jan", "Dec"], color="#111111", weight="bold", fontsize=13)
+ax.tick_params(axis="both", which="both", length=0, labelsize=13)
+for label in ax.get_yticklabels():
+    label.set_color("#111111")
+    label.set_weight("bold")
+ax.set_xlim(0.6, 2.4)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+plt.tight_layout()
+plt.show()
+    </div>
+
  <h2>Sparkline</h2>
     <p>These visuals are the pocket-sized heroes of the chart world, specifically engineered to squeeze right into your regular text or live inside a single spreadsheet cell. They give you a quick, no-nonsense look at your trends without hogging all the screen real estate or demanding the high-maintenance setup of a full-scale graph. Figure 8 delivers a bite-sized view of our monthly changes, even tossing in a handy shaded zone to show you exactly where the data usually likes to hang out</p>
 
@@ -1014,6 +1633,105 @@ plot8 <- ggplot(df1, aes(M1, Count, group = Item)) +
 plot8
 </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+df1 = df1.sort_values(by=["Item", "M1"]).reset_index(drop=True)
+items_list = sorted(list(df1["Item"].unique()))
+num_items = len(items_list)
+
+# Build the Faceted Sparkline Workspace Grid (Vertically Stacked)
+fig, axes = plt.subplots(
+    nrows=num_items, ncols=1, figsize=(10, 8), sharex=True, sharey=False
+)
+if num_items == 1:
+    axes = [axes]
+single_letters = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
+month_nums = list(range(1, 13))
+for idx, item in enumerate(items_list):
+    ax = axes[idx]
+    item_data = df1[df1["Item"] == item].copy()
+    q25 = item_data["Count"].quantile(0.25)
+    q75 = item_data["Count"].quantile(0.75)
+    ribbon_ymin = q25 * 0.99
+    ribbon_ymax = q75 * 1.01
+    ax.fill_between(
+        item_data["M1"],
+        ribbon_ymin,
+        ribbon_ymax,
+        color="#EAEAEA",
+        alpha=1.0,
+        zorder=1,
+    )
+    ax.plot(
+        item_data["M1"],
+        item_data["Count"],
+        color="black",
+        linewidth=1.2,
+        zorder=2,
+    )
+    min_val = item_data["Count"].min()
+    max_val = item_data["Count"].max()
+    start_row = item_data.iloc[0]
+    end_row = item_data.iloc[-1]
+    min_row = item_data.loc[item_data["Count"].idxmin()]
+    max_row = item_data.loc[item_data["Count"].idxmax()]
+    spark_targets = [start_row, end_row, min_row, max_row]
+    for row in spark_targets:
+        x_pt = int(row["M1"])
+        y_pt = float(row["Count"])
+        lbl_txt = str(int(round(y_pt, 0)))
+        ax.scatter(
+            x_pt, y_pt, color="black", s=25, edgecolor="black", zorder=3
+        )
+        ax.text(
+            x_pt,
+            y_pt + (max_val * 0.03),
+            lbl_txt,
+            color="black",
+            weight="bold",
+            fontsize=10,
+            ha="center",
+            va="bottom",
+            zorder=4,
+        )
+    ax.text(
+        -0.03,
+        0.5,
+        item,
+        transform=ax.transAxes,
+        fontsize=14,
+        weight="bold",
+        ha="right",
+        va="center",
+        color="black",
+    )
+    ax.set_yticklabels([])
+    ax.tick_params(axis="both", which="both", length=0, labelsize=18)
+    ax.set_ylim(min_val * 0.85, max_val * 1.15)
+    ax.grid(False)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+# Format X-Axis on Bottom Chart Layer
+bottom_ax = axes[-1]
+bottom_ax.set_xticks(month_nums)
+bottom_ax.set_xticklabels(
+    single_letters, color="black", weight="bold", fontsize=18, ha="center"
+)
+bottom_ax.set_xlim(0.8, 12.2)
+
+plt.subplots_adjust(hspace=0.08)
+plt.show()
+    </div>
+
 <h2>Streamgraph</h2>
     <p>This is essentially a stacked area chart that threw away its rigid, flat baseline and decided to live its best, fluid life. Instead of being anchored to the bottom of the page, its colorful layers flow and dance around a wavy, moving central axis. It is perfect for seeing how different categories vibe together over time. If you glance at Figure 9, the organic waves make it smooth and easy to spot our big traffic surges, highlighting collective peaks from June to August, the summer months./p>
 
@@ -1051,6 +1769,50 @@ text(.75, 25, labels = "A", font = 2, cex.axis = 1.6)
 text(.75, 0, labels = "B", font = 2, cex.axis = 1.6)
 text(.75, -25, labels = "C", font = 2, cex.axis = 1.6)
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Pivot Wider: Transform long table into an ordered wide matrix
+pivot_df = df1.pivot(index="M1", columns="Item", values="Count").reindex(
+    range(1, 13)
+)
+x = np.arange(1, 13)
+y_a = pivot_df["A"].values
+y_b = pivot_df["B"].values
+y_c = pivot_df["C"].values
+colors = ["#404040", "#808080", "#D3D3D3"]
+
+# Build the Streamgraph Workspace
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.stackplot(x, y_c, y_b, y_a, colors=colors, baseline="sym", alpha=1.0)
+
+# Add Custom Floating Identification Text Labels next to their new layers
+ax.text(0.75, 25, "A", color="black", weight="bold", fontsize=16, ha="center")
+ax.text(0.75, 0, "B", color="black", weight="bold", fontsize=16, ha="center")
+ax.text(0.75, -25, "C", color="black", weight="bold", fontsize=16, ha="center")
+
+# Aesthetic Formatting (axes=FALSE, bty="n")
+single_letters = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"]
+ax.set_xticks(x)
+ax.set_xticklabels(single_letters, color="black", weight="bold", fontsize=14)
+ax.set_yticklabels([])
+ax.tick_params(axis="both", which="both", length=0, pad=10)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+ax.set_xlim(0.5, 12.5)
+
+plt.tight_layout()
+plt.show()
+    </div>
 
 </body>
 </html>
