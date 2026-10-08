@@ -163,7 +163,19 @@
         white-space: pre;           /* Preserves spaces and tabs exactly as typed */
         border: 1px solid #333;
     }
-
+    .python-script-section {
+    	background-color: #1E293B;  /* Deep slate blue/gray background */
+    	color: #F8FAFC;             /* Crisp, off-white text for high contrast */
+    	font-family: 'Fira Code', 'Consolas', monospace;
+    	font-size: 0.95rem;
+    	padding: 15px;
+    	margin: 20px 0;
+    	border-radius: 6px;         /* Slightly softer, modern corners */
+    	overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+    	white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+    	border-left: 5px solid #38BDF8; /* Vibrant Python-blue accent bar on the left */
+    	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* Subtle shadow for a modern look */
+    }
         @media (max-width: 768px) {
             .container {
                 margin: 0;
@@ -431,6 +443,103 @@ plot1 <- ggplot(df1, aes(x = Item, y = Count)) +
 plot1
     </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+import calendar
+import io
+import numpy as np
+import pandas as pd
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.graph_objects as go
+import plotly.io as pio
+from pathlib import Path
+from plotnine import (
+    aes,
+    element_blank,
+    element_text,
+    geom_point,
+    geom_col,
+    ggplot,
+    labs,
+    scale_size_continuous,
+    theme,
+    ylim,
+)
+from scipy.interpolate import make_interp_spline
+from scipy.stats import gaussian_kde
+from scipy.stats import norm
+
+# Load and clean the data
+data_dir = Path("./data")
+data_dir.mkdir(exist_ok=True)  # This safely creates the folder if it doesn't exist
+file_path = data_dir / "comparison.csv"
+df1 = pd.read_csv(file_path)
+df1 = df1.dropna(subset=["Item", "Month", "Month1", "Count", "Rank"])
+df1["Count"] = pd.to_numeric(df1["Count"])
+df1["Rank"] = pd.to_numeric(df1["Rank"])
+df1["Item"] = pd.Categorical(df1["Item"], categories=["A", "B", "C"], ordered=True)
+
+# Build the Plot Workspace
+fig, ax = plt.subplots(figsize=(8, 6))
+box_style = {"edgecolor": "black", "linewidth": 2, "facecolor": "none"}
+whisker_style = {"color": "black", "linewidth": 2}
+capprops_style = {"color": "black", "linewidth": 2}
+median_style = {"color": "black", "linewidth": 2}
+sns.boxplot(
+    data=df1,
+    x="Item",
+    y="Count",
+    ax=ax,
+    color="white",
+    fliersize=8,  # Replicates outlier.size=3
+    flierprops={"markerfacecolor": "black", "markeredgecolor": "black"},
+    boxprops=box_style,
+    whiskerprops=whisker_style,
+    capprops=capprops_style,
+    medianprops=median_style,
+    showcaps=False,
+)
+ax.set_ylim(10, 35)
+y_tick_positions = list(range(10, 36, 5))
+ax.set_yticks(y_tick_positions)
+y_tick_labels = list()
+for val in y_tick_positions:
+    if val == 10 or val == 35:
+        y_tick_labels.append("")
+    else:
+        y_tick_labels.append(str(val))
+
+# Apply Aesthetic Theme Configurations (panel.background = element_blank())
+ax.set_xlabel(None)  # Removes x-axis title
+ax.set_ylabel(None)  # Removes y-axis title
+ax.tick_params(axis="both", which="both", length=0, labelsize=20)
+ax.set_yticklabels(y_tick_labels)
+for label in ax.get_xticklabels():
+    label.set_weight("bold")
+    label.set_color("black")
+    label.set_horizontalalignment("right")
+for label in ax.get_yticklabels():
+    label.set_weight("bold")
+    label.set_color("black")
+    label.set_verticalalignment("top")
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+plt.tight_layout()
+plt.show()
+    </div>
+
  <h2>Candlestick Chart</h2>
     <p>While these usually pop up when people are stressing over financial data, you can think of these charts as the slightly fancier cousins of the box-and-whisker plot. The "wicks" stretching out from the top and bottom show you the absolute highest and lowest values achieved during that time frame. Meanwhile, the main body of the candle represents your opening and closing values, with a light or white candle acting as a green light to show that the closing value finished higher than the opening one. If you take a peek at Figure 2, you can see that the lowest Count value for each of the three items either occured at the beginning or end of the year since there is no line extending below the box.</p>
 
@@ -493,8 +602,98 @@ plot2 <- ggplot(ohlc, aes(x = Item)) +
 plot2
     </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Map months to numeric values (1-12)
+month_abbrs = list(calendar.month_abbr)[1:]  # ['Jan', 'Feb', 'Mar', ...]
+month_to_num = {month: idx + 1 for idx, month in enumerate(month_abbrs)}
+df1["M1"] = df1["Month"].map(month_to_num)
+
+# Calculate OHLC Summary Data
+ohlc_list = []
+for item in ["A", "B", "C"]:
+    item_data = df1[df1["Item"] == item]
+    open_val = item_data.loc[item_data["M1"] == 1, "Count"].values
+    close_val = item_data.loc[item_data["M1"] == 12, "Count"].values
+    open_price = open_val if len(open_val) > 0 else np.nan
+    close_price = close_val if len(close_val) > 0 else np.nan
+    high_price = item_data["Count"].max()
+    low_price = item_data["Count"].min()
+    ohlc_list.append(
+        {
+            "Item": item,
+            "open1": open_price,
+            "high1": high_price,
+            "low1": low_price,
+            "close1": close_price,
+        }
+    )
+ohlc = pd.DataFrame(ohlc_list)
+ohlc["Item"] = pd.Categorical(ohlc["Item"], categories=["A", "B", "C"], ordered=True)
+x_positions = np.arange(len(ohlc))
+gray_palette = {"A": "#D3D3D3", "B": "#808080", "C": "#404040"}
+
+# Build the Plot Workspace
+fig, ax = plt.subplots(figsize=(8, 6))
+for idx, row in ohlc.iterrows():
+    item = row["Item"]
+    color = gray_palette.get(item, "#000000")
+    ax.vlines(
+        x=idx,
+        ymin=row["low1"],
+        ymax=row["high1"],
+        colors="black",
+        linewidth=1.6,
+        zorder=1,
+    )
+    body_bottom = min(row["open1"], row["close1"])
+    body_height = abs(row["open1"] - row["close1"])
+
+    ax.bar(
+        x=idx,
+        height=body_height,
+        bottom=body_bottom,
+        width=0.5,
+        color=color,
+        edgecolor="black",
+        linewidth=1.2,
+        zorder=2,
+    )
+ax.set_ylim(10, 35)
+y_tick_positions = list(range(10, 36, 5))
+ax.set_yticks(y_tick_positions)
+y_tick_labels = list()
+for val in y_tick_positions:
+    if val == 10 or val == 35:
+        y_tick_labels.append("")
+    else:
+        y_tick_labels.append(str(val))
+
+# Aesthetic Layout Theme Configurations (panel.background = element_blank())
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+ax.set_xticks(x_positions)
+ax.set_xticklabels(["A", "B", "C"], color="black", weight="bold", fontsize=20, ha="center")
+ax.set_yticklabels(y_tick_labels, color="black", weight="bold", fontsize=20)
+ax.tick_params(axis="both", which="both", length=0)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+plt.tight_layout()
+plt.show()
+    </div>
+
  <h2>Histogram</h2>
-    <p>If you want to see exactly how your data aggregates, a histogram is your perfect match. This chart takes all your chaotic data points and neatly organizes them into specific "bins" or ranges, using connected bars to show you how often your data chooses to hang out in each bucket. It is a fantastic tool for instantly revealing patterns like center, spread, and overall shape. Looking closely at Figure 3, none of the items have a beautiful, symmetric normal distribution, with all of the Items being slightly skewed to the right with a large variance.</p>
+    <p>If you want to see exactly how your data aggregates, a histogram is your perfect match. This chart takes all your chaotic data points and neatly organizes them into specific "bins" or ranges, using connected bars to show you how often your data chooses to hang out in each bucket. It is a fantastic tool for instantly revealing patterns like center, spread, and overall shape. Looking closely at Figure 3, Item B has a beautiful, symmetric normal distribution, with the other two items being slightly skewed to the right with a larger variance.</p>
 
 <figure style="display: flex; flex-direction: column; align-items: center;">
     <img src="dist_3.jpeg" alt="Figure 3: Histogram" width="600">
@@ -513,21 +712,17 @@ plot2
     <!-- Stylized Code/Script Container Profile -->
     <div class="r-script-section">
 b_width <- 2 # bin width
-plot3 <- ggplot(df1, aes(x = Count)) +
-  geom_histogram(aes(fill = Item), binwidth = b_width) +
+df_curves <- df1 %>%
+  group_by(Item) %>%
+  reframe(
+    x = seq(min(Count) - 5, max(Count) + 5, length.out = 200),
+    y = dnorm(x, mean = mean(Count), sd = sd(Count)) * b_width * n()
+  )
+
+plot3 <- ggplot() +
+  geom_histogram(data = df1, aes(x = Count, fill = Item), binwidth = b_width) +
   scale_fill_manual(values = gray_palette) +
-  stat_function(
-    fun = function(x, mean, sd, n) { 
-      dnorm(x, mean = mean, sd = sd) * b_width * n 
-    },
-    args = list(
-      mean = mean(df1$Count), 
-      sd   = sd(df1$Count), 
-      n    = 12 
-    ),
-    color = "black", 
-    linewidth = 1.2
-  ) +
+  geom_line(data = df_curves, aes(x = x, y = y), color = "black", linewidth = 1.2) +
   facet_wrap(~ Item, strip.position = "bottom") +
   labs(x = NULL, y = NULL) + 
   theme(plot.title = element_blank(),
@@ -546,8 +741,84 @@ plot3 <- ggplot(df1, aes(x = Count)) +
         strip.placement = "outside",
         legend.position = "none",
         panel.background = element_blank())
+
 plot3
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Enforce explicit item categorization ordering
+items_list = ["A", "B", "C"]
+num_items = len(items_list)
+b_width = 2  # bin width
+n_samples = 12  # group sample size scalar matching args=list(n=12)
+gray_palette = {"A": "#D3D3D3", "B": "#808080", "C": "#404040"}
+
+# Build the Facet Wrap Plot Layout (1 row, 3 columns)
+fig, axes = plt.subplots(
+    nrows=1, ncols=num_items, figsize=(12, 5), sharex=True, sharey=True
+)
+if num_items == 1:
+    axes = [axes]
+min_val, max_val = int(df1["Count"].min()), int(df1["Count"].max())
+bins_range = np.arange(min_val - b_width, max_val + b_width * 2, b_width)
+for idx, item in enumerate(items_list):
+    ax = axes[idx]
+    item_data = df1[df1["Item"] == item]
+    color = gray_palette.get(item, "#000000")
+    ax.hist(
+        item_data["Count"],
+        bins=bins_range,
+        color=color,
+        edgecolor="none",
+        alpha=1.0,
+        zorder=1,
+    )
+    local_mean = item_data["Count"].mean()
+    local_sd = item_data["Count"].std()
+    x_curve = np.linspace(min_val - 5, max_val + 5, 200)
+    y_curve = (
+        norm.pdf(x_curve, loc=local_mean, scale=local_sd) * b_width * n_samples
+    )
+    ax.plot(
+        x_curve, y_curve, color="black", linewidth=1.2, linestyle="-", zorder=2
+    )
+    ax.text(
+        0.5,
+        -0.18,
+        item,
+        transform=ax.transAxes,
+        fontsize=20,
+        weight="bold",
+        ha="center",
+        va="top",
+        color="black",
+    )
+    ax.set_xlabel(None)
+    ax.set_ylabel(None)
+    ax.tick_params(axis="both", which="both", length=0, labelsize=15)
+    for label in ax.get_xticklabels():
+        label.set_color("black")
+        label.set_weight("bold")
+        label.set_horizontalalignment("right")
+    ax.set_yticklabels([])
+    ax.grid(False)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+# Add horizontal compression gaps between the adjacent panel blocks
+plt.subplots_adjust(wspace=0.15)
+plt.tight_layout()
+plt.show()
+    </div>
 
  <h2>Pyramid Chart</h2>
     <p>Think of the pyramid chart as the ultimate data showdown. It is essentially a diverging bar graph that pits two different groups against each other, with the zero-axis sitting right in the middle like a referee. The bars stretch out to both the left and the right, which occasionally confuses people into thinking the left side represents negative values, but it is just a friendly side-by-side comparison. For a perfect example, take a look at Figure 4. Items A and B claim the left side while item C holds down the right, beautifully highlighting some completely unrelated data lengths for the months of June, July, and August.</p>
@@ -619,6 +890,102 @@ plot4 <- ggplot(df2, aes(x = fct_rev(Month),
 plot4
 </div>
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Subset and group items A and B together
+df1["M1"] = df1["Month"].map(month_to_num)
+df_ab = df1[df1["Item"].isin(["A", "B"])].copy()
+df_ab_summary = (
+    df_ab.groupby(["Month", "Month1", "M1"])
+    .agg({"Count": "sum", "Rank": "min"})
+    .reset_index()
+)
+df_ab_summary["Item"] = "AB"
+df_c = df1[df1["Item"] == "C"].copy()
+df2 = pd.concat([df_ab_summary, df_c], ignore_index=True)
+df2 = df2.sort_values(by=["M1", "Item"]).reset_index(drop=True)
+df2["Index"] = df2.index + 1
+custom_order = month_abbrs
+df2["Month"] = pd.Categorical(df2["Month"], categories=custom_order, ordered=True)
+
+# Restructure for the Diverging Horizontal Layout
+pivot_df = df2.pivot(index="Month", columns="Item", values="Count").reindex(
+    custom_order
+)
+reversed_months = custom_order[::-1]
+pivot_df = pivot_df.reindex(reversed_months)
+months_y = np.arange(len(reversed_months))
+counts_ab = pivot_df["AB"].values
+counts_c = pivot_df["C"].values
+
+# Build the Plot Workspace
+fig, ax = plt.subplots(figsize=(12, 8))
+ax.barh(
+    months_y,
+    -counts_ab,
+    color="#969892",
+    edgecolor="none",
+    height=0.7,
+    label="AB",
+)
+ax.barh(
+    months_y, counts_c, color="#f0f0f0", edgecolor="none", height=0.7, label="C"
+)
+x_tick_positions = list(range(-60, 31, 20))
+ax.set_xlim(-60, 30)
+ax.set_xticks(x_tick_positions)
+absolute_tick_labels = [str(int(abs(tick))) for tick in x_tick_positions]
+ax.set_xticklabels(
+    absolute_tick_labels, color="black", weight="bold", fontsize=20, ha="center"
+)
+
+# Replicate geom_label Overlay Text Boxes at the top (Jan line index = 11)
+ax.text(
+    -15,
+    11,
+    "AB",
+    color="black",
+    weight="bold",
+    fontsize=16,
+    ha="center",
+    va="center",
+    bbox=dict(facecolor="white", edgecolor="none", pad=4),
+)
+ax.text(
+    10,
+    11,
+    "C",
+    color="black",
+    weight="bold",
+    fontsize=16,
+    ha="center",
+    va="center",
+    bbox=dict(facecolor="white", edgecolor="none", pad=4),
+)
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+ax.set_yticks(months_y)
+ax.set_yticklabels(
+    reversed_months, color="black", weight="bold", fontsize=20, va="center"
+)
+ax.tick_params(axis="both", which="both", length=0, pad=10)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+ax.set_ylim(-0.6, len(reversed_months) - 0.2)
+
+plt.tight_layout()
+plt.show()
+    </div>
+
  <h2>Raincloud Plot</h2>
     <p>If you prefer to strip away the mystery and just let the raw numbers speak for themselves, the raincloud plot is your best friend. This layout simply puts the data on full display to highlight exactly how it chooses to scatter across three visual elements for each item: a smooth density cloud, a classic box-and-whisker summary, and the actual data points falling as rain directly underneath. Taking a gander at Figure 5, the math shows that item A is living its best life with a dense cloud and rain dots tightly packed around 17 (except for that lone spike up to 30), whereas the other two items are marching to their own beat with noticeably skewed distributions, stretched summary boxes, and distinct mid-year rain outliers.</p>
 
@@ -669,6 +1036,87 @@ plot5 <- ggplot(df1, aes(x = Count, y=Item)) +
 plot5
 </div> 
 
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+items_list = ["A", "B", "C"]
+num_items = len(items_list)
+gray_palette = {"A": "#A0A0A0", "B": "#A0A0A0", "C": "#A0A0A0"}
+
+# Build the Plot Canvas
+fig, ax = plt.subplots(figsize=(10, 8))
+y_positions = np.array([2.0, 1.0, 0.0])
+x_eval = np.linspace(10, 35, 1000)
+for idx, item in enumerate(items_list):
+    item_data = df1[df1["Item"] == item]["Count"].values
+    y_center = y_positions[idx]
+    color = gray_palette.get(item, "#A0A0A0")
+    kde = gaussian_kde(item_data)
+    kde.set_bandwidth(bw_method=kde.factor * 0.2) 
+    density = kde(x_eval)
+    density_scaled = (density / density.max()) * 0.32 
+    ax.fill_between(
+        x_eval, 
+        y_center + 0.06, # Slight clearance gap above boxplot
+        y_center + 0.06 + density_scaled, 
+        color=color, 
+        alpha=1.0, 
+        edgecolor="none",
+        zorder=1
+    )
+    ax.boxplot(
+        item_data,
+        positions=[y_center],
+        orientation="horizontal",
+        widths=0.08,
+        showfliers=False,
+        patch_artist=True,
+        boxprops=dict(facecolor="white", edgecolor="black", linewidth=1.5),
+        whiskerprops=dict(color="black", linewidth=1.5),
+        capprops=dict(color="black", linewidth=0), # Clears terminal whisker bars
+        medianprops=dict(color="black", linewidth=3.0),
+        zorder=3
+    )
+    unique_vals, counts = np.unique(item_data, return_counts=True)
+    dot_spacing = 0.075 # Controls the perfect uniform vertical gap between stacked dots
+    for val, count in zip(unique_vals, counts):
+        for dot_idx in range(count):
+            y_dot = y_center - 0.08 - (dot_idx * dot_spacing)
+            ax.scatter(
+                val, 
+                y_dot, 
+                color="#A0A0A0", 
+                s=160, # Large crisp dots matching reference style
+                edgecolor="none",
+                alpha=1.0,
+                zorder=2
+            )
+
+# Scale and Lock Grid Windows Boundaries
+ax.set_xlim(11, 33)
+ax.set_xticks([15, 20, 25, 30])
+ax.set_xticklabels(["15", "20", "25", "30"], color="black", weight="bold", fontsize=20)
+ax.set_yticks(y_positions)
+ax.set_yticklabels(items_list, color="black", weight="bold", fontsize=22)
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+ax.tick_params(axis="both", which="both", length=0, pad=15)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+ax.set_ylim(-0.5, 2.5)
+
+plt.tight_layout()
+plt.show()
+    </div>
+
  <h2>Ridgeline Plot</h2>
     <p>If you want your data to look less like a spreadsheet and more like a majestic mountain range, the ridgeline plot is your go-to style. This chart cleverly stacks multiple density plots or histograms right on top of each other, making it incredibly easy to compare how a numeric variable behaves across completely different categories. Looking at Figure 6, you can see this landscape in action as it perfectly highlights the heavily skewed distributions of items A and B, while letting you see exactly how they stack up against the bi-modal peaks of item A.</p>
 
@@ -713,6 +1161,76 @@ plot6 <- ggplot(df1, aes(x = Count, y = Item, fill = Item)) +
         panel.background = element_blank())
 plot6
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+items_list = ["A", "B", "C"]
+num_items = len(items_list)
+
+# Build the Plot Workspace
+fig, ax = plt.subplots(figsize=(10, 8))
+y_positions = np.array([2.0, 1.0, 0.0])
+x_eval = np.linspace(11, 34, 1000)
+
+# Compute and Plot Ridgelines with Adjusted Smoothing
+for idx, item in enumerate(items_list):
+    item_data = df1[df1["Item"] == item]["Count"].values
+    y_baseline = y_positions[idx]
+    kde = gaussian_kde(item_data)
+    kde.set_bandwidth(bw_method=kde.factor * 0.2)
+    density = kde(x_eval)
+    density_scaled = (density / density.max()) * 0.9
+    layer_z = num_items - idx 
+    ax.fill_between(
+        x_eval,
+        y_baseline,
+        y_baseline + density_scaled,
+        facecolor="#f5f5f5",
+        alpha=1.0,
+        zorder=layer_z
+    )
+    ax.plot(
+        x_eval,
+        y_baseline + density_scaled,
+        color="black",
+        linewidth=1.2,
+        zorder=layer_z + 0.1
+    )
+for y_baseline in y_positions:
+    ax.hlines(
+        y=y_baseline,
+        xmin=11,
+        xmax=34,
+        colors="black",
+        linewidth=1.0,
+        zorder=10  # High z-order ensures lines pass visibly through overlapping peaks
+    )
+
+# Aesthetic Layout Theme Configurations (panel.background = element_blank())
+ax.set_xlabel(None)
+ax.set_ylabel(None)
+ax.set_yticks(y_positions)
+ax.set_yticklabels(items_list, color="black", weight="bold", fontsize=22, va="center")
+ax.set_xlim(11, 34)
+ax.set_xticks([15, 20, 25, 30])
+ax.set_xticklabels(["15", "20", "25", "30"], color="black", weight="bold", fontsize=20, ha="center")
+ax.tick_params(axis="both", which="both", length=0, pad=15)
+ax.grid(False)
+for spine in ax.spines.values():
+    spine.set_visible(False)
+ax.set_ylim(-0.2, 3.2)
+
+plt.tight_layout()
+plt.show()
+    </div>
 
  <h2>Statistical Uncertainty</h2>
     <p>This is basically your data’s way of saying, "Give or take a little." To show this wiggle room visually, we dress up our charts with error bars, confidence intervals, fan graphs, or smooth color gradients that highlight just how much the data set likes to fluctuate. We can see a full parade of these safety nets in Figure 7, which tracks our quarterly counts. The top graph features error bars keeping item A in check, the middle graph wraps item B in a cozy confidence interval, and the bottom graph unleashes a dynamic fan graph to map out the possibilities for item C.</p>
@@ -853,6 +1371,161 @@ plot7c <- ggplot(filter(df_stat, Item == "C"), aes(x = seq, y = mean)) +
   
 grid.arrange(plot7a, plot7b, plot7c, ncol = 1)
 </div>
+
+<p></p>
+<p style="text-align: center;"><b>Python Script Execution & Plot Generation Architecture</b></p>
+<p></p>
+    
+    <div class="main-impact">
+        <p>The following Python translation directly replicates the R script's ggplot2 architecture using the plotnine API. This equivalent framework generates a clean, warning-free bar chart by explicitly mapping data point variables, standardizing linear tracking scales up to a 400-count threshold ceiling, and purging default chart grid lines to maximize executive clarity.</p>
+    </div>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+# Calculate the sequence quarter index (1 to 4)
+df1["seq"] = (df1["M1"] - 1) // 3 + 1
+qtr_labels = {1: "1st Qtr", 2: "2nd Qtr", 3: "3rd Qtr", 4: "4th Qtr"}
+df1["qtr"] = df1["seq"].map(qtr_labels)
+df_stat = (
+    df1.groupby(["Item", "qtr", "seq"])["Count"]
+    .agg(mean="mean", sd="std")
+    .reset_index()
+)
+df_stat["min"] = df_stat["mean"] - df_stat["sd"]
+df_stat["max"] = df_stat["mean"] + df_stat["sd"]
+df_stat = df_stat.sort_values(by=["Item", "seq"]).reset_index(drop=True)
+
+# Create the Main Layout Grid (3 Stacked Subplots)
+fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, ncols=1, figsize=(10, 10))
+quarters_x = np.array([1, 2, 3, 4])
+qtr_text = ["1st Qtr", "2nd Qtr", "3rd Qtr", "4th Qtr"]
+
+# ----------------------------------------------------
+# PANEL A: Error Bar / Column Chart
+# ----------------------------------------------------
+df_a = df_stat[df_stat["Item"] == "A"].sort_values("seq")
+ax1.bar(
+    quarters_x,
+    df_a["mean"],
+    color="#C0C0C0",
+    edgecolor="none",
+    width=0.7,
+    zorder=2,
+)
+ax1.errorbar(
+    quarters_x,
+    df_a["mean"],
+    yerr=df_a["sd"],
+    fmt="none",
+    color="black",
+    linewidth=1.2,
+    capsize=8,
+    zorder=3,
+)
+ax1.text(
+    2.5,
+    27,
+    "A",
+    color="black",
+    weight="bold",
+    fontsize=24,
+    ha="center",
+    va="center",
+)
+
+# ----------------------------------------------------
+# PANEL B: Confidence Interval Ribbon
+# ----------------------------------------------------
+df_b = df_stat[df_stat["Item"] == "B"].sort_values("seq")
+poly_b = np.poly1d(np.polyfit(quarters_x, df_b["mean"], 2))
+x_smooth = np.linspace(1, 4, 200)
+ax2.fill_between(
+    df_b["seq"],
+    df_b["min"],
+    df_b["max"],
+    color="black",
+    alpha=0.1,
+    edgecolor="none",
+    zorder=1,
+)
+ax2.plot(x_smooth, poly_b(x_smooth), color="black", linewidth=1.5, zorder=2)
+ax2.scatter(quarters_x, df_b["mean"], color="black", s=25, zorder=3)
+ax2.text(
+    2.5,
+    24,
+    "B",
+    color="black",
+    weight="bold",
+    fontsize=24,
+    ha="center",
+    va="center",
+)
+
+# ----------------------------------------------------
+# PANEL C: Multi-Layered Fan Chart
+# ----------------------------------------------------
+df_c = df_stat[df_stat["Item"] == "C"].sort_values("seq")
+poly_c = np.poly1d(np.polyfit(quarters_x, df_c["mean"], 2))
+ax3.fill_between(
+    df_c["seq"],
+    df_c["mean"] - 2 * df_c["sd"],
+    df_c["mean"] + 2 * df_c["sd"],
+    color="black",
+    alpha=0.1,
+    edgecolor="none",
+    zorder=1,
+)
+ax3.fill_between(
+    df_c["seq"],
+    df_c["min"],
+    df_c["max"],
+    color="black",
+    alpha=0.15,
+    edgecolor="none",
+    zorder=2,
+)
+ax3.plot(x_smooth, poly_c(x_smooth), color="black", linewidth=1.5, zorder=3)
+ax3.scatter(quarters_x, df_c["mean"], color="black", s=25, zorder=4)
+ax3.text(
+    2.5,
+    23,
+    "C",
+    color="black",
+    weight="bold",
+    fontsize=24,
+    ha="center",
+    va="center",
+    bbox=dict(facecolor="white", edgecolor="none", boxstyle="round,pad=0.2"),
+)
+
+# ----------------------------------------------------
+# 4. Standardize Layout, Axis Scaling, and Clean Styling
+# ----------------------------------------------------
+for ax in [ax1, ax2, ax3]:
+    ax.set_xlabel(None)
+    ax.set_ylabel(None)
+    ax.set_xticks(quarters_x)
+    ax.set_xticklabels(qtr_text, color="black", weight="bold", fontsize=15)
+    ax.tick_params(axis="both", which="both", length=0, pad=10)
+    ax.grid(False)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    for label in ax.get_yticklabels():
+        label.set_color("black")
+        label.set_weight("bold")
+        label.set_fontsize(12)
+ax1.set_xlim(0.35, 4.65)
+ax1.set_ylim(0, 30)
+ax2.set_xlim(0.9, 4.2)
+ax2.set_ylim(18, 31)
+ax2.set_yticks([20, 24, 28])
+ax3.set_xlim(0.9, 4.2)
+ax3.set_ylim(8, 37)
+ax3.set_yticks([10, 15, 20, 25, 30, 35])
+
+plt.subplots_adjust(hspace=0.4)
+plt.show()
+    </div>
 
 </body>
 </html>
