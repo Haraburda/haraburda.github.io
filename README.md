@@ -135,34 +135,34 @@ This section contains a deep catalog of production-grade statistical architectur
 
 * **Descriptive Analytics & Root-Cause Safety Architecture:** 
   * *Operational Impact:* Transforms plant incident reporting data into high-visibility executive dashboards. Features Pareto distribution layers, cross-unit weekday heatmaps, and conditional incident-severity pyramids to uncover root-cause manufacturing risk metrics.
-  * **🔗 View R Script:** [Safety Dashboards Analytics Script](visualization/Vis_Safety1.html)
+  * **🔗 View R and Python Scripts:** [Safety Dashboards Analytics Script](visualization/Vis_Safety1.html)
 * **Network Supply Chain Sankey Flux Visualization:** 
   * *Operational Impact:* Programmatically maps complex financial, raw material, and labor velocity flows across disconnected enterprise nodes using high-clarity weighted directional Sankey network trees.
-  * **🔗 View R Script:** [Sankey Flow Diagrams Script](visualization/Vis_Sankey1.html)
+  * **🔗 View R and Python Scripts:** [Sankey Flow Diagrams Script](visualization/Vis_Sankey1.html)
 * **Global Route Geospatial Mapping:** 
   * *Operational Impact:* Visualizes inter-theater logistics legs and distribution center connections by rendering precise orthodromic route line matrices directly on top of coordinate world map scales.
-  * **🔗 View R Script:** [Geospatial Mapping Script](visualization/Vis_GlobalMap1.html)
+  * **🔗 View R and Python Scripts:** [Geospatial Mapping Script](visualization/Vis_GlobalMap1.html)
 * **Multi-Tier Supplier Performance Comparison Optimization:** 
   * *Operational Impact:* Isolates fulfillment metrics and delivery variances across diverse vendor cohorts by executing dynamic multi-variable comparison engines like Dot Plots, Marimekko charts, and Bullet graphs.
-  * **🔗 View R Script:** [Supplier Performance Comparison Script](visualization/Vis_SupplierComp1.html)
+  * **🔗 View R and Python Scripts:** [Supplier Performance Comparison Script](visualization/Vis_SupplierComp1.html)
 * **Lead-Time Volatility & Time-Series Diagnostics:** 
   * *Operational Impact:* Traces and diagnoses systemic material delivery delays and cyclic procurement bottlenecks across volatile inventory horizons by deploying high-density Horizon graphs, Bump charts, and Sparklines.
-  * **🔗 View R Script:** [Time-Series Inventory Diagnostics Script](visualization/Vis_InventoryTime1.html)
+  * **🔗 View R and Python Scripts:** [Time-Series Inventory Diagnostics Script](visualization/Vis_InventoryTime1.html)
 * **Sub-Tier Operational Risk Distribution Diagnostics:** 
   * *Operational Impact:* Maps and isolates statistical process out-of-control signals and tail-end disruptions across tier-two component lead times using Box-and-Whisker frameworks, Ridgeline plots, and Statistical Uncertainty models.
-  * **🔗 View R Script:** [Risk Distribution Diagnostics Script](visualization/Vis_RiskDist1.html)
+  * **🔗 View R and Python Scripts:** [Risk Distribution Diagnostics Script](visualization/Vis_RiskDist1.html)
 * **Multivariate Supply Chain Network Relationship Modeling:** 
   * *Operational Impact:* Visualizes raw material capacity constraints and network flow dependencies between multiple continuous variables by running matrix Scatter plots, Chord diagrams, Parallel Coordinates, and high-order Non-Linear Regression curves.
-  * **🔗 View R Script:** [Network Relationship Modeling Script](visualization/Vis_NetworkModel1.html)
+  * **🔗 View R and Python Scripts:** [Network Relationship Modeling Script](visualization/Vis_NetworkModel1.html)
 * **Theater Logistics & Density Geospatial Analysis:** 
   * *Operational Impact:* Overlays computational throughput matrices directly onto territorial coordinate systems, utilizing proportional Cartograms, Choropleths, and point-source Density heat maps to identify lane stress profiles independent of political boundaries.
-  * **🔗 View R Script:** [Geospatial Density Mapping Script](visualization/Vis_GeospatialDensity1.html)
+  * **🔗 View R and Python Scripts:** [Geospatial Density Mapping Script](visualization/Vis_GeospatialDensity1.html)
 * **Longitudinal Market Share & Composition Variance Analysis:** 
   * *Operational Impact:* Safeguards executive decision intelligence from severe visual distortions caused by poor angular and area estimation models (such as multi-layer, 3D, or exploded pie frameworks). Deploys single-hue horizontal bar matrices and continuous time-series line vectors to isolate rapid product freefalls and shifting market-dominance signatures across multi-year procurement horizons.
-  * **🔗 View R Script:** [Composition Variance Analysis Script](visualization/Vis_CompAnalysis1.html)
+  * **🔗 View R and Python Scripts:** [Composition Variance Analysis Script](visualization/Vis_CompAnalysis1.html)
 * **Executive Data Presentation Optimization Engine:** 
   * *Operational Impact:* Maximizes executive decision velocity by applying Gestalt visual grouping mechanics and inline structural explainers to data tables while systematically clearing out cognitive barriers like moiré vibrations, cross-hatching, and literal graphic chartjunk.
-  * **🔗 View R Script:** [Presentation Optimization Engine Script](visualization/Vis_DataOptimization1.html)
+  * **🔗 View R and Python Scripts:** [Presentation Optimization Engine Script](visualization/Vis_DataOptimization1.html)
 
 ### 6. Data Engineering, Wrangling & Extraction Pipelines
 
@@ -172,6 +172,25 @@ This section contains a deep catalog of production-grade statistical architectur
 * **Data Cleansing & Vector Integrity Pipelines:** 
   * *Operational Impact:* Cleans incoming raw CSV/database outputs by isolating sparse columns, correcting corrupt categorical vector definitions, and safely translating missing values into uniform missing-data (`NA`) primitives.
   * **🔗 View R Script:** [Vector Cleaning Pipeline Script](wrangle/Wra_RemoveBlankCell.html)
+
+### 7. The Logistics Optimization Engine: 200 Master Analytic Methods
+
+To permanently dismantle fragmented silos and loose, unmonitored scripts, the framework routes all scoured, type-invariant inputs past the Production Horizon into **Phase II: The Logistics Optimization Engine**. Operating under strict Contextual Data Logic (CDL) parameters, this high-performance pipeline orchestrates its computational muscle by deploying **200 Master Analytic Methods**. Instead of slow, manual sandboxes, these algorithms are strictly organized into four specialized logistical distribution fleets engineered to convert raw numbers into pure enterprise momentum while enforcing a real-time software cage to mitigate the Velocity Hazard.
+
+#### <ins>The Core Distribution Fleets</ins>
+*   **Distribution Fleet I: Classical Statistical Inference & Linear Modeling (Methods 1–56)** 
+    *   *The Long-Haul Freight Carriers:* Built on pure clockwork, these dependable algorithms handle high-volume temporal streams, mapping cyclical patterns, tracking asset momentum across rolling windows, and executing strict syntactic ingestion gate audits with ironclad statistical predictability.
+*   **Distribution Fleet II: Decentralized Clustering, Space Optimization & Missingness Forensics (Methods 57–108)** 
+    *   *The Inventory Auditors & Cross-Docking Specialists:* Operating across decentralized cloud clusters, these methods partition massive information dumps to isolate hidden data segments and profile complex asset classes. They utilize non-Euclidean hyperbolic embedding spaces and intense missingness forensics to handle telemetry voids so no phantom inventory slips through the cracks.
+*   **Distribution Fleet III: Neural Architectures, Context Transformers & Additive Estimators (Methods 109–140)** 
+    *   *The Heavy Automated Fulfillment Centers:* Unleashed when data relations are highly non-linear, tangled, and invisible to standard math. This unit operates like multi-story robotic warehouses in twenty spatial dimensions at once, processing high-density computer vision matrices, token processing pipelines, and contextual transformer streams bound by neuro-symbolic logic invariants.
+*   **Distribution Fleet IV: Reinforcement Loops, Simulation, Physical Actuators & Edge Control (Methods 141–200)** 
+    *   *The Autonomous Dispatch Controllers:* Self-correcting, reward-driven models that actively steer the operational pipeline. This tier anchors generative policy loops directly to multi-physics engines, discrete-event simulators, and hardware-level safety limits to continuously adjust tactical behaviors based on real-time pipeline feedback.
+
+#### <ins>Ingestion Rails & Source Scripts</ins>
+Every algorithm across these fleets serves as a hyper-tuned forklift designed to move immense predictive intelligence out of your pipelines. To deploy, audit, or review the executable logic gates driving this framework:
+
+👉 **[Access the Production-Ready R and Python Scripts Here](data_analytics/methods.html)**
 
 <p></p>
 [click to view these analytics codes](https://github.com/Haraburda/tutorial_codes.git)
