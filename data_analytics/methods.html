@@ -97,8 +97,11 @@
         }
 
     .table-container {
+        width: fit-content;
         max-width: 900px;
         margin: 0 auto;
+        display: flex;
+        flex-direction: column;
     }
     .table-title {
         font-size: 1.15rem;
@@ -114,13 +117,13 @@
         text-align: left;
     }
     table {
-        width: 100%;
+        width: max-content;
         border-collapse: collapse;
         margin-bottom: 12px;
         font-size: 0.95rem;
     }
     th, td {
-        padding: 5px 8px;
+        padding: 5px 12px;
         font-weight: normal;
     }
     /* Academic top and bottom structural borders */
@@ -283,9 +286,9 @@
 
     <li><b>Ensemble Tree Learning & Boosting Architectures (Methods 83–88).</b> Deploying non-parametric tree-based models and sequential boosting arrays optimized for mapping sequential error corrections and downstream target outcomes. This line eliminates variance limitations by polling decorrelated bootstrap-aggregated decision networks, minimizing functional objective losses via second-order Taylor expansions, and executing target statistics across random permutations without introducing prediction leakages. <a href="ens_tree.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Advanced Data Missingness Forensics & Matrix Imputation (Methods 89–99).</b> Modeling, tracking, classifying, and systematically repairing telemetry voids and missing entries across incomplete data records before model ingestion. It routes data gaps natively down optimal tree branches or fills empty rows using chained systems of Gibbs-sampler regressions. It analyzes joint nullity correlation patterns to verify whether missing blocks occur synchronously across independent operational pathways. <a href="adv_missing.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Advanced Data Missingness Forensics & Matrix Imputation (Methods 89–100).</b> Modeling, tracking, classifying, and systematically repairing telemetry voids and missing entries across incomplete data records before model ingestion. It routes data gaps natively down optimal tree branches or fills empty rows using chained systems of Gibbs-sampler regressions. It analyzes joint nullity correlation patterns to verify whether missing blocks occur synchronously across independent operational pathways. <a href="adv_missing.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Structural Profiling, Collinearity, & Modality Analysis (Methods 100–105).</b> Diagnostics focused on checking inter-variable dependencies, local distribution profiles, and multi-collinearity boundaries before launching active pipelines. It computes Variance Inflation Factors to trap unstable dependencies while using joint information entropy metrics and statistical modality analytics to flag structural skewness, kurtosis, and multi-modal distribution shifts. <a href="struct_profile.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Structural Profiling, Collinearity, & Modality Analysis (Methods 101–105).</b> Diagnostics focused on checking inter-variable dependencies, local distribution profiles, and multi-collinearity boundaries before launching active pipelines. It computes Variance Inflation Factors to trap unstable dependencies while using joint information entropy metrics and statistical modality analytics to flag structural skewness, kurtosis, and multi-modal distribution shifts. <a href="struct_profile.html">Access Executable R and Python Deployment Scripts.</a></li>
 
     <li><b>Spatial Outlier & Anomaly Segmentation (Methods 106–108).</b> Density-based and isolation frameworks engineered to isolate background noise or flag extreme spatial anomalies across live streams. It isolates extreme mutations directly by measuring how few recursive tree splits are needed to trap an observation, scaling multidimensional outlier scores against your exact dataset covariance structures. <a href="outlier.html">Access Executable R and Python Deployment Scripts.</a></li>
 
@@ -307,11 +310,11 @@
 
     <li><b>Multi-Timeline, Signal, & Non-Linear Structural Forecasting (Methods 126–128).</b> Calibrating complex non-linear curves and tracing shifting temporal signals across parallel multi-variable time paths. It fits additive structural models that isolate trends, holiday parameters, and seasonal components simultaneously, utilizing dynamic time-warping matrices to align disparate chronological signals. <a href="multi_time.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Classical Neural Layers & Support Vector Baselines (Methods 129–132).</b> Executing layered, deterministic tensor mappings and maximal-margin classification boundaries for baseline asset pattern mapping. It stacks fully connected feedforward layers and discrete cross-correlation filtering arrays with non-linear activation functions, utilizing specialized kernel transformations to separate complex, hyper-dimensional target spaces. <a href="class_neural.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Classical Neural Layers & Support Vector Baselines (Methods 129–133).</b> Executing layered, deterministic tensor mappings and maximal-margin classification boundaries for baseline asset pattern mapping. It stacks fully connected feedforward layers and discrete cross-correlation filtering arrays with non-linear activation functions, utilizing specialized kernel transformations to separate complex, hyper-dimensional target spaces. <a href="class_neural.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Biological, Physical, & Constraint-Driven Deep Systems (Methods 133–136).</b> Embedding physical differential equations, biological threshold parameters, or rigid logical laws directly into deep network backbones. It defines hidden network layers as continuous differential state paths solved via numerical integrations, constraining continuous paths by forcing neural loss functions to satisfy strict symbolic first-order logic invariants. <a href="bio_physical.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Biological, Physical, & Constraint-Driven Deep Systems (Methods 134–137).</b> Embedding physical differential equations, biological threshold parameters, or rigid logical laws directly into deep network backbones. It defines hidden network layers as continuous differential state paths solved via numerical integrations, constraining continuous paths by forcing neural loss functions to satisfy strict symbolic first-order logic invariants. <a href="bio_physical.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Auditing, Alignment, & Adversarial Stress Testing (Methods 137–140).</b> Stress-testing network defense thresholds, mapping cross-modal visual-textual bridges, and enforcing strict retrieval grounding constraints. It calculates rapid, gradient-based input distortions to evaluate deep network failure tolerances while systematically scoring answer relevance, context relevance, and faithfulness across generative pipeline. <a href="audit.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Auditing, Alignment, & Adversarial Stress Testing (Methods 138–140).</b> Stress-testing network defense thresholds, mapping cross-modal visual-textual bridges, and enforcing strict retrieval grounding constraints. It calculates rapid, gradient-based input distortions to evaluate deep network failure tolerances while systematically scoring answer relevance, context relevance, and faithfulness across generative pipeline. <a href="audit.html">Access Executable R and Python Deployment Scripts.</a></li>
 
 </ul>
 
@@ -321,24 +324,328 @@
     <p>The autonomous dispatch controllers. These are self-correcting, reward-driven models that don't just predict where the supply chain is going—they actively steer the trucks, continuously adjusting tactical behaviors based on real-time pipeline feedback. This tier anchors generative policy loops directly to multi-physics engines, zero-knowledge verification frameworks, and hardware-level safety limits to ensure that hyper-velocity optimization loops remain constrained within real-world physical and operational boundaries:</p>
 
 <ul>
-    <li><b>Mathematical Optimization & Resource Allocation (Methods 141–143).</b> Minimizing operational execution costs, warehouse routing pathways, and supply chain schedules against fixed multi-variable constraint matrices. This group solves complex scheduling networks by combining continuous and discrete optimization variables over discrete coordinate grids, searching massive strategy spaces heuristically via stochastic bit-mask perturbations and physical cooling schedules. <a href="math_opt.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Mathematical Optimization & Resource Allocation (Methods 141–146).</b> Minimizing operational execution costs, warehouse routing pathways, and supply chain schedules against fixed multi-variable constraint matrices. This group solves complex scheduling networks by combining continuous and discrete optimization variables over discrete coordinate grids, searching massive strategy spaces heuristically via stochastic bit-mask perturbations and physical cooling schedules. <a href="math_opt.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Reinforcement Learning Policies & Gated Control Loops (Methods 144–159).</b> Governing autonomous routing agents and optimizing expected reward streams via value-based, policy-based, and actor-critic reinforcement architectures. It coordinates multi-agent paths using clipped policy objective functions and tabular difference parameters, decoupling target action selection from action evaluation while using entropy maximization to promote stable exploration across continuous domains. <a href="reinforce.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Reinforcement Learning Policies & Gated Control Loops (Methods 147–162).</b> Governing autonomous routing agents and optimizing expected reward streams via value-based, policy-based, and actor-critic reinforcement architectures. It coordinates multi-agent paths using clipped policy objective functions and tabular difference parameters, decoupling target action selection from action evaluation while using entropy maximization to promote stable exploration across continuous domains. <a href="reinforce.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Tree Searches & Bandit Decision Nodes (Methods 160–164).</b> Navigating massive strategic decision trees and balancing online exploration vs. exploitation across competitive or unobserved asset channels. This line navigates complex decision matrices by combining random rollouts with structured look-ahead nodes, sampling from dynamic Bayesian posterior distributions and mapping real-time environmental context vectors to reward distributions. <a href="tree_search.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Tree Searches & Bandit Decision Nodes (Methods 163–167).</b> Navigating massive strategic decision trees and balancing online exploration vs. exploitation across competitive or unobserved asset channels. This line navigates complex decision matrices by combining random rollouts with structured look-ahead nodes, sampling from dynamic Bayesian posterior distributions and mapping real-time environmental context vectors to reward distributions. <a href="tree_search.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Swarm Intelligence & Bio-Inspired Routing (Methods 165–166).</b> Using distributed, multi-entity heuristic algorithms that mimic collective natural behaviors to resolve complex spatial routing matrices. It converges on global optimization paths across hyper-dimensional networks by sharing spatial velocity and positioning vectors or applying artificial pheromone deposition trails across interconnected graph topologies. <a href="swarm_intel.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Swarm Intelligence & Bio-Inspired Routing (Methods 168–169).</b> Using distributed, multi-entity heuristic algorithms that mimic collective natural behaviors to resolve complex spatial routing matrices. It converges on global optimization paths across hyper-dimensional networks by sharing spatial velocity and positioning vectors or applying artificial pheromone deposition trails across interconnected graph topologies. <a href="swarm_intel.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Multi-Physics Simulations & Continuous Systems (Methods 167–174).</b> Numerical modeling and spatial mesh processing used to simulate continuous real-world engineering dynamics and fluid physical assets. It tracks deterministic state trajectories over continuous horizons using first-derivative vector systems and discrete grid arrays, solving global stiffness variables and cross-dimensional partial differential fluid equations across active hardware-in-the-loop environments. <a href="mulit_physics.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Multi-Physics Simulations & Continuous Systems (Methods 170–177).</b> Numerical modeling and spatial mesh processing used to simulate continuous real-world engineering dynamics and fluid physical assets. It tracks deterministic state trajectories over continuous horizons using first-derivative vector systems and discrete grid arrays, solving global stiffness variables and cross-dimensional partial differential fluid equations across active hardware-in-the-loop environments. <a href="mulit_physics.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-    <li><b>Stochastic Risk Projections & Structural Modeling (Methods 175–180).</b> Tracking macro-level failure networks, probabilistic belief updaters, and survival metrics to forecast operational lifespans and risk distributions. It models step-by-step process logistics under intense stress using chronological next-event queues, mapping continuous empirical evidence to update prior probability distributions and tracking cumulative component hazard wear-out rates. <a href="stochastic.html">Access Executable R and Python Deployment Scripts.</a></li>
+    <li><b>Stochastic Risk Projections & Structural Modeling (Methods 178–180).</b> Tracking macro-level failure networks, probabilistic belief updaters, and survival metrics to forecast operational lifespans and risk distributions. It models step-by-step process logistics under intense stress using chronological next-event queues, mapping continuous empirical evidence to update prior probability distributions and tracking cumulative component hazard wear-out rates. <a href="stochastic.html">Access Executable R and Python Deployment Scripts.</a></li>
 
     <li><b>Deep Structural Processing & Diffusion Reconstruction (Methods 181–190).</b> Processing highly tangled multi-dimensional asset layers and mapping continuous generative pathways to reconstruct missing or heavily corrupted pipeline signals. This line embeds reverse-time stochastic differential steps and multi-scale score matching parameters directly into the optimization pipeline, allowing the matrix to iteratively de-noise structural inputs and synthesize high-fidelity distribution targets without losing global manifold consistency. <a href="deep_structure.html">Access Executable R and Python Deployment Scripts.</a></li>
 
     <li><b>Hard Core Edge Limits, Invariants, & Safety Shutdowns (Methods 191–200).</b> Enforcing unyielding physical constraints, hardcoded runtime boundaries, and immediate defensive isolation routines on active, high-velocity automation rails. Operating at the absolute terminal boundary of Phase II, this unit implements non-negotiable threshold filters and zero-knowledge verification frameworks that intercept structurally flawed calculations at microsecond speeds, executing automated safety shutdowns before toxic variables can propagate down execution rails or cause physical machinery failures. <a href="hard_core.html">Access Executable R and Python Deployment Scripts.</a></li>
 
-
 </ul>
+
+<hr style="background-color:gray; height:2px;">
+
+<div class="table-container">
+    <h1 class="table-title">Consolidated Table of Methods</h1>
+    <p class="table-subtitle">Master Taxonomy Reference Index (Methods 1–200)</p>
+
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="left-align" style="width: 10%;">Number</th>
+                <th class="left-align" style="width: 90%;">Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Section 1 -->
+            <tr><td colspan="2" class="left-align font-weight-bold" style="padding-top: 10px; font-weight: bold;">String Processing & Syntactic Validation</td></tr>
+            <tr><td class="left-align">1</td><td class="left-align">Direct Pattern Mapping</td></tr>
+            <tr><td class="left-align">2</td><td class="left-align">Validation Rule Parsing</td></tr>
+            <tr><td class="left-align">3</td><td class="left-align">Tokenization Filtering</td></tr>
+            <tr><td class="left-align">4</td><td class="left-align">String Geometry Analysis</td></tr>
+            <tr><td class="left-align">5</td><td class="left-align">Primitive Type Casting</td></tr>
+            <tr><td class="left-align">6</td><td class="left-align">Schema Invariant Validation</td></tr>
+
+            <!-- Section 2 -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Classical Statistical Inference & Experimental Design</td></tr>
+            <tr><td class="left-align">7</td><td class="left-align">Hypothesis Testing (General)</td></tr>
+            <tr><td class="left-align">8</td><td class="left-align">Analysis of Variance (ANOVA) Blocks</td></tr>
+            <tr><td class="left-align">9</td><td class="left-align">Propensity Score Matching (PSM)</td></tr>
+            <tr><td class="left-align">10</td><td class="left-align">Kullback-Leibler (KL) Divergence Tracking</td></tr>
+            <tr><td class="left-align">11</td><td class="left-align">Conformal Prediction Bounds</td></tr>
+
+            <!-- Section 3 -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Classical Regression Modeling</td></tr>
+            <tr><td class="left-align">12</td><td class="left-align">Linear Regression</td></tr>
+            <tr><td class="left-align">13</td><td class="left-align">Logistic Regression</td></tr>
+            <tr><td class="left-align">14</td><td class="left-align">Ridge & Lasso Regression</td></tr>
+            <tr><td class="left-align">15</td><td class="left-align">Polynomial Regression</td></tr>
+            <tr><td class="left-align">16</td><td class="left-align">Quantile Regression</td></tr>
+            <tr><td class="left-align">17</td><td class="left-align">Stepwise Regression</td></tr>
+            <tr><td class="left-align">18</td><td class="left-align">Naive Bayes Classification</td></tr>
+
+            <!-- Section 4 -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Data Imputation & Spatial Gaps Filling</td></tr>
+            <tr><td class="left-align">19</td><td class="left-align">Listwise Deletion</td></tr>
+            <tr><td class="left-align">20</td><td class="left-align">Pairwise Deletion</td></tr>
+            <tr><td class="left-align">21</td><td class="left-align">Mean / Median / Mode Imputation</td></tr>
+            <tr><td class="left-align">22</td><td class="left-align">Constant Imputation</td></tr>
+            <tr><td class="left-align">23</td><td class="left-align">Last Observation Carried Forward</td></tr>
+            <tr><td class="left-align">24</td><td class="left-align">Next Observation Carried Backward</td></tr>
+            <tr><td class="left-align">25</td><td class="left-align">Linear Interpolation</td></tr>
+            <tr><td class="left-align">26</td><td class="left-align">Spline Interpolation</td></tr>
+
+            <!-- Section 5 -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Operational Metadata Auditing & Volumetric Profiling</td></tr>
+            <tr><td class="left-align">27</td><td class="left-align">Metadata Auditing</td></tr>
+            <tr><td class="left-align">28</td><td class="left-align">Structural Shape Profiling</td></tr>
+            <tr><td class="left-align">29</td><td class="left-align">Inflow-Outflow Profiling</td></tr>
+
+            <!-- Section 6 -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Linear & Non-Linear Time-Series Forecasting</td></tr>
+            <tr><td class="left-align">30</td><td class="left-align">Autoregressive Integrated Moving Average (ARIMA)</td></tr>
+            <tr><td class="left-align">31</td><td class="left-align">Seasonal ARIMA (SARIMA)</td></tr>
+            <tr><td class="left-align">32</td><td class="left-align">Exponential Smoothing (ETS)</td></tr>
+            <tr><td class="left-align">33</td><td class="left-align">Holt-Winters Exponential Smoothing</td></tr>
+            <tr><td class="left-align">34</td><td class="left-align">Vector Error Correction Model (VECM)</td></tr>
+            <tr><td class="left-align">35</td><td class="left-align">Generalized Autoregressive Conditional Heteroskedasticity (GARCH)</td></tr>
+            <tr><td class="left-align">36</td><td class="left-align">Exponential GARCH (EGARCH)</td></tr>
+            <tr><td class="left-align">37</td><td class="left-align">Threshold GARCH (TGARCH)</td></tr>
+            <tr><td class="left-align">38</td><td class="left-align">Dynamic Linear Models (DLM)</td></tr>
+            <tr><td class="left-align">39</td><td class="left-align">Kalman Filter State-Space Estimation</td></tr>
+            <tr><td class="left-align">40</td><td class="left-align">Extended Kalman Filtering (EKF)</td></tr>
+            <tr><td class="left-align">41</td><td class="left-align">Unscented Kalman Filtering (UKF)</td></tr>
+            <tr><td class="left-align">42</td><td class="left-align">Particle Filtering (Sequential Monte Carlo)</td></tr>
+            <tr><td class="left-align">43</td><td class="left-align">Theta Forecasting Method</td></tr>
+            <tr><td class="left-align">44</td><td class="left-align">Croston’s Method for Intermittent Demand</td></tr>
+            <tr><td class="left-align">45</td><td class="left-align">Singular Spectrum Analysis (SSA)</td></tr>
+            <tr><td class="left-align">46</td><td class="left-align">Empirical Mode Decomposition (EMD)</td></tr>
+            <tr><td class="left-align">47</td><td class="left-align">Functional Time Series Data Analysis (FTSA)</td></tr>
+            <tr><td class="left-align">48</td><td class="left-align">Wavelet-Based Multiresolution Time-Series Analysis</td></tr>
+            <tr><td class="left-align">49</td><td class="left-align">Autoregressive Fractionally Integrated Moving Average (ARFIMA)</td></tr>
+            <tr><td class="left-align">50</td><td class="left-align">Structural Time Series Models (STSM)</td></tr>
+            <tr><td class="left-align">51</td><td class="left-align">Autoregressive Conditional Duration (ACD)</td></tr>
+            <tr><td class="left-align">52</td><td class="left-align">Non-Linear Autoregressive Exogenous (NARX) Networks</td></tr>
+            <tr><td class="left-align">53</td><td class="left-align">Hidden Markov Model (HMM) Time-Series Decoupling</td></tr>
+
+            <!-- Section 7 -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Advanced Causal & Quantum Frameworks</td></tr>
+            <tr><td class="left-align">54</td><td class="left-align">Structural Causal Modeling (SCM) & Do-Calculus</td></tr>
+            <tr><td class="left-align">55</td><td class="left-align">Quantum Principal Component Analysis (qPCA)</td></tr>
+            <tr><td class="left-align">56</td><td class="left-align">Variational Quantum Linear Solvers (VQLS)</td></tr>
+
+            <!-- Section 8 -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Density-Based & Spatial Partitioning Clustering</td></tr>
+            <tr><td class="left-align">57</td><td class="left-align">K-Nearest Neighbors (KNN)</td></tr>
+            <tr><td class="left-align">58</td><td class="left-align">K-Means Clustering</td></tr>
+            <tr><td class="left-align">59</td><td class="left-align">Hierarchical Clustering</td></tr>
+            <tr><td class="left-align">60</td><td class="left-align">Density-Based Spatial Clustering of Applications with Noise (DBSCAN)</td></tr>
+            <tr><td class="left-align">61</td><td class="left-align">Gaussian Mixture Models (GMM)</td></tr>
+            <tr><td class="left-align">62</td><td class="left-align">K-Medoids (PAM) Space Partitioning</td></tr>
+            <tr><td class="left-align">63</td><td class="left-align">Divisive Analysis (DIANA) Hierarchical Clustering</td></tr>
+            <tr><td class="left-align">64</td><td class="left-align">Ordering Points To Identify the Clustering Structure (OPTICS)</td></tr>
+            <tr><td class="left-align">65</td><td class="left-align">Fuzzy C-Means Clustering</td></tr>
+            <tr><td class="left-align">66</td><td class="left-align">Mean-Shift Clustering</td></tr>
+            <tr><td class="left-align">67</td><td class="left-align">Balanced Iterative Reducing and Clustering using Hierarchies (BIRCH)</td></tr>
+            <tr><td class="left-align">68</td><td class="left-align">Affinity Propagation</td></tr>
+            <tr><td class="left-align">69</td><td class="left-align">Spectral Clustering Matrices</td></tr>
+
+<!-- Section 9: Geometric Dimensionality Reduction & Manifold Projections -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Geometric Dimensionality Reduction & Manifold Projections</td></tr>
+            <tr><td class="left-align">70</td><td class="left-align">Principal Component Analysis (PCA)</td></tr>
+            <tr><td class="left-align">71</td><td class="left-align">t-distributed Stochastic Neighbor Embedding (t-SNE)</td></tr>
+            <tr><td class="left-align">72</td><td class="left-align">Uniform Manifold Approximation (UMAP)</td></tr>
+            <tr><td class="left-align">73</td><td class="left-align">Self-Organizing Maps (SOM) Topology</td></tr>
+            <tr><td class="left-align">74</td><td class="left-align">Kernel PCA Non-Linear Space Mapping</td></tr>
+            <tr><td class="left-align">75</td><td class="left-align">Independent Component Analysis (ICA)</td></tr>
+            <tr><td class="left-align">76</td><td class="left-align">Non-Negative Matrix Factorization (NMF)</td></tr>
+            <tr><td class="left-align">77</td><td class="left-align">Linear Discriminant Analysis (LDA) Projection</td></tr>
+            <tr><td class="left-align">78</td><td class="left-align">Isomap Embedding Matrices</td></tr>
+            <tr><td class="left-align">79</td><td class="left-align">Locally Linear Embedding (LLE)</td></tr>
+            <tr><td class="left-align">80</td><td class="left-align">Multidimensional Scaling (MDS)</td></tr>
+            <tr><td class="left-align">81</td><td class="left-align">Topological Data Analysis (TDA) & Persistent Homology</td></tr>
+            <tr><td class="left-align">82</td><td class="left-align">Hyperbolic Geometry Embedding & Manifold Clustering</td></tr>
+
+            <!-- Section 10: Ensemble Tree Learning & Boosting Architectures -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Ensemble Tree Learning & Boosting Architectures</td></tr>
+            <tr><td class="left-align">83</td><td class="left-align">Decision Trees</td></tr>
+            <tr><td class="left-align">84</td><td class="left-align">Random Forests</td></tr>
+            <tr><td class="left-align">85</td><td class="left-align">Gradient Boosting Machines (GBM)</td></tr>
+            <tr><td class="left-align">86</td><td class="left-align">Extreme Gradient Boosting (XGBoost)</td></tr>
+            <tr><td class="left-align">87</td><td class="left-align">Light Gradient Boosting Machine</td></tr>
+            <tr><td class="left-align">88</td><td class="left-align">Categorical Boosting (CatBoost)</td></tr>
+
+            <!-- Section 11: Advanced Data Missingness Forensics & Matrix Imputation -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Advanced Data Missingness Forensics & Matrix Imputation</td></tr>
+            <tr><td class="left-align">89</td><td class="left-align">KNN Imputation</td></tr>
+            <tr><td class="left-align">90</td><td class="left-align">Regression Imputation</td></tr>
+            <tr><td class="left-align">91</td><td class="left-align">Stochastic Regression Imputation</td></tr>
+            <tr><td class="left-align">92</td><td class="left-align">Multiple Imputation (MICE)</td></tr>
+            <tr><td class="left-align">93</td><td class="left-align">Missing Data Random Forest</td></tr>
+            <tr><td class="left-align">94</td><td class="left-align">Sparsity-Aware Split Handling</td></tr>
+            <tr><td class="left-align">95</td><td class="left-align">Native Split Handling</td></tr>
+            <tr><td class="left-align">96</td><td class="left-align">Null Matrix Mapping</td></tr>
+            <tr><td class="left-align">97</td><td class="left-align">Visual Pattern Clustering</td></tr>
+            <tr><td class="left-align">98</td><td class="left-align">Nullity Correlation Matrix Analysis</td></tr>
+            <tr><td class="left-align">99</td><td class="left-align">Missingness Mechanism Classification</td></tr>
+            <tr><td class="left-align">100</td><td class="left-align">Hot-Deck Imputation Engine</td></tr>
+
+            <!-- Section 12: Structural Profiling, Collinearity, & Modality Analysis -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Structural Profiling, Collinearity, & Modality Analysis</td></tr>
+            <tr><td class="left-align">101</td><td class="left-align">Exploratory Profiling</td></tr>
+            <tr><td class="left-align">102</td><td class="left-align">Spatial Density Matrix Analysis</td></tr>
+            <tr><td class="left-align">103</td><td class="left-align">Linear Dependency Profiling</td></tr>
+            <tr><td class="left-align">104</td><td class="left-align">Matrix Association Testing</td></tr>
+            <tr><td class="left-align">105</td><td class="left-align">Statistical Modality Analysis</td></tr>
+
+            <!-- Section 13: Spatial Outlier & Anomaly Segmentation -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Spatial Outlier & Anomaly Segmentation</td></tr>
+            <tr><td class="left-align">106</td><td class="left-align">Isolation Forests Anomaly Segmentation</td></tr>
+            <tr><td class="left-align">107</td><td class="left-align">Local Outlier Factor (LOF) Spatial Density Matrix</td></tr>
+            <tr><td class="left-align">108</td><td class="left-align">Mahalanobis Distance Outlier Scoring</td></tr>
+
+            <!-- Section 14: Recurrent Sequences & Gated Temporal Networks -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Recurrent Sequences & Gated Temporal Networks</td></tr>
+            <tr><td class="left-align">109</td><td class="left-align">Recurrent Neural Networks (RNN)</td></tr>
+            <tr><td class="left-align">110</td><td class="left-align">Long Short-Term Memory (LSTM)</td></tr>
+            <tr><td class="left-align">111</td><td class="left-align">Gated Recurrent Units (GRU)</td></tr>
+            <tr><td class="left-align">112</td><td class="left-align">Bidirectional LSTM (BiLSTM)</td></tr>
+            <tr><td class="left-align">113</td><td class="left-align">Liquid Time-Constant (LTC) Networks</td></tr>
+
+            <!-- Section 15: Generative Modeling & Latent Space Reconstruction -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Generative Modeling & Latent Space Reconstruction</td></tr>
+            <tr><td class="left-align">114</td><td class="left-align">Autoencoders</td></tr>
+            <tr><td class="left-align">115</td><td class="left-align">Variational Autoencoders (VAE)</td></tr>
+            <tr><td class="left-align">116</td><td class="left-align">Generative Adversarial Networks (GAN)</td></tr>
+            <tr><td class="left-align">117</td><td class="left-align">Deep Belief Networks (DBN)</td></tr>
+            <tr><td class="left-align">118</td><td class="left-align">Restricted Boltzmann Machines (RBM)</td></tr>
+
+            <!-- Section 16: Attention Mechanisms & Transformer Core Arrays -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Attention Mechanisms & Transformer Core Arrays</td></tr>
+            <tr><td class="left-align">119</td><td class="left-align">Transformers</td></tr>
+            <tr><td class="left-align">120</td><td class="left-align">Transformer Encoder-Decoder Systems</td></tr>
+            <tr><td class="left-align">121</td><td class="left-align">Bidirectional Encoder Representations from Transformers (BERT) Layering</td></tr>
+            <tr><td class="left-align">122</td><td class="left-align">Generative Pre-trained Transformer (GPT) Token Core</td></tr>
+            <tr><td class="left-align">123</td><td class="left-align">Vision Transformers (ViT)</td></tr>
+
+            <!-- Section 17: Graph-Structured & Relational Processing Networks -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Graph-Structured & Relational Processing Networks</td></tr>
+            <tr><td class="left-align">124</td><td class="left-align">Graph Convolutional Networks (GCN)</td></tr>
+            <tr><td class="left-align">125</td><td class="left-align">Graph Attention Networks (GAT)</td></tr>
+
+            <!-- Section 18: Multi-Timeline, Signal, & Non-Linear Structural Forecasting -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Multi-Timeline, Signal, & Non-Linear Structural Forecasting</td></tr>
+            <tr><td class="left-align">126</td><td class="left-align">Prophet</td></tr>
+            <tr><td class="left-align">127</td><td class="left-align">Vector Autoregressions (VAR)</td></tr>
+            <tr><td class="left-align">128</td><td class="left-align">Dynamic Time Warping (DTW)</td></tr>
+
+            <!-- Section 19: Classical Neural Layers & Support Vector Baselines -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Classical Neural Layers & Support Vector Baselines</td></tr>
+            <tr><td class="left-align">129</td><td class="left-align">Non-Linear Regression</td></tr>
+            <tr><td class="left-align">130</td><td class="left-align">Feedforward Neural Networks</td></tr>
+            <tr><td class="left-align">131</td><td class="left-align">Convolutional Neural Networks (CNN)</td></tr>
+            <tr><td class="left-align">132</td><td class="left-align">Support Vector Machines (SVM)</td></tr>
+            <tr><td class="left-align">133</td><td class="left-align">Multilayer Perceptron (MLP) Feedforward Network</td></tr>
+
+            <!-- Section 20: Biological, Physical, & Constraint-Driven Deep Systems -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Biological, Physical, & Constraint-Driven Deep Systems</td></tr>
+            <tr><td class="left-align">134</td><td class="left-align">Neural Ordinary Differential Equations (Neural ODEs)</td></tr>
+            <tr><td class="left-align">135</td><td class="left-align">Spiking Neural Networks (SNN)</td></tr>
+            <tr><td class="left-align">136</td><td class="left-align">Physics-Informed Neural Networks (PINN)</td></tr>
+            <tr><td class="left-align">137</td><td class="left-align">Neuro-Symbolic Logic Invariant Injection</td></tr>
+
+            <!-- Section 21: Auditing, Alignment, & Adversarial Stress Testing -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Auditing, Alignment, & Adversarial Stress Testing</td></tr>
+            <tr><td class="left-align">138</td><td class="left-align">Adversarial Perturbation Fuzzing (FGSM)</td></tr>
+            <tr><td class="left-align">139</td><td class="left-align">Retrieval-Augmented Grounding (RAG) Triad Auditing</td></tr>
+            <tr><td class="left-align">140</td><td class="left-align">Contrastive Language-Image Pre-training (CLIP) Alignment Metrics</td></tr>
+
+            <!-- Section 22: Mathematical Optimization & Resource Allocation -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Mathematical Optimization & Resource Allocation</td></tr>
+            <tr><td class="left-align">141</td><td class="left-align">Linear Programming (LP)</td></tr>
+            <tr><td class="left-align">142</td><td class="left-align">Integer Programming (IP)</td></tr>
+            <tr><td class="left-align">143</td><td class="left-align">Mixed-Integer Programming (MIP)</td></tr>
+            <tr><td class="left-align">144</td><td class="left-align">Genetic Algorithms</td></tr>
+            <tr><td class="left-align">145</td><td class="left-align">Simulated Annealing Global Optimization</td></tr>
+            <tr><td class="left-align">146</td><td class="left-align">Formal Contract Invariant Verification</td></tr>
+
+            <!-- Section 23: Reinforcement Learning Policies & Gated Control Loops -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Reinforcement Learning Policies & Gated Control Loops</td></tr>
+            <tr><td class="left-align">147</td><td class="left-align">Markov Decision Processes (MDP)</td></tr>
+            <tr><td class="left-align">148</td><td class="left-align">Tabular Q-Learning Matrices</td></tr>
+            <tr><td class="left-align">149</td><td class="left-align">State-Action-Reward-State-Action (SARSA) Convergence Loops</td></tr>
+            <tr><td class="left-align">150</td><td class="left-align">Double Deep Q-Networks (DDQN)</td></tr>
+            <tr><td class="left-align">151</td><td class="left-align">Dueling Deep Q-Networks</td></tr>
+            <tr><td class="left-align">152</td><td class="left-align">Deep Deterministic Policy Gradient (DDPG)</td></tr>
+            <tr><td class="left-align">153</td><td class="left-align">Twin Delayed DDPG (TD3)</td></tr>
+            <tr><td class="left-align">154</td><td class="left-align">Asynchronous Advantage Actor-Critic (A3C)</td></tr>
+            <tr><td class="left-align">155</td><td class="left-align">Advantage Actor-Critic (A2C)</td></tr>
+            <tr><td class="left-align">156</td><td class="left-align">Proximal Policy Optimization (PPO)</td></tr>
+            <tr><td class="left-align">157</td><td class="left-align">Trust Region Policy Optimization (TRPO)</td></tr>
+            <tr><td class="left-align">158</td><td class="left-align">Soft Actor-Critic (SAC)</td></tr>
+            <tr><td class="left-align">159</td><td class="left-align">DDPG with Hindsight Experience Replay (HER)</td></tr>
+            <tr><td class="left-align">160</td><td class="left-align">Evolutionary Strategies for Policy Search</td></tr>
+            <tr><td class="left-align">161</td><td class="left-align">Multi-Agent Deep Deterministic Policy Gradient (MADDPG)</td></tr>
+            <tr><td class="left-align">162</td><td class="left-align">Generative Adversarial Diffusion RL (GAD-RL)</td></tr>
+
+            <!-- Section 24: Tree Searches & Bandit Decision Nodes -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Tree Searches & Bandit Decision Nodes</td></tr>
+            <tr><td class="left-align">163</td><td class="left-align">Monte Carlo Tree Search (MCTS) Strategy Nodes</td></tr>
+            <tr><td class="left-align">164</td><td class="left-align">Upper Confidence Bound Applied to Trees (UCT)</td></tr>
+            <tr><td class="left-align">165</td><td class="left-align">Multi-Armed Bandit Thompson Sampling</td></tr>
+            <tr><td class="left-align">166</td><td class="left-align">Multi-Armed Bandit Upper Confidence Bound (UCB1)</td></tr>
+            <tr><td class="left-align">167</td><td class="left-align">Contextual Bandit Execution Nodes</td></tr>
+
+            <!-- Section 25: Swarm Intelligence & Bio-Inspired Routing -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Swarm Intelligence & Bio-Inspired Routing</td></tr>
+            <tr><td class="left-align">168</td><td class="left-align">Particle Swarm Optimization (PSO) Tactical Vectors</td></tr>
+            <tr><td class="left-align">169</td><td class="left-align">Ant Colony Optimization (ACO) Distributed Routing</td></tr>
+
+            <!-- Section 26: Multi-Physics Simulations & Continuous Systems -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Multi-Physics Simulations & Continuous Systems</td></tr>
+            <tr><td class="left-align">170</td><td class="left-align">Ordinary Differential Equations (ODE)</td></tr>
+            <tr><td class="left-align">171</td><td class="left-align">Partial Differential Equations (PDE)</td></tr>
+            <tr><td class="left-align">172</td><td class="left-align">Finite Difference Method (FDM)</td></tr>
+            <tr><td class="left-align">173</td><td class="left-align">Finite Element Analysis (FEA)</td></tr>
+            <tr><td class="left-align">174</td><td class="left-align">Computational Fluid Dynamics (CFD)</td></tr>
+            <tr><td class="left-align">175</td><td class="left-align">Hardware-in-the-Loop (HIL)</td></tr>
+            <tr><td class="left-align">176</td><td class="left-align">Molecular Dynamics (MD)</td></tr>
+            <tr><td class="left-align">177</td><td class="left-align">Mechanical Network Rail Actuation</td></tr>
+
+            <!-- Section 27: Stochastic Risk Projections & Structural Modeling -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Stochastic Risk Projections & Structural Modeling</td></tr>
+            <tr><td class="left-align">178</td><td class="left-align">Spatial Autoregressive Models (SAR)</td></tr>
+            <tr><td class="left-align">179</td><td class="left-align">Discrete Event Simulation (DES)</td></tr>
+            <tr><td class="left-align">180</td><td class="left-align">Bayesian Inference</td></tr>
+
+            <!-- Section 28: Deep Structural Processing & Diffusion Reconstruction -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Deep Structural Processing & Diffusion Reconstruction</td></tr>
+            <tr><td class="left-align">181</td><td class="left-align">Generative Adversarial Imputation Networks (GAIN)</td></tr>
+            <tr><td class="left-align">182</td><td class="left-align">Denoising Diffusion Probabilistic Models (DDPM)</td></tr>
+            <tr><td class="left-align">183</td><td class="left-align">Capsule Networks (CapsNet)</td></tr>
+            <tr><td class="left-align">184</td><td class="left-align">Deep Residual Networks (ResNet)</td></tr>
+            <tr><td class="left-align">185</td><td class="left-align">Siamese Neural Network Verification Matrices</td></tr>
+            <tr><td class="left-align">186</td><td class="left-align">Survival Analysis</td></tr>
+            <tr><td class="left-align">187</td><td class="left-align">System Dynamics (SD)</td></tr>
+            <tr><td class="left-align">188</td><td class="left-align">Agent-Based Modeling (ABM)</td></tr>
+            <tr><td class="left-align">189</td><td class="left-align">Monte Carlo Simulation</td></tr>
+            <tr><td class="left-align">190</td><td class="left-align">Deep Multi-Agent Reinforcement Learning (DQN/PPO)</td></tr>
+
+            <!-- Section 29: Hard Core Edge Limits, Invariants, & Safety Shutdowns -->
+            <tr><td colspan="2" class="left-align" style="padding-top: 10px; border-top: 1px solid #000; font-weight: bold;">Hard Core Edge Limits, Invariants, & Safety Shutdowns</td></tr>
+            <tr><td class="left-align">191</td><td class="left-align">Boundary Constraint Mapping</td></tr>
+            <tr><td class="left-align">192</td><td class="left-align">Static Limit Invariant Auditing</td></tr>
+            <tr><td class="left-align">193</td><td class="left-align">Absolute Range Profiling</td></tr>
+            <tr><td class="left-align">194</td><td class="left-align">Proposed Change Boundary Tracking</td></tr>
+            <tr><td class="left-align">195</td><td class="left-align">Rolling Window Variance Auditing</td></tr>
+            <tr><td class="left-align">196</td><td class="left-align">Deterministic Golden State Rollbacks</td></tr>
+            <tr><td class="left-align">197</td><td class="left-align">Root-Level Firmware Invariant Proving</td></tr>
+            <tr><td class="left-align">198</td><td class="left-align">Independent Database Write Lockouts</td></tr>
+            <tr><td class="left-align">199</td><td class="left-align">Chaos Engineering Payload Injection (Data Chaos)</td></tr>
+            <tr><td class="left-align">200</td><td class="left-align">Zero-Knowledge Machine Learning Verification (zkML)</td></tr>
+        </tbody>
+    </table>
+
+
     </div>
 
 </body>
