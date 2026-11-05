@@ -1,0 +1,2654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Scott Haraburda">
+    <title>Data Imputation & Spatial Gaps Filling</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color, #2d3748);
+            background-color: var(--bg-color, #ffffff);
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: var(--container-bg, #ffffff);
+            box-shadow: none;
+            border-radius: 8px;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color, #3182ce);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-color, #3182ce);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        h2 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e2e8f0);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            word-break: break-word;
+        }
+
+        /* Linked Section Header Class Explicitly to CSS */
+        .section-header, h3 {
+            color: var(--secondary-color, #2c5282);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        /* Linked Main Impact Box Explicitly to CSS to Enforce Containment */
+        .main-impact {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        ul {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .keywords {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+    .hat-wrapper {
+      position: relative;
+      display: inline-block;
+      font-family: "Times New Roman", serif;
+      font-style: italic;
+      font-size: 1.15rem;
+    }
+    .hat {
+      position: absolute;
+      left: 50%;
+      top: -0.25em; /* Pulls the hat up over the mu character */
+      transform: translateX(-50%); /* Keeps it perfectly centered */
+      font-style: normal;
+      font-size: 0.9em;
+    }
+    .table-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .table-title {
+        font-size: 1.15rem;
+        font-weight: normal;
+        margin-bottom: 2px;
+        text-align: left;
+    }
+    .table-subtitle {
+        font-size: 1rem;
+        font-style: italic;
+        margin-top: 0;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    table {
+        width: max-content;
+        margin: 0 auto 12px auto; 
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 10pt; 
+    }
+    th, td {
+        padding: 5px 8px;
+        font-weight: normal;
+        font-size: 10pt; 
+    }
+    thead tr.top-border th {
+        border-top: 2px solid #000;
+    }
+    thead tr.bottom-border th {
+        border-bottom: 1px solid #000;
+    }
+    tbody tr.summary-start td {
+        border-top: 1px solid #000;
+    }
+    tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+    }
+    /* Text layout alignments */
+    .left-align { text-align: left; }
+    .center-align { text-align: center; }
+    .right-align { text-align: right; }
+    
+    /* Footer formatting for Notes and Sources */
+    .table-footer {
+        font-size: 0.85rem;
+        text-align: left;
+        line-height: 1.4;
+    }
+    .table-footer p {
+        margin: 6px 0 0 0;
+    }
+    .r-script-section {
+        background-color: #000000;  /* Pure black background */
+        color: #00FF00;             /* Matrix-style neon green text */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.95rem;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 4px;
+        overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+        white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+        border: 1px solid #333;
+    }
+    .python-script-section {
+    	background-color: #1E293B;  /* Deep slate blue/gray background */
+    	color: #F8FAFC;             /* Crisp, off-white text for high contrast */
+    	font-family: 'Fira Code', 'Consolas', monospace;
+    	font-size: 0.95rem;
+    	padding: 15px;
+    	margin: 20px 0;
+    	border-radius: 6px;         /* Slightly softer, modern corners */
+    	overflow-x: auto;           /* Adds a horizontal scrollbar if script line is too long */
+    	white-space: pre;           /* Preserves spaces and tabs exactly as typed */
+    	border-left: 5px solid #38BDF8; /* Vibrant Python-blue accent bar on the left */
+    	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); /* Subtle shadow for a modern look */
+    }
+    .terminal-output {
+      margin-left: 40px;                       /* Indents the entire block */
+      font-family: 'Courier New', Courier, monospace; /* Ensures the font is Courier */
+      font-size: 10pt;                         /* Sets font size (use 10px if you prefer pixel absolute) */
+      white-space: pre-wrap;                   /* Optional: forces long lines to wrap instead of clipping */
+    }
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container"> 
+    <header>
+        <h1>Data Imputation & Spatial Gaps Filling</h1>
+        <h4 class="author">Scott S. Haraburda</h4>
+        <h4 class="date">1 November 2026</h4>
+    </header>
+
+    <div class="main-impact">
+        <!-- FIXED: Added closing </span> tag below to prevent global browser text stream blowout -->
+        <p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">Before your computational convoy could advance, it had to navigate the strict logistics yards of Classical Regression Modeling. That previous sector operated like an old-school railway dispatcher, trying to draw straight, unyielding transit lines through high-volume data freight. It hummed with the steady vibrations of ordinary least squares, fiercely charting resource trajectories and predicting fuel consumptions by anchoring dependent vectors to static independent routes. While its predictive lanes were brilliantly lean and ran on clockwork predictability, its rigid iron rails had a fatal flaw: they completely derailed the second they hit an unmapped sinkhole or a sudden telemetry void in the incoming supply lines. It could map the terrain beautifully, but it possessed absolute intolerance for broken bridges or empty containers.</p>
+<p></p>
+<p style="margin: 0;"><span style="font-weight: bold; font-style: italic;">Now, your data cargo rolls across the perimeter into the specialized cross-docking terminal of Data Imputation & Spatial Gaps Filling. If the regression modeling yard was a fleet of long-haul freight carriers, think of this group as your forensic inventory auditors and supply chain rescue teams. In the live enterprise ecosystem, shipments rarely arrive perfectly packed; real-world data pipelines are messy, volatile, and plagued by missing manifests, silent sensor drops, and sudden telemetry voids. Leaving these structural cavities empty paralyzes downstream optimization matrices, while guessing blindly risks ordering enough phantom safety stock to sink an entire distribution network. This group deploys a brutal forensic matrix to handle the black holes in your streaming queues, either aggressively patching the spatial gaps with calculated proxies or ruthlessly purging compromised cargo before it jams up the fulfillment lines.</span></p>
+    </div>
+
+<h2 id="TOC", style="text-align: center;">List of Methods</h2>
+
+<ul style="padding-left: 200px;">
+    <li><a href="#Method-19">Method 19: Listwise Deletion</a></li>
+    <li><a href="#Method-20">Method 20: Pairwise Deletion</a></li>
+    <li><a href="#Method-21">Method 21: Mean / Median / Mode Imputation</a></li>
+    <li><a href="#Method-22">Method 22: Constant Imputation</a></li>
+    <li><a href="#Method-23">Method 23: Last Observation Carried Forward</a></li>
+    <li><a href="#Method-24">Method 24: Next Observation Carried Backward</a></li>
+    <li><a href="#Method-25">Method 25: Linear Interpolation</a></li>
+    <li><a href="#Method-26">Method 26: Spline Interpolation</a></li>
+</ul>
+
+<ul style="padding-left: 200px;">
+    <li><a href="https://haraburda.github.io/data_analytics/methods.html">Return to Logistics Optimization Engine</a></li>
+</ul>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-19">Method 19: Listwise Deletion</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">Welcome to the frontline triage gate of your data validation yard. Before an incomplete cargo manifest can slip downstream and corrupt your automated cloud network, it encounters Listwise Deletion. Think of this method as an unyielding, zero-tolerance customs inspector standing at the intake conveyor belt. It doesn't possess the patience to reconstruct damaged packages, nor will it waste computational clock cycles trying to guess what a supplier forgot to write on a shipping log. If a single critical data field—be it a quantity, a tracking timestamp, or a warehouse identifier—is missing or blank, this method cold-bloodedly drops the entire row into the incinerator. It treats incomplete data not as a puzzle to solve, but as toxic material requiring immediate quarantine.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">Listwise Deletion is deployed at the absolute perimeter of data ingestion pipelines, acting as a cheap preprocessing shield immediately following initial schema validation. It is standard engineering practice when clean statistical baselines are required and the volume of missing fields is small enough that purging records won't starve downstream algorithms. It is heavily used in high-velocity transaction auditing, strict regulatory compliance tracking, and automated fulfillment workflows where acting on incomplete variables could cause expensive, catastrophic runtime exceptions.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method offers a highly efficient, machine-velocity filter that incurs virtually zero computational overhead, protecting your cloud compute budgets from expensive mathematical iterations. By completely scrubbing away rows with empty dimensions, it provides an ironclad guarantee that downstream statistical models and linear programming engines receive 100% complete, fully populated arrays. It completely eliminates the risk of "hallucinated data bias" because it never manufactures synthetic values out of thin air, ensuring that your operational metrics remain perfectly grounded in pure, unadulterated reality.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, this blunt-force purge can easily trigger a catastrophic reduction in your analytical sample size if missingness is peppered across multiple variables. If a supplier’s telemetry drops out completely at random, applying this method will cause you to blindly throw away massive amounts of otherwise pristine, high-value data cargo, stranding valid shipments at the gate. Furthermore, if the root cause of the missing data is systematic—such as an older scanning device at Dock B failing to register heavy containers—Listwise Deletion will systematically delete your heavy freight records entirely, injecting severe selection bias into your reporting and leaving management completely blind to underlying infrastructure failures.</p>
+
+<p><u>Formula</u></p>
+<p style="margin-left: 40px;">The method maps a raw incoming data matrix into a fully complete operational subset by evaluating an indicator function driven by a row-wise logical conjunction:</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <mi>f</mi>
+            <mo>(</mo>
+            <msub>
+                <mi>x</mi>
+                <mi>i</mi>
+            </msub>
+            <mo>)</mo>
+            <mo>=</mo>
+            <msub>
+                <mi>x</mi>
+                <mi>i</mi>
+            </msub>
+            <mo>·</mo>
+            <munderover>
+                <mo>∏</mo>
+                <mrow>
+                    <mi>j</mi>
+                    <mo>=</mo>
+                    <mn>1</mn>
+                </mrow>
+                <mi>m</mi>
+            </munderover>
+            <mi>&#x1D540;</mi>
+            <mo>(</mo>
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>≠</mo>
+            <mi>N</mi>
+            <mi>A</mi>
+            <mo>)</mo>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>x<sub>i</sub></i></b> is the i-th row vector within the ingested data payload manifest.</li>
+    <li><b><i>x<sub>ij</sub></i></b> represents an individual variable cell within that row across m total columns.</li>
+    <li><b>&#x1D540;</b> is the indicator function returning 1 if the cell contains a valid, type-invariant value, or 0 if it is missing (NA / null).</li>
+    <li>The product function acts as an uncompromising logical AND gate; if even a single cell in the row is missing, the product drops to 0, completely erasing the row from the cleared output stream.</li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Missing Completely at Random (MCAR): The probability that a data field is missing is entirely unrelated to its own value or any other observed operational parameters in the dataset.</li>
+    <li>Sufficient Inflow Volume: The baseline data stream possesses enough volume that the systemic destruction of incomplete records will not cause a lack of support downstream.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(utils)
+setwd("~/Publication/Data_Analytics/Analytical_Methods")
+rm(list = ls())  # Clear all variables from system
+
+# Listwise Deletion Forensic Engine
+# Purpose: Purge incomplete data freight to secure a 100% complete evaluation matrix
+
+clean_missing_gaps <- function(relative_path) {
+  
+  # Construct complete cross-platform path to the ingestion yard
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  
+  # Verify manifest existence before firing up the intake gates
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target manifest file not found at locator:", full_data_path))
+  }
+  
+  # Ingest raw cargo logs, preserving empty spaces as NA strings
+  raw_cargo <- read.csv(full_data_path, header = TRUE, na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  # Verify schema mapping integrity
+  required_fields <- c("ID", "Carrier", "Time", "Weight")
+  if (!all(required_fields %in% colnames(raw_cargo))) {
+    stop("Schema Mapping Error: Core structural tracking columns missing from incoming manifest.")
+  }
+  
+  # Calculate baseline dimensions before the purge
+  total_inflow_rows <- nrow(raw_cargo)
+  
+  # Execute Listwise Deletion using base R complete.cases logic
+  # complete.cases returns a logical vector evaluating to TRUE only if all cells are fully populated
+  complete_row_indicators <- complete.cases(raw_cargo[, required_fields])
+  
+  # Filter the data frame to isolate pristine data cargo
+  pristine_cargo <- raw_cargo[complete_row_indicators, ]
+  purged_rows <- total_inflow_rows - nrow(pristine_cargo)
+  
+  # Generate automated customs manifest report
+  cat("\n--- Logistical Missingness Forensic Audit Complete ---\n")
+  cat(paste("Total Inflow Manifests Processed : ", total_inflow_rows, "\n"))
+  cat(paste("Cargo Rows Successfully Cleared  : ", nrow(pristine_cargo), "\n"))
+  cat(paste("Compromised Records Vaporized    : ", purged_rows, "\n\n"))
+  
+  print(pristine_cargo[, required_fields])
+  cat("\n")
+  
+  return(pristine_cargo)
+}
+
+# Execute the forensic engine pointing directly to your file inside the 'data' folder
+audit_results <- clean_missing_gaps("data_imp1.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+import os
+import pandas as pd
+import numpy as np
+from pathlib import Path
+
+def clean_missing_gaps(relative_path: str) -> pd.DataFrame:
+    """Ingests unstable data manifests, executes listwise deletion to purge rows 
+    containing missing values, and routes pristine payloads downstream.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    # Structural schema validation using shortened headers
+    required_fields = ["ID", "Carrier", "Time", "Weight"]
+    if not set(required_fields).issubset(raw_cargo.columns):
+        raise KeyError(f"Schema Mapping Error: Missing required structural tracking fields.")
+        
+    total_inflow_rows = len(raw_cargo)
+    pristine_cargo = raw_cargo.dropna(subset=required_fields).copy()
+    purged_rows = total_inflow_rows - len(pristine_cargo)
+    
+    pristine_cargo["Time"] = pd.to_numeric(pristine_cargo["Time"])
+    pristine_cargo["Weight"] = pd.to_numeric(pristine_cargo["Weight"])
+    
+    print("\n--- Logistical Missingness Forensic Audit Complete ---")
+    print(f"Total Inflow Processed : {total_inflow_rows}")
+    print(f"Rows Cleared           : {len(pristine_cargo)}")
+    print(f"Records Vaporized      : {purged_rows}\n")
+    print(pristine_cargo[required_fields].to_string(index=False))
+    print("")
+    
+    return pristine_cargo
+
+audit_results = clean_missing_gaps("data_imp1.csv")
+    </div>
+
+<p><u>Dataset (data_imp1.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-202</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col"></td>
+                <td class="num-col">4800</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-203</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">13.9</td>
+                <td class="num-col">6100</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-204</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">19.4</td>
+                <td class="num-col">null</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-205</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col">18.8</td>
+                <td class="num-col">3900</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col"></td>
+                <td class="num-col"></td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5500</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u></p>
+
+<pre class="terminal-output">
+--- Logistical Missingness Forensic Audit Complete ---
+Total Inflow Manifests Processed :  7 
+Cargo Rows Successfully Cleared  :  4 
+Compromised Records Vaporized    :  3 
+
+       ID Carrier Time Weight
+1 MNF-201 Fleet_A 14.2   5200
+3 MNF-203 Fleet_A 13.9   6100
+5 MNF-205 Fleet_B 18.8   3900
+7 MNF-207 Fleet_A 15.1   5500
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-20">Method 20: Pairwise Deletion</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">When the strict filtering of Listwise Deletion shrinks your operational dataset below sustainable safety levels, the pipeline switches to Pairwise Deletion (also known as Available Case Analysis). Think of this method as an adaptive cross-docking supervisor who refuses to scrap an entire container just because one tracking tag is missing. Instead of incinerating a whole record due to a single missing cell, Pairwise Deletion dynamically salvages all populated data fields on an operation-by-operation basis. If an analytical calculation requires only cargo weight and carrier routing, it evaluates every manifest that contains those two fields, completely ignoring whether those same records are missing information downstream.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">Pairwise Deletion is standard practice inside retrospective procurement audits, covariance structure tracking, and correlation matrix compilation within the Classical Statistical Inference terminal. It is deployed when preserving data volume is a higher priority than structural row symmetry, particularly when missingness is scattered across separate parameters. It is heavily utilized when calculating grand averages, variable variances, or multi-lane correlation matrices from sparse supplier telemetry pipelines without shrinking the effective sample size to zero.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method provides maximum data preservation, ensuring that your compute fleets utilize every scrap of valid information arriving at the terminal. By isolating missingness to individual variable combinations, it protects your sample size from collapsing, which maintains high statistical power for downstream significance testing. Furthermore, it avoids the artificial distortions introduced by manufacturing synthetic values, ensuring that every calculated correlation coefficient or variance metric is derived strictly from real, unmanipulated operational variables.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, this flexible approach introduces a serious mathematical hazard: an unstable baseline terrain. Because different calculations within the same analysis pull from different subsets of records, your covariance matrices can become structurally inconsistent or non-positive definite, causing advanced modeling algorithms downstream to completely crash. This variance instability makes it difficult to compute uniform standard errors. Furthermore, if the missing data contains underlying patterns, this method will seamlessly propagate selection bias throughout your metrics without throwing a single clear compilation error flag to alert your engineering team.</p>
+
+<p><u>Formula</u></p>
+<p style="margin-left: 40px;">The method computes summary statistics (such as covariance) between any two variables X<sub>j</sub> and X<sub>k</sub> by dynamically restricting the sample space to the available case intersection:</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <msub>
+                <mi>&#x3C3;</mi>
+                <mrow>
+                    <mi>j</mi>
+                    <mi>k</mi>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mfrac>
+                <mn>1</mn>
+                <mrow>
+                    <msub>
+                        <mi>N</mi>
+                        <mrow>
+                            <mi>j</mi>
+                            <mi>k</mi>
+                        </mrow>
+                    </msub>
+                    <mo>&#x2212;</mo>
+                    <mn>1</mn>
+                </mrow>
+            </mfrac>
+            <munder>
+                <mo>&#x2211;</mo>
+                <mrow>
+                    <mi>i</mi>
+                    <mo>&#x2208;</mo>
+                    <msub>
+                        <mi>&#x1D49C;</mi>
+                        <mrow>
+                            <mi>j</mi>
+                            <mi>k</mi>
+                        </mrow>
+                    </msub>
+                </mrow>
+            </munder>
+            <mo>(</mo>
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>&#x2212;</mo>
+            <msub>
+                <mover>
+                    <mi>x</mi>
+                    <mo>&#xAF;</mo>
+                </mover>
+                <mrow>
+                    <mi>j</mi>
+                    <mo>(</mo>
+                    <mi>k</mi>
+                    <mo>)</mo>
+                </mrow>
+            </msub>
+            <mo>)</mo>
+            <mo>(</mo>
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mi>k</mi>
+                </mrow>
+            </msub>
+            <mo>&#x2212;</mo>
+            <msub>
+                <mover>
+                    <mi>x</mi>
+                    <mo>&#xAF;</mo>
+                </mover>
+                <mrow>
+                    <mi>k</mi>
+                    <mo>(</mo>
+                    <mi>j</mi>
+                    <mo>)</mo>
+                </mrow>
+            </msub>
+            <mo>)</mo>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>&#x1D49C;<sub>jk</sub></i></b> is the dynamically generated subset of row indices i where both x<sub>ij</sub>&ne;NA and x<sub>ik</sub>&ne;NA.</li>
+    <li><b><i>N<sub>jk</sub></i></b> is the total volume count of elements surviving inside the active intersection pool &#x1D49C;<sub>jk</sub>.</li>
+    <li><b><i>x&#x305;<sub>j(k)</sub></i></b> is the empirical mean of variable x<sub>j</sub> calculated exclusively across the available rows within &#x1D49C;<sub>jk</sub>.</li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Missing Completely at Random (MCAR): The probability of telemetry loss for any given metric is completely independent of the true values within the dataset.</li>
+    <li>Asymptotic Normality Support: The sample size within each isolated variable pair intersection remains large enough to satisfy traditional parametric statistical distributions.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Pairwise Deletion Forensic Engine
+# Purpose: Dynamically calculate a clean correlation matrix using all available case intersections
+
+analyze_pairwise_correlations <- function(relative_path) {
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target file not found:", full_data_path))
+  }
+  
+  raw_cargo <- read.csv(full_data_path, header = TRUE, na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  target_metrics <- c("Time", "Weight")
+  if (!all(target_metrics %in% colnames(raw_cargo))) {
+    stop("Schema Mapping Error: Core target evaluation metrics missing from incoming dataset.")
+  }
+  
+  raw_cargo$Time <- as.numeric(raw_cargo$Time)
+  raw_cargo$Weight <- as.numeric(raw_cargo$Weight)
+  
+  # Identify the precise intersection pool rows for Time and Weight
+  intersection_mask <- !is.na(raw_cargo$Time) & !is.na(raw_cargo$Weight)
+  intersection_data <- raw_cargo[intersection_mask, c("ID", "Carrier", "Time", "Weight")]
+  available_cases_count <- nrow(intersection_data)
+  
+  # Execute Pairwise Deletion for correlation modeling
+  pairwise_corr <- cor(raw_cargo[, target_metrics], use = "pairwise.complete.obs")
+  
+  # Generate integrated forensic customs report
+  cat("\n--- Logistical Pairwise Deletion Correlation Audit Complete ---\n")
+  cat(paste("Total Inflow Manifest Records Evaluated : ", nrow(raw_cargo), "\n"))
+  cat(paste("Active Case Intersection Pool Size (N) : ", available_cases_count, "\n\n"))
+  
+  cat("--- Isolated Pairwise Intersection Pool Records ---\n")
+  print(intersection_data)
+  cat("\n")
+  
+  cat("--- Calculated Parameter Correlation Matrix ---\n")
+  print(pairwise_corr)
+  cat("\n")
+  
+  return(list(correlation = pairwise_corr, intersection_pool = intersection_data))
+}
+
+audit_results <- analyze_pairwise_correlations("data_imp2.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+def analyze_pairwise_correlations(relative_path: str) -> dict:
+    """Ingests unstable data manifests, isolates the active intersection pool,
+    and computes a localized parameter correlation matrix across available cases.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    target_metrics = ["Time", "Weight"]
+    if not set(target_metrics).issubset(raw_cargo.columns):
+        raise KeyError(f"Schema Mapping Error: Missing target columns for pairwise execution.")
+        
+    raw_cargo["Time"] = pd.to_numeric(raw_cargo["Time"])
+    raw_cargo["Weight"] = pd.to_numeric(raw_cargo["Weight"])
+    
+    # Isolate only rows where both tracking parameters survive the missingness filter
+    intersection_data = raw_cargo.dropna(subset=target_metrics)[["ID", "Carrier"] + target_metrics].copy()
+    available_cases_count = len(intersection_data)
+    
+    # Execute Pairwise Deletion correlation calculation
+    pairwise_corr = raw_cargo[target_metrics].corr()
+    
+    # Generate integrated forensic customs report
+    print("\n--- Logistical Pairwise Deletion Correlation Audit Complete ---")
+    print(f"Total Inflow Manifest Records Evaluated : {len(raw_cargo)}")
+    print(f"Active Case Intersection Pool Size (N) : {available_cases_count}\n")
+    
+    print("--- Isolated Pairwise Intersection Pool Records ---")
+    print(intersection_data.to_string(index=False))
+    print("\n")
+    
+    print("--- Calculated Parameter Correlation Matrix ---")
+    print(pairwise_corr.to_string())
+    print("")
+    
+    return {"correlation": pairwise_corr, "intersection_pool": intersection_data}
+
+audit_results = analyze_pairwise_correlations("data_imp2.csv")
+    </div>
+
+<p><u>Dataset (data_imp2.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-202</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col"></td>
+                <td class="num-col">4800</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-203</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">13.9</td>
+                <td class="num-col">6100</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-204</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">19.4</td>
+                <td class="num-col">null</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-205</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col">18.8</td>
+                <td class="num-col">3900</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col"></td>
+                <td class="num-col"></td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5500</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u></p>
+
+<pre class="terminal-output">
+--- Logistical Pairwise Deletion Correlation Audit Complete ---
+Total Inflow Manifest Records Evaluated :  7 
+Active Case Intersection Pool Size (N) :  4 
+
+--- Isolated Pairwise Intersection Pool Records ---
+       ID Carrier Time Weight
+1 MNF-201 Fleet_A 14.2   5200
+3 MNF-203 Fleet_A 13.9   6100
+5 MNF-205 Fleet_B 18.8   3900
+7 MNF-207 Fleet_A 15.1   5500
+
+--- Calculated Parameter Correlation Matrix ---
+             Time     Weight
+Time    1.0000000 -0.9297581
+Weight -0.9297581  1.0000000
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-21">Method 21: Mean / Median / Mode Imputation</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">When discarding rows via deletion methods starves downstream algorithms of vital sample volume, the pipeline pivots to a deterministic replacement strategy: Mean / Median / Mode Imputation. Think of this method as a resourceful terminal dispatcher who refuses to halt a shipment or scrap a manifest due to a few blank spaces. Instead, this system evaluates the historical cargo profile of the missing parameter and instantly fills the void with a centralized baseline proxy. It calculates the arithmetic center for continuous metrics, the median checkpoint value for skewed distributions, or the most frequent category (mode) for discrete operational labels, keeping the data conveyor moving at maximum velocity.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">Central tendency imputation is deployed within data staging zones immediately following initial diagnostic scans, acting as a rapid, low-compute structural restoration tool. It is standard practice when downstream machine learning architecture or linear programming engines strictly prohibit structural holes (null values) but the data volume is too precious to sacrifice. It is widely utilized for stabilizing high-volume telemetry fields, tracking consistent warehouse metrics, and patching routine sensor drops where tracking precision can safely tolerate standardized baseline averages.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method provides an incredibly lean, high-velocity remediation shield that prevents downstream crashes without reducing your analytical sample size. By preserving the complete count of all incoming manifests, it ensures that your modeling fleets maintain maximum statistical volume and structural integrity. Furthermore, because calculating central tendencies requires minimal clock cycles and zero complex multi-pass modeling, it executes with near-zero computational overhead, heavily protecting your cloud processing budget during massive real-time data inflows.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, this convenient patch introduces a severe mathematical distortion: the artificial compression of data variance. By plugging multiple missing gaps with an identical, unyielding center value, the method completely flattens the natural distribution curve, making your operational tracking look significantly more uniform and stable than it is in reality. This variance deflation artificially shrinks standard errors and inflates t-statistics, deceptively signaling high statistical precision to management. Furthermore, if a continuous field like transport weight has a heavily skewed distribution, imputing the mean will pull the center toward extreme outliers, corrupting the baseline and masking critical logistical bottlenecks.</p>
+
+<p><u>Formula</u></p>
+<p style="margin-left: 40px;">The method replaces missing values within a targeted column vector X<sub>j</sub> by evaluating a conditional mathematical mapping function:</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mrow>
+                <mo>{</mo>
+                <mtable columnalign="left left" rowspacing="0.6ex" columnspacing="1.5em">
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mover>
+                                    <mi>x</mi>
+                                    <mo>&#x2DC;</mo>
+                                </mover>
+                                <mi>j</mi>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>i</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>=</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>i</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>i</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>&#x2260;</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                </mtable>
+            </mrow>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>x<sub>ij</sub></i></b> is the specific variable value located at the i-th row of the j-th cargo column.</li>
+    <li>NA represents an unrecorded, null, or corrupted data field.</li>
+    <li><b><i>x&#x303;<sub>j</sub></i></b> is the chosen operational central tendency metric calculated exclusively from the fully populated rows within that column, defined based on the variable's structure.</li>
+</ul>
+<ul style="list-style-type: circle; padding-left: 100px;">
+    <li>Mean (Continuous, Symmetric):
+<math>
+    <msub>
+        <mover>
+            <mi>x</mi>
+            <mo>&#x2DC;</mo>
+        </mover>
+        <mi>j</mi>
+    </msub>
+    <mo>=</mo>
+    <mfrac>
+        <mn>1</mn>
+        <mi>n</mi>
+    </mfrac>
+    <msubsup>
+        <mo>&#x2211;</mo>
+        <mrow>
+            <mi>i</mi>
+            <mo>=</mo>
+            <mn>1</mn>
+        </mrow>
+        <mi>n</mi>
+    </msubsup>
+    <msub>
+        <mi>x</mi>
+        <mrow>
+            <mi>i</mi>
+            <mi>j</mi>
+        </mrow>
+    </msub>
+</math>
+    </li>
+    <li>Median (Continuous, Skewed):
+<math>
+    <msub>
+        <mover>
+            <mi>x</mi>
+            <mo>&#x2DC;</mo>
+        </mover>
+        <mi>j</mi>
+    </msub>
+    <mo>=</mo>
+    <mi>m</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mi>i</mi>
+    <mi>a</mi>
+    <mi>n</mi>
+    <mo>(</mo>
+    <msub>
+        <mi>X</mi>
+        <mi>j</mi>
+    </msub>
+    <mo>)</mo>
+</math>
+    </li>
+    <li>Mode (Categorical/Discrete):
+<math>
+    <msub>
+        <mover>
+            <mi>x</mi>
+            <mo>&#x2DC;</mo>
+        </mover>
+        <mi>j</mi>
+    </msub>
+    <mo>=</mo>
+    <mi>a</mi>
+    <mi>r</mi>
+    <mi>g</mi>
+    <mi>m</mi>
+    <mi>a</mi>
+    <msub>
+        <mi>x</mi>
+        <mi>v</mi>
+    </msub>
+    <msubsup>
+        <mo>&#x2211;</mo>
+        <mrow>
+            <mi>i</mi>
+            <mo>=</mo>
+            <mn>1</mn>
+        </mrow>
+        <mi>n</mi>
+    </msubsup>
+    <mi>&#x1D540;</mi>
+    <mo>(</mo>
+    <msub>
+        <mi>x</mi>
+        <mrow>
+            <mi>i</mi>
+            <mi>j</mi>
+        </mrow>
+    </msub>
+    <mo>=</mo>
+    <mi>v</mi>
+    <mo>)</mo>
+</math>
+    </li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Missing at Random (MAR): The probability of missingness is completely independent of the unobserved missing values themselves, allowing historical observed centers to act as a fair proxy</li>
+    <li>Preservation of Centrality: The true, unobserved missing values are assumed to cluster tightly around the historical average or dominant category of the dataset.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Central Tendency Imputation Forensic Engine
+# Purpose: Automatically compute and embed mean, median, or mode proxies to fill data voids
+
+impute_central_tendency <- function(relative_path) {
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target file not found:", full_data_path))
+  }
+  
+  raw_cargo <- read.csv(full_data_path, header = TRUE, na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  # Ensure column casting integrity before central evaluations
+  raw_cargo$Time   <- as.numeric(raw_cargo$Time)
+  raw_cargo$Weight <- as.numeric(raw_cargo$Weight)
+  
+  # 1. Continuous Symmetric Vector: Impute missing 'Time' via Arithmetic Mean
+  calculated_mean <- mean(raw_cargo$Time, na.rm = TRUE)
+  raw_cargo$Time_Imputed <- ifelse(is.na(raw_cargo$Time), calculated_mean, raw_cargo$Time)
+  
+  # 2. Continuous Skewed Vector: Impute missing 'Weight' via Median
+  calculated_median <- median(raw_cargo$Weight, na.rm = TRUE)
+  raw_cargo$Weight_Imputed <- ifelse(is.na(raw_cargo$Weight), calculated_median, raw_cargo$Weight)
+  
+  # 3. Categorical Discrete Vector: Impute missing 'Carrier' via Mode
+  carrier_table <- table(raw_cargo$Carrier)
+  calculated_mode <- names(carrier_table)[which.max(carrier_table)]
+  raw_cargo$Carrier_Imputed <- ifelse(is.na(raw_cargo$Carrier) | raw_cargo$Carrier == "", calculated_mode, raw_cargo$Carrier)
+  
+  # Generate integrated forensic customs report
+  cat("\n--- Logistical Central Tendency Imputation Complete ---\n")
+  cat(paste("Computed Mean Proxy for Time     : ", round(calculated_mean, 2), "\n"))
+  cat(paste("Computed Median Proxy for Weight : ", round(calculated_median, 2), "\n"))
+  cat(paste("Computed Mode Proxy for Carrier  : ", calculated_mode, "\n\n"))
+  
+  cat("--- Restored Data Manifest Payload ---\n")
+  print(raw_cargo[, c("ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed")])
+  cat("\n")
+  
+  return(raw_cargo)
+}
+
+audit_results <- impute_central_tendency("data_imp3.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+def impute_central_tendency(relative_path: str) -> pd.DataFrame:
+    """Ingests unstable data manifests, automatically computes column-specific 
+    central tendencies, and applies infill modifications to seal structural voids.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    raw_cargo["Time"] = pd.to_numeric(raw_cargo["Time"])
+    raw_cargo["Weight"] = pd.to_numeric(raw_cargo["Weight"])
+    
+    # 1. Compute Continuous Metrics
+    calculated_mean = raw_cargo["Time"].mean()
+    calculated_median = raw_cargo["Weight"].median()
+    
+    # 2. Compute Categorical Mode
+    calculated_mode = raw_cargo["Carrier"].mode()[0]
+    
+    # 3. Apply Infill Operations
+    raw_cargo["Time_Imputed"] = raw_cargo["Time"].fillna(calculated_mean)
+    raw_cargo["Weight_Imputed"] = raw_cargo["Weight"].fillna(calculated_median)
+    raw_cargo["Carrier_Imputed"] = raw_cargo["Carrier"].fillna(calculated_mode)
+    
+    # Format primitive types for uniform output matrix tracking
+    raw_cargo["Weight_Imputed"] = raw_cargo["Weight_Imputed"].astype(float)
+    
+    # Generate integrated forensic customs report
+    print("\n--- Logistical Central Tendency Imputation Complete ---")
+    print(f"Computed Mean Proxy for Time     : {calculated_mean:.2f}")
+    print(f"Computed Median Proxy for Weight : {calculated_median:.2f}")
+    print(f"Computed Mode Proxy for Carrier  : {calculated_mode}\n")
+    
+    print("--- Restored Data Manifest Payload ---")
+    output_cols = ["ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed"]
+    print(raw_cargo[output_cols].to_string(index=False))
+    print("")
+    
+    return raw_cargo
+
+audit_results = impute_central_tendency("data_imp3.csv")
+
+    </div>
+
+<p><u>Dataset (data_imp3.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr style="color: red;" >
+                <td class="text-col">MNF-202</td>
+                <td class="text-col"></td>
+                <td class="num-col">16.5</td>
+                <td class="num-col">4800</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-203</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">13.9</td>
+                <td class="num-col">6100</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-204</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">19.4</td>
+                <td class="num-col">null</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-205</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col"></td>
+                <td class="num-col">3900</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col"></td>
+                <td class="num-col"></td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5500</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u><span style="color: red;"> Imputed values for features missing data are highlighed in red.</span></p>
+
+<pre class="terminal-output">
+--- Logistical Central Tendency Imputation Complete ---
+Computed Mean Proxy for Time     :  15.82 
+Computed Median Proxy for Weight :  5200 
+Computed Mode Proxy for Carrier  :  Fleet_A 
+
+--- Restored Data Manifest Payload ---
+       ID Carrier_Imputed Time_Imputed Weight_Imputed
+1 MNF-201         Fleet_A        14.20           5200
+2 MNF-202         <span style="color: red;">Fleet_A</span>        16.50           4800
+3 MNF-203         Fleet_A        13.90           6100
+4 MNF-204         Fleet_C        19.40           <span style="color: red;">5200</span>
+5 MNF-205         Fleet_B        <span style="color: red;">15.82</span>           3900
+6 MNF-206         Fleet_C        <span style="color: red;">15.82</span>           <span style="color: red;">5200</span>
+7 MNF-207         Fleet_A        15.10           5500
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-22">Method 22: Constant Imputation</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">When sealing data cavities with central statistics risks shifting your operational baseline or distorting standard error margins, the staging pipeline implements a strict deterministic alternative: Constant Imputation (also known as Fixed-Value Replacement). Think of this method as a precision routing supervisor who refuses to rely on historical averages or floating metrics to resolve a telemetry void. Instead of calculating a changing center, this protocol injects an unchanging, pre-allocated constant—such as a fixed regulatory standard, a baseline default value, or a specific indicator flag like "UNKNOWN"—directly into every empty cell. It creates a highly controlled, predictable shield that seals missing voids without introducing statistical drift.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">Constant value injection is deployed at the outermost data staging zones immediately preceding advanced modeling blocks or relational database transactions. It is standard engineering practice when missingness represents a specific operational state (e.g., an unassigned backup vehicle or a zeroed-out line credit) or when structural gaps must be safely flagged with extreme baseline parameters (like -999 or 0) to alert downstream validation filters. It is widely utilized across automated ledger audits, fixed manufacturing line tracking, and rigid logistics networks where variance safety boundaries must remain completely locked.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method establishes an exceptionally stable and predictable ingestion shield that avoids the continuous processing cycles of floating mathematical recalculations. By mapping missing parameters straight to an unchanging baseline target, it guarantees complete compatibility across strict relational databases and data warehouse schemas without altering the records' original sample volumes. Furthermore, because it replaces empty fields using direct structural assignment logic, it cuts down on computational runtime overhead, heavily protecting your server budget during high-velocity data streaming runs.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, this unyielding assignment process carries a significant operational risk: the distortion of underlying data relationships. By forcing multiple diverse data cavities into a single, uniform fixed-value mold, it creates artificial data spikes that permanently warp correlation matrices and deflate variance curves downstream. If a continuous field like delivery delay is filled with zeros instead of actual estimated values, downstream regression forecasting models will underpredict logistical risk, blinding management to supply chain disruption threats. This structural hazard requires data architecture teams to maintain precise, hardcoded replacement configurations, or risk corrupting automated inventory tracking systems.</p>
+
+<p><u>Formula</u></p>
+<p style="margin-left: 40px;">The method forces missing values inside a targeted variable column vector X<sub>j</sub> to a fixed, pre-allocated parameter value by evaluating a localized structural step function:</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mrow>
+                <mo>{</mo>
+                <mtable columnalign="left left" rowspacing="0.6ex" columnspacing="1.5em">
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mi>C</mi>
+                                <mrow>
+                                    <mi>i</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>i</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>=</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>i</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>i</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>&#x2260;</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                </mtable>
+            </mrow>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>x<sub>ij</sub></i></b> is the explicit parameter value located at the i-th row of the j-th data column vector.</li>
+    <li>NA represents an unrecorded, null, or corrupted data field cell.</li>
+    <li><b><i>C<sub>j</sub></i></b> is the rigid, pre-allocated operational constant value assigned specifically to the j-th column, determined at compile-time based on system design rules (e.g., C<sub>Time</sub> = 0.0), C<sub>Carrier</sub>= "UNASSIGNED").</li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Structural Intentionality: The occurrence of missingness within the data stream is assumed to represent a recognizable operational state that can be accurately described by a single static value.</li>
+    <li>Deterministic Boundary Boundaries: The chosen constant \(C_{j}\) is assumed to be structurally appropriate for the variable domain and will not trigger data-type or schema overflow errors downstream.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Constant Imputation Forensic Engine
+# Purpose: Enforce rigid fixed-value replacements across missing data parameters to secure stable arrays
+
+impute_constant_values <- function(relative_path) {
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target file not found:", full_data_path))
+  }
+  
+  raw_cargo <- read.csv(full_data_path, header = TRUE, na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  # Ensure column casting integrity before fixing values
+  raw_cargo$Time   <- as.numeric(raw_cargo$Time)
+  raw_cargo$Weight <- as.numeric(raw_cargo$Weight)
+  
+  # Define the Hardcoded Constant Blueprint (C_j)
+  time_constant    <- 0.0
+  weight_constant  <- -999.0
+  carrier_constant <- "UNASSIGNED"
+  
+  # Execute Vectorized Constant Value Replacement
+  raw_cargo$Time_Imputed    <- ifelse(is.na(raw_cargo$Time), time_constant, raw_cargo$Time)
+  raw_cargo$Weight_Imputed  <- ifelse(is.na(raw_cargo$Weight), weight_constant, raw_cargo$Weight)
+  raw_cargo$Carrier_Imputed <- ifelse(is.na(raw_cargo$Carrier) | raw_cargo$Carrier == "", carrier_constant, raw_cargo$Carrier)
+  
+  # Generate integrated forensic customs report
+  cat("\n--- Logistical Constant Imputation Audit Complete ---\n")
+  cat(paste("Applied Fixed Constant for Time    : ", time_constant, "\n"))
+  cat(paste("Applied Fixed Constant for Weight  : ", weight_constant, "\n"))
+  cat(paste("Applied Fixed Constant for Carrier : ", carrier_constant, "\n\n"))
+  
+  cat("--- Restored Data Manifest Payload ---\n")
+  print(raw_cargo[, c("ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed")])
+  cat("\n")
+  
+  return(raw_cargo)
+}
+
+audit_results <- impute_constant_values("data_imp4.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+def impute_constant_values(relative_path: str) -> pd.DataFrame:
+    """Ingests unstable data manifests, maps targeted columns to rigid pre-allocated 
+    constants, and updates structural variables to seal data voids.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    raw_cargo["Time"] = pd.to_numeric(raw_cargo["Time"])
+    raw_cargo["Weight"] = pd.to_numeric(raw_cargo["Weight"])
+    
+    # Define the Hardcoded Constant Blueprint (C_j)
+    constant_map = {
+        "Time": 0.0,
+        "Weight": -999.0,
+        "Carrier": "UNASSIGNED"
+    }
+    
+    # Execute Constant Value Replacement using localized fillna dictionaries
+    raw_cargo["Time_Imputed"] = raw_cargo["Time"].fillna(constant_map["Time"])
+    raw_cargo["Weight_Imputed"] = raw_cargo["Weight"].fillna(constant_map["Weight"])
+    raw_cargo["Carrier_Imputed"] = raw_cargo["Carrier"].fillna(constant_map["Carrier"])
+    
+    # Generate integrated forensic customs report
+    print("\n--- Logistical Constant Imputation Audit Complete ---")
+    print(f"Applied Fixed Constant for Time    : {constant_map['Time']}")
+    print(f"Applied Fixed Constant for Weight  : {constant_map['Weight']}")
+    print(f"Applied Fixed Constant for Carrier : {constant_map['Carrier']}\n")
+    
+    print("--- Restored Data Manifest Payload ---")
+    output_cols = ["ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed"]
+    print(raw_cargo[output_cols].to_string(index=False))
+    print("")
+    
+    return raw_cargo
+
+audit_results = impute_constant_values("data_imp4.csv")
+    </div>
+
+<p><u>Dataset (data_imp4.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-202</td>
+                <td class="text-col"></td>
+                <td class="num-col">16.5</td>
+                <td class="num-col">4800</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-203</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">13.9</td>
+                <td class="num-col">6100</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-204</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">19.4</td>
+                <td class="num-col">null</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-205</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col"></td>
+                <td class="num-col">3900</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col"></td>
+                <td class="num-col"></td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5500</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u><span style="color: red;"> Imputed values for features missing data are highlighed in red.</span></p>
+
+<pre class="terminal-output">
+--- Logistical Constant Imputation Audit Complete ---
+Applied Fixed Constant for Time    :  0 
+Applied Fixed Constant for Weight  :  -999 
+Applied Fixed Constant for Carrier :  UNASSIGNED 
+
+--- Restored Data Manifest Payload ---
+       ID Carrier_Imputed Time_Imputed Weight_Imputed
+1 MNF-201         Fleet_A         14.2           5200
+2 MNF-202      <span style="color: red;">UNASSIGNED</span>         16.5           4800
+3 MNF-203         Fleet_A         13.9           6100
+4 MNF-204         Fleet_C         19.4           <span style="color: red;">-999</span>
+5 MNF-205         Fleet_B          <span style="color: red;">0.0</span>           3900
+6 MNF-206         Fleet_C          <span style="color: red;">0.0</span>           <span style="color: red;">-999</span>
+7 MNF-207         Fleet_A         15.1           5500
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-23">Method 23: Last Observation Carried Forward</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">When data tracking fields occur across a rolling time horizon, standard central tendency or constant injections can destroy the underlying chronological narrative. In these environments, the pipeline implements Last Observation Carried Forward (LOCF). Think of this method as an automated tracking supervisor monitoring a continuous shipping pipeline. When a remote sensor experiences a temporary telemetry dropout, LOCF assumes that the operational environment remains unchanged until a new reading proves otherwise. It duplicates the last successfully recorded parameter value forward through time to bridge the gap, keeping the real-time routing engines synchronized.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">LOCF is standard operating procedure within longitudinal tracking pipelines, automated asset movement logs, and industrial process monitoring systems. It is deployed when data points are collected sequentially and missingness is caused by random transmission drops rather than physical structural changes. It is heavily utilized for maintaining continuous lines in machinery temperature logs, tracking carrier transit coordinates over dead zones, and stabilizing high-frequency market pricing indicators where the most recent observation provides the most logical proxy.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method establishes a highly intuitive, timeline-aware restoration layer that maintains the sequential flow of chronological data matrices. By applying a rolling carry-forward mechanism, it fills telemetry voids without requiring complex multi-variable predictive modeling or high-end database calls. Furthermore, it naturally tracks shifts in baseline thresholds over long horizons, ensuring that short dropouts do not cause downstream forecasting models to drop valuable time-series segments or trigger false alarm system shutdowns.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, this chronological carry-forward introduces a critical structural defect: the artificial stabilization of time-series variance. By copying an identical value forward across long time gaps, it hides the natural fluctuation of the process, making a volatile shipping line appear deceptively stable. If an asset experiences a critical breakdown immediately following a sensor drop, LOCF will blindly project a "normal operational status" forward through time, hiding the disaster from your engineering team. This risk forces data architecture teams to implement strict time-out limits to prevent stale parameters from propagating across long periods.</p>
+
+<p><u>Formula</u></p>
+<p style="margin-left: 40px;">The method resolves missingness across an ordered time-series vector X<sub>j</sub> sorted by a structural temporal index t by evaluating a recursive carry-forward rule:</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mrow>
+                <mo>{</mo>
+                <mtable columnalign="left left" rowspacing="0.6ex" columnspacing="1.5em">
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t-1,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>=</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>&#x2260;</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                </mtable>
+            </mrow>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>x<sub>t,j</sub></i></b> is the explicit parameter value located at the t-th chronological step of the j-th variable vector.</li>
+    <li>NA represents an unrecorded, null, or corrupted data field cell.</li>
+    <li><b><i>x<sub>t-1,j</sub></i></b> is the immediately preceding sequential value within that same column. The function applies this assignment recursively down the vector until a new, valid data payload is encountered.</li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Temporal Stability: The underlying operational parameter is assumed to be highly correlated with its own past, meaning changes occur gradually rather than in sudden, volatile spikes.</li>
+    <li>Chronological Sorting: The input matrix is strictly ordered by a valid, uniform time-series or sequence tracking index before execution.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+audit_results <- impute_constant_values("data_imp4.csv")
+
+
+# Last Observation Carried Forward (LOCF) Forensic Engine
+# Purpose: Dynamically carry forward the most recent non-missing value down an ordered time-series stream
+
+impute_locf_sequence <- function(relative_path) {
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target file not found:", full_data_path))
+  }
+  
+  raw_cargo <- read.csv(full_data_path, header = TRUE, na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  # Ensure column casting integrity and strict chronological sorting before rolling forward
+  raw_cargo$Time   <- as.numeric(raw_cargo$Time)
+  raw_cargo$Weight <- as.numeric(raw_cargo$Weight)
+  
+  # Execute LOCF natively via sequential looping to preserve zero-package dependencies
+  locf_vector_continuous <- function(vec) {
+    if (length(vec) == 0) return(vec)
+    last_valid <- vec[1]
+    for (i in 1:length(vec)) {
+      if (is.na(vec[i])) {
+        vec[i] <- last_valid
+      } else {
+        last_valid <- vec[i]
+      }
+    }
+    return(vec)
+  }
+  
+  locf_vector_categorical <- function(vec) {
+    if (length(vec) == 0) return(vec)
+    last_valid <- vec[1]
+    for (i in 1:length(vec)) {
+      if (is.na(vec[i]) || vec[i] == "") {
+        vec[i] <- last_valid
+      } else {
+        last_valid <- vec[i]
+      }
+    }
+    return(vec)
+  }
+  
+  # Apply the chronological carry-forward across target fields
+  raw_cargo$Time_Imputed    <- locf_vector_continuous(raw_cargo$Time)
+  raw_cargo$Weight_Imputed  <- locf_vector_continuous(raw_cargo$Weight)
+  raw_cargo$Carrier_Imputed <- locf_vector_categorical(raw_cargo$Carrier)
+  
+  # Generate integrated forensic customs report
+  cat("\n--- Logistical Last Observation Carried Forward Complete ---\n")
+  cat("Processing sequencing tracking vector: Sequential carry applied.\n\n")
+  
+  cat("--- Restored Sequential Data Manifest Payload ---\n")
+  print(raw_cargo[, c("ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed")])
+  cat("\n")
+  
+  return(raw_cargo)
+}
+
+audit_results <- impute_locf_sequence("data_imp5.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+def impute_locf_sequence(relative_path: str) -> pd.DataFrame:
+    """Ingests sequential data manifests, verifies chronological vector structures, 
+    and applies Last Observation Carried Forward (LOCF) infill logic to seal tracking gaps.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    raw_cargo["Time"] = pd.to_numeric(raw_cargo["Time"])
+    raw_cargo["Weight"] = pd.to_numeric(raw_cargo["Weight"])
+    
+    # Execute LOCF using pandas ffill() (forward fill) which natively carries the last valid observation forward
+    raw_cargo["Time_Imputed"] = raw_cargo["Time"].ffill()
+    raw_cargo["Weight_Imputed"] = raw_cargo["Weight"].ffill()
+    raw_cargo["Carrier_Imputed"] = raw_cargo["Carrier"].ffill()
+    
+    # Generate integrated forensic customs report
+    print("\n--- Logistical Last Observation Carried Forward Complete ---")
+    print("Processing sequential tracking vector: Timeline ffill operators executed.\n")
+    
+    print("--- Restored Sequential Data Manifest Payload ---")
+    output_cols = ["ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed"]
+    print(raw_cargo[output_cols].to_string(index=False))
+    print("")
+    
+    return raw_cargo
+
+audit_results = impute_locf_sequence("data_imp5.csv")
+    </div>
+
+<p><u>Dataset (data_imp5.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-202</td>
+                <td class="text-col"></td>
+                <td class="num-col">16.5</td>
+                <td class="num-col">4800</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-203</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">13.9</td>
+                <td class="num-col">6100</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-204</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">19.4</td>
+                <td class="num-col">null</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-205</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col"></td>
+                <td class="num-col">3900</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col"></td>
+                <td class="num-col"></td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5500</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u><span style="color: red;"> Imputed values for features missing data are highlighed in red.</span></p>>
+
+<pre class="terminal-output">
+--- Logistical Last Observation Carried Forward Complete ---
+Processing sequencing tracking vector: Sequential carry applied.
+
+--- Restored Sequential Data Manifest Payload ---
+       ID Carrier_Imputed Time_Imputed Weight_Imputed
+1 MNF-201         Fleet_A         14.2           5200
+2 MNF-202         <span style="color: red;">Fleet_A</span>         16.5           4800
+3 MNF-203         Fleet_A         13.9           6100
+4 MNF-204         Fleet_C         19.4           <span style="color: red;">6100</span>
+5 MNF-205         Fleet_B         <span style="color: red;">19.4</span>           3900
+6 MNF-206         Fleet_C         <span style="color: red;">19.4</span>           <span style="color: red;">3900</span>
+7 MNF-207         Fleet_A         15.1           5500
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-24">Method 24: Next Observation Carried Backward</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">When chronological time-series fields require a look-ahead alignment rather than a carry-forward projection, the data staging line implements Next Observation Carried Backward (NOCB). Think of this method as an analytical tracking supervisor who encounters an early sensor blackout and resolves it by looking upstream at the next successful checkpoint entry. When a rolling log suffers an early telemetry dropout, NOCB assumes that the upcoming state is the most accurate proxy for the preceding missing interval. It takes the next valid observation in the queue and copies it backward through time to fill the void, ensuring historical alignment before the next major distribution wave.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">NOCB is standard practice inside retrospective batch auditing, contract validation pipelines, and back-testing frameworks for time-series forecasting models. It is specifically deployed when an analytical run operates on a historical ledger and missing parameters must align directly with a known future target state, such as back-dating a newly assigned regional shipping profile to unassigned preceding runs. It is widely utilized for stabilizing early baseline drops in longitudinal inventory queues, filling initial telemetry dead zones, and matching backward-compatible tracking indexes across sequential supplier manifests.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method establishes a reliable, retrospective restoration layer that aligns early missing gaps directly with upcoming real-world data points. By applying a backwards roll, it seals chronological voids cleanly without introducing synthetic noise or floating central tendencies that warp early data segments. Furthermore, it protects sample counts from collapsing at the very beginning of structural tracking intervals, ensuring that downstream machine learning models and multi-period linear programming engines receive a completely continuous timeline.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, this look-ahead method introduces a critical structural flaw: the violation of chronological causality (Data Leakage). By retroactively injecting a future data point backward into a past time frame, you are allowing information from the future to influence past analytical steps. If an automated routing model uses this patched data to simulate historical operational decisions, it will make choices based on information that would have been impossible to know in real-time, completely invalidating your back-testing results and blinding your engineering team to historical volatility risk.</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mrow>
+                <mo>{</mo>
+                <mtable columnalign="left left" rowspacing="0.6ex" columnspacing="1.5em">
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t+1,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>=</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                    <mtr>
+                        <mtd>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                        </mtd>
+                        <mtd>
+                            <mtext>if&#x2004;</mtext>
+                            <msub>
+                                <mi>x</mi>
+                                <mrow>
+                                    <mi>t,</mi>
+                                    <mi>j</mi>
+                                </mrow>
+                            </msub>
+                            <mo>&#x2260;</mo>
+                            <mi>N</mi>
+                            <mi>A</mi>
+                        </mtd>
+                    </mtr>
+                </mtable>
+            </mrow>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>x<sub>t,j</sub></i></b> is the explicit parameter value located at the t-th chronological step of the j-th variable vector.</li>
+    <li>NA represents an unrecorded, null, or corrupted data field cell.</li>
+    <li><b><i>x<sub>t+1,j</sub></i></b> is the immediately succeeding sequential value within that same column. The algorithm applies this assignment recursively up the vector until it encounters the baseline data payload.</li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Backward-Compatible Consistency: The upcoming operational parameter state is assumed to be a valid and stable representation of the immediate preceding time interval.</li>
+    <li>Rigid Sequential Ordering: The input dataset is strictly sorted by a valid, uniform time-series or sequence tracking index before execution begins.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Next Observation Carried Backward (NOCB) Forensic Engine
+# Purpose: Dynamically carry backward the next valid observation up an ordered time-series stream
+
+impute_nocb_sequence <- function(relative_path) {
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target file not found:", full_data_path))
+  }
+  
+  raw_cargo <- read.csv(full_data_path, header = TRUE, na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  # Ensure column casting integrity and strict chronological sorting before rolling backward
+  raw_cargo$Time   <- as.numeric(raw_cargo$Time)
+  raw_cargo$Weight <- as.numeric(raw_cargo$Weight)
+  
+  # Execute NOCB natively via sequential looping to preserve zero-package dependencies
+  nocb_vector_continuous <- function(vec) {
+    n <- length(vec)
+    if (n == 0) return(vec)
+    last_valid <- vec[n]
+    for (i in n:1) {
+      if (is.na(vec[i])) {
+        vec[i] <- last_valid
+      } else {
+        last_valid <- vec[i]
+      }
+    }
+    return(vec)
+  }
+  
+  nocb_vector_categorical <- function(vec) {
+    n <- length(vec)
+    if (n == 0) return(vec)
+    last_valid <- vec[n]
+    for (i in n:1) {
+      if (is.na(vec[i]) || vec[i] == "") {
+        vec[i] <- last_valid
+      } else {
+        last_valid <- vec[i]
+      }
+    }
+    return(vec)
+  }
+  
+  # Apply the chronological carry-backward across target fields
+  raw_cargo$Time_Imputed    <- nocb_vector_continuous(raw_cargo$Time)
+  raw_cargo$Weight_Imputed  <- nocb_vector_continuous(raw_cargo$Weight)
+  raw_cargo$Carrier_Imputed <- nocb_vector_categorical(raw_cargo$Carrier)
+  
+  # Generate integrated forensic customs report
+  cat("\n--- Logistical Next Observation Carried Backward Complete ---\n")
+  cat("Processing sequencing tracking vector: Sequential backward carry applied.\n\n")
+  
+  cat("--- Restored Sequential Data Manifest Payload ---\n")
+  print(raw_cargo[, c("ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed")])
+  cat("\n")
+  
+  return(raw_cargo)
+}
+
+audit_results <- impute_nocb_sequence("data_imp6.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+def impute_nocb_sequence(relative_path: str) -> pd.DataFrame:
+    """Ingests sequential data manifests, verifies chronological vector structures, 
+    and applies Next Observation Carried Backward (NOCB) infill logic to seal tracking gaps.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    raw_cargo["Time"] = pd.to_numeric(raw_cargo["Time"])
+    raw_cargo["Weight"] = pd.to_numeric(raw_cargo["Weight"])
+    
+    # Execute NOCB using pandas bfill() (backward fill) which natively carries the next valid observation backward
+    raw_cargo["Time_Imputed"] = raw_cargo["Time"].bfill()
+    raw_cargo["Weight_Imputed"] = raw_cargo["Weight"].bfill()
+    raw_cargo["Carrier_Imputed"] = raw_cargo["Carrier"].bfill()
+    
+    # Generate integrated forensic customs report
+    print("\n--- Logistical Next Observation Carried Backward Complete ---")
+    print("Processing sequential tracking vector: Timeline bfill operators executed.\n")
+    
+    print("--- Restored Sequential Data Manifest Payload ---")
+    output_cols = ["ID", "Carrier_Imputed", "Time_Imputed", "Weight_Imputed"]
+    print(raw_cargo[output_cols].to_string(index=False))
+    print("")
+    
+    return raw_cargo
+
+audit_results = impute_nocb_sequence("data_imp6.csv")
+    </div>
+
+<p><u>Dataset (data_imp6.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-202</td>
+                <td class="text-col"></td>
+                <td class="num-col">16.5</td>
+                <td class="num-col">4800</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-203</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">13.9</td>
+                <td class="num-col">6100</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-204</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">19.4</td>
+                <td class="num-col">null</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-205</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col"></td>
+                <td class="num-col">3900</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col"></td>
+                <td class="num-col"></td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5500</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u><span style="color: red;"> Imputed values for features missing data are highlighed in red.</span></p>
+
+<pre class="terminal-output">
+--- Logistical Next Observation Carried Backward Complete ---
+Processing sequencing tracking vector: Sequential backward carry applied.
+
+--- Restored Sequential Data Manifest Payload ---
+       ID Carrier_Imputed Time_Imputed Weight_Imputed
+1 MNF-201         Fleet_A         14.2           5200
+2 MNF-202         <span style="color: red;">Fleet_A</span>         16.5           4800
+3 MNF-203         Fleet_A         13.9           6100
+4 MNF-204         Fleet_C         19.4           <span style="color: red;">3900</span>
+5 MNF-205         Fleet_B         <span style="color: red;">15.1</span>           3900
+6 MNF-206         Fleet_C         <span style="color: red;">15.1</span>           <span style="color: red;">5500</span>
+7 MNF-207         Fleet_A         15.1           5500
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-25">Method 25: Linear Interpolation</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">Welcome to the continuous-flow pipeline grid of your data transit ecosystem. When the unyielding, blunt-force purge of Listwise Deletion shrinks your observational cargo volume below safe operating margins, and crude centrality patches threaten to warp your underlying variance distributions, your staging network activates Linear Interpolation. Think of this method as an agile, on-the-fly bridge-building crew stationed across a moving chronological rail line. When a sudden, temporary telemetry dropout shatters a sequential data vector, this protocol refuses to stall operations or leave an empty crater. Instead, it surveys the structural anchors immediately preceding and following the gap, mapping a straight, first-order trajectory to dynamically manufacture local, mathematically balanced proxy coordinates. It ensures your time-series conveyor continues gliding forward at maximum operational velocity without dropping a single chronological link.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">Linear Interpolation is deployed as standard practice inside real-time longitudinal tracking lines, high-frequency fuel consumption monitors, and continuous automated inventory queues. It is specifically activated within data staging zones to patch temporary sensor blackouts, bridge periodic transmission blips over dead zones, and stitch together sequential telemetry metrics where data points exhibit a clear, rolling chronological dependency.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method establishes a highly intuitive, timeline-aware restoration layer that preserves the underlying chronological narrative without reducing your analytical sample volume or introducing the severe distribution flattening seen in central tendency injections. Because it restricts its lookup to the localized coordinate steps surrounding the missing void, it tracks fluid baseline shifts smoothly over time, preventing downstream multi-period optimizations from throwing false-alarm runtime failures. Operating entirely via deterministic, first-order geometric calculations, it seals your data cavities with near-instantaneous compilation speeds, keeping your cloud compute processing expenditures minimal.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, deploying this look-ahead and carry-back repair crew introduces a significant structural hazard: The Straight-Line Deception. By bridging spatial voids with perfectly uniform, unyielding line segments, the method completely masks localized, high-frequency volatility or sudden spikes that may have occurred inside the blind spot. If a critical physical asset experiences a catastrophic breakdown or an extreme temperature surge precisely during a sensor drop, Linear Interpolation will blindly draw a smooth, peaceful transit path over the disaster, completely hiding the supply chain failure from your engineering dashboard. Furthermore, if the telemetry gap occurs at the absolute perimeter of your tracking interval, the algorithm lacks the necessary downstream anchor point, causing the interpolation math to collapse and forcing database architecture teams to implement alternative boundary rules.</p>
+
+<p><u>Formula</u></p>
+<p style="margin-left: 40px;">The method forces missing values across a sequentially ordered variable vector X<sub>j</sub> sorted by a structural temporal tracking index t by computing the first-order linear coordinate step between the bounding observed nodes:</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>t</mi>
+                    <mo>,</mo>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <msub>
+                <mi>x</mi>
+                <mrow>
+                    <mi>a</mi>
+                    <mo>,</mo>
+                    <mi>j</mi>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <mfrac>
+                <mrow>
+                    <mo>(</mo>
+                    <mi>t</mi>
+                    <mo>&#x2212;</mo>
+                    <mi>a</mi>
+                    <mo>)</mo>
+                    <mo>(</mo>
+                    <msub>
+                        <mi>x</mi>
+                        <mrow>
+                            <mi>b</mi>
+                            <mo>,</mo>
+                            <mi>j</mi>
+                        </mrow>
+                    </msub>
+                    <mo>&#x2212;</mo>
+                    <msub>
+                        <mi>x</mi>
+                        <mrow>
+                            <mi>a</mi>
+                            <mo>,</mo>
+                            <mi>j</mi>
+                        </mrow>
+                    </msub>
+                    <mo>)</mo>
+                </mrow>
+                <mrow>
+                    <mo>(</mo>
+                    <mi>b</mi>
+                    <mo>&#x2212;</mo>
+                    <mi>a</mi>
+                    <mo>)</mo>
+                </mrow>
+            </mfrac>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>t</i></b> is the chronological index step containing an unrecorded, null, or missing telemetry field cell (x<sub>t,j</sub> = NA).</li>
+    <li><b><i>a</i></b> is the closest preceding sequential index step where a valid, type-invariant observation exists (a < t).</li>
+    <li><b><i>b</i></b> is the closest succeeding sequential index step where a valid, type-invariant observation exists (b > t).</li>
+    <li><b><i>x<sub>a,j</sub></i></b> and <b><i>x<sub>b,j</sub></i></b> are the explicit historical parameters anchoring the local spatial boundary line.</li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Temporal Continuity: The true, unobserved missing parameters are assumed to follow a smooth, gradual geometric path heavily correlated with local chronological step neighbors rather than displaying erratic, unpredictable structural shifts.</li>
+    <li>Rigid Sequential Ordering: The incoming data matrix is strictly sorted and uniformly indexed by a valid timeline or sequence parameter prior to execution.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Linear Interpolation Bridge Engine
+# Purpose: Stitch structural temporal gaps using localized first-order geometry
+impute_linear_interpolation <- function(relative_path) {
+  
+  # Construct complete cross-platform path to the ingestion yard
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target manifest file not found at locator:", full_data_path))
+  }
+  
+  # Ingest raw cargo logs, preserving empty spaces as NA strings
+  raw_cargo <- read.csv(full_data_path, header = TRUE, 
+                        na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  # Ensure column casting integrity before running geometric loops
+  raw_cargo$Sequence <- as.numeric(raw_cargo$Sequence)
+  raw_cargo$Time <- as.numeric(raw_cargo$Time)
+  raw_cargo$Weight <- as.numeric(raw_cargo$Weight)
+  
+  # Enforce strict chronological sequence ordering
+  raw_cargo <- raw_cargo[order(raw_cargo$Sequence), ]
+  
+  # Base R Vectorized Linear Interpolation Logic (Zero External Dependencies)
+  interpolate_vector <- function(x, y) {
+    if (length(y) == 0) return(y)
+    na_indices <- which(is.na(y))
+    if (length(na_indices) == 0) return(y)
+    
+    # Core approximation pass mirroring classic approx() functionality
+    interpolated_values <- approx(x, y, xout = x, method = "linear")$y
+    return(interpolated_values)
+  }
+  
+  # Deploy the interpolation crew across continuous data metrics
+  raw_cargo$Time_Imputed <- interpolate_vector(raw_cargo$Sequence, raw_cargo$Time)
+  raw_cargo$Weight_Imputed <- interpolate_vector(raw_cargo$Sequence, raw_cargo$Weight)
+  
+  # Generate integrated forensic customs report
+  cat("\n--- Logistical Linear Interpolation Bridge Audit Complete ---\n")
+  cat("Processing chronological sequence vector: First-order line segments active.\n\n")
+  
+  print(raw_cargo[, c("ID", "Sequence", "Time", "Time_Imputed", "Weight", "Weight_Imputed")])
+  cat("\n")
+  
+  return(raw_cargo)
+}
+
+# Execute the interpolation engine pointing directly to your local folder
+audit_results <- impute_linear_interpolation("data_imp7.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+def impute_linear_interpolation(relative_path: str) -> pd.DataFrame:
+    """Ingests sequential data manifests, verifies chronological vector structures,
+    and applies first-order Linear Interpolation to seal tracking gaps.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    # Cast variables explicitly to enforce structural compliance
+    raw_cargo["Sequence"] = pd.to_numeric(raw_cargo["Sequence"])
+    raw_cargo["Time"] = pd.to_numeric(raw_cargo["Time"])
+    raw_cargo["Weight"] = pd.to_numeric(raw_cargo["Weight"])
+    
+    # Enforce rigid sequential sorting prior to interpolation passes
+    raw_cargo = raw_cargo.sort_values(by="Sequence").reset_index(drop=True)
+    
+    # Execute Linear Interpolation using pandas native interpolate framework
+    # set_index ensures interpolation happens relative to the chronological timeline gap scale
+    raw_cargo = raw_cargo.set_index("Sequence")
+    raw_cargo["Time_Imputed"] = raw_cargo["Time"].interpolate(method="linear")
+    raw_cargo["Weight_Imputed"] = raw_cargo["Weight"].interpolate(method="linear")
+    raw_cargo = raw_cargo.reset_index()
+    
+    # Generate integrated forensic customs report
+    print("\n--- Logistical Linear Interpolation Bridge Audit Complete ---")
+    print("Processing sequential tracking vector: Timeline coordinate step operators executed.\n")
+    
+    output_cols = ["ID", "Sequence", "Time", "Time_Imputed", "Weight", "Weight_Imputed"]
+    print(raw_cargo[output_cols].to_string(index=False))
+    print("")
+    
+    return raw_cargo
+
+# Execute the engine pointing directly to your local file
+audit_results = impute_linear_interpolation("data_imp7.csv")
+    </div>
+
+<p><u>Dataset (data_imp7.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="num-col">Sequence</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="num-col">1</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-202</td>
+                <td class="num-col">2</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5000</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-203</td>
+                <td class="num-col">3</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">16.0</td>
+                <td class="num-col">NaN</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-204</td>
+                <td class="num-col">4</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">NaN</td>
+                <td class="num-col">4600</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-205</td>
+                <td class="num-col">5</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col">17.8</td>
+                <td class="num-col">4300</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="num-col">6</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">18.7</td>
+                <td class="num-col">NaN</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="num-col">7</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">19.6</td>
+                <td class="num-col">3700</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u><span style="color: red;"> Imputed values for features missing data are highlighed in red.</span></p>
+
+<pre class="terminal-output">
+--- Logistical Linear Interpolation Bridge Audit Complete ---
+Processing chronological sequence vector: First-order line segments active.
+
+       ID Sequence Time Time_Imputed Weight Weight_Imputed
+1 MNF-201        1 14.2         14.2   5200           5200
+2 MNF-202        2 15.1         15.1   5000           5000
+3 MNF-203        3 16.0         16.0    NaN           <span style="color: red;">4800</span>
+4 MNF-204        4  NaN         <span style="color: red;">16.9</span>   4600           4600
+5 MNF-205        5 17.8         17.8   4300           4300
+6 MNF-206        6 18.7         18.7    NaN           <span style="color: red;">4000</span>
+7 MNF-207        7 19.6         19.6   3700           3700
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2 id="Method-26">Method 26: Spline Interpolation</h2>
+
+<p><u>Background</u></p>
+<p style="margin-left: 40px;">Welcome back to the advanced cross-docking deck of the logistics infrastructure. When standard coordinate stitching via Linear Interpolation drops a sequence of rigid, sharp-angled lines across your time-series queues, it introduces geometric stress points that fail to model organic, fluid acceleration. To bypass this mechanical stiffening, your pipeline shifts into high-gear routing physics: Spline Interpolation. Think of this protocol as an elite engineering squad armed with flexible, heavy-duty structural rails instead of generic wooden planks. Rather than constructing blunt, point-to-point connections over a string of sensor dropouts, this system fits multi-degree piecewise polynomial functions across your missing intervals. It matches up first and second derivatives at every single coordinate checkpoint boundary to map a continuous curve. The result is a smooth, frictionless mathematical pathway that mirrors real-world velocity profiles and keeps your downstream forecasting convoys flying along at peak precision.</p>
+
+<p><u>Usage</u></p>
+<p style="margin-left: 40px;">Spline Interpolation is deployed as standard procedure inside retrospective batch audits, long-range freight capacity forecasting engines, and complex multi-period spatial optimization loops. It is specifically engineered to patch multi-interval telemetry voids where underlying metrics possess an inherently smooth or cyclical physics constraint—such as recording a transport vessel's rolling physical coordinate drift or measuring long-horizon warehousing humidity trends.</p>
+
+<p><u>Benefits</u></p>
+<p style="margin-left: 40px;">This method establishes a sophisticated, curve-aware restoration layer that maintains mathematical continuity across your entire dataset, preventing downstream neural transformers or optimization models from misinterpreting raw linear seams as sudden, artificial step shocks. By matching velocity changes seamlessly at every observed milestone, it accurately models underlying logistical trends across deep spatial cavities, saving your core predictive infrastructure from throwing out unmatched, fragmented time-series records.</p>
+
+<p><u>Cautions</u></p>
+<p style="margin-left: 40px;">However, deploying this look-ahead curve-fitting specialist exposes your tracking tables to The Whiplash Anomaly (Runge's Phenomenon). If your sequence contains volatile, sudden localized jumps or tight step adjustments immediately adjacent to a telemetry gap, the spline logic will dramatically overcorrect. This forces wide, erratic mathematical oscillations inside the blind spot that create hallucinated, extreme values out of thin air. If a cargo weight field experiences a small true shift, a loose cubic spline may project a wild, phantom baseline dip that drops your metrics beneath absolute zero or breaches maximum container safety boundaries—corrupting downstream inventory tracking. This hazard demands that database teams rigorously audit spatial boundary tolerances before feeding inputs directly to active automation rails.</p>
+
+<p><u>Formula</u></p>
+<p style="margin-left: 40px;">The method forces missing values across an ordered column vector X<sub>j</sub> by assembling a series of third-order piecewise cubic polynomials S<sub>i</sub> (t) uniquely mapped between every pair of observed historical points:</p>
+
+<div class="container">
+    <div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; text-align: center; margin: 30px auto;">
+        <math display="block">
+            <msub>
+                <mi>S</mi>
+                <mi>i</mi>
+            </msub>
+            <mo>(</mo>
+            <mi>t</mi>
+            <mo>)</mo>
+            <mo>=</mo>
+            <msub>
+                <mi>a</mi>
+                <mi>i</mi>
+            </msub>
+            <mo>+</mo>
+            <msub>
+                <mi>b</mi>
+                <mi>i</mi>
+            </msub>
+            <mo>(</mo>
+            <mi>t</mi>
+            <mo>&#x2212;</mo>
+            <msub>
+                <mi>t</mi>
+                <mi>i</mi>
+            </msub>
+            <mo>)</mo>
+            <mo>+</mo>
+            <msub>
+                <mi>c</mi>
+                <mi>i</mi>
+            </msub>
+            <msup>
+                <mrow>
+                    <mo>(</mo>
+                    <mi>t</mi>
+                    <mo>&#x2212;</mo>
+                    <msub>
+                        <mi>t</mi>
+                        <mi>i</mi>
+                    </msub>
+                    <mo>)</mo>
+                </mrow>
+                <mn>2</mn>
+            </msup>
+            <mo>+</mo>
+            <msub>
+                <mi>d</mi>
+                <mi>i</mi>
+            </msub>
+            <msup>
+                <mrow>
+                    <mo>(</mo>
+                    <mi>t</mi>
+                    <mo>&#x2212;</mo>
+                    <msub>
+                        <mi>t</mi>
+                        <mi>i</mi>
+                    </msub>
+                    <mo>)</mo>
+                </mrow>
+                <mn>3</mn>
+            </msup>
+            <mtext>&#x2004;for&#x2004;</mtext>
+            <mi>t</mi>
+            <mo>&#x2208;</mo>
+            <mo>[</mo>
+            <msub>
+                <mi>t</mi>
+                <mi>i</mi>
+            </msub>
+            <mo>,</mo>
+            <msub>
+                <mi>t</mi>
+                <mrow>
+                    <mi>i</mi>
+                    <mo>+</mo>
+                    <mn>1</mn>
+                </mrow>
+            </msub>
+            <mo>]</mo>
+        </math>
+    </div>
+</div>
+
+<p style="margin-left: 40px;">Where:</b:</p>
+<ul style="padding-left: 60px;">
+    <li><b><i>t</i></b> represents the chronological or sequential tracking index containing an unrecorded or missing variable payload cell (x<sub>t,j</sub> = NA).</li>
+    <li><b><i>t<sub>i</sub></i></b> and <b><i>t<sub>i+1</sub></i></b> are the explicit historical milestones bounding the active missing segment loop.</li>
+    <li>The coefficients <b><i>a<sub>ij</sub></i></b>, <b><i>b<sub>ij</sub></i></b>, <b><i>c<sub>ij</sub></i></b>, and <b><i>d<sub>ij</sub></i></b> are computed globally across the entire matrix by solving a tridiagonal linear equation system that enforces three structural invariant conditions:</li>
+</ul>
+<ul style="list-style-type: circle; padding-left: 100px;">
+    <li>Structural Continuity: S<sub>i</sub>(t<sub>i+1</sub>)=S<sub>i+1</sub>(t<sub>i+1</sub>) [The local curves must stitch together perfectly at the nodes].</li>
+    <li>Velocity Alignment: S<sub>i</sub><sup>'</sup>(t<sub>i+1</sub>)=S<sub>i+1</sub><sup>'</sup>(t<sub>i+1</sub>) [The first derivatives match, eliminating sharp trajectory corners].</li>
+    <li>Acceleration Balance: S<sub>i</sub><sup>''</sup>(t<sub>i+1</sub>)=S<sub>i+1</sub><sup>''</sup>(t<sub>i+1</sub>) [The second derivatives match to secure smooth, non-linear transitions].</li>
+</ul>
+
+<p><u>Assumptions</u></p>
+<ul style="padding-left: 60px;">
+    <li>Mathematical Differentiability: The real-world logistical process is assumed to behave smoothly and continuously, where changes in parameters occur as flowing curves rather than jagged, erratic jumps.</li>
+    <li>Rigid Sequential Ordering: The incoming data manifest is completely sorted by a uniform sequence index containing a minimum of four distinct historical anchor observations to compute polynomial coefficients.</li>
+</ul>
+
+<p><u>R Script Execution</u></p>
+<p style="margin-left: 40px;">The following optimized R script framework generates a clean, warning-free code for this analytic method. The system defaults strictly to a Natural Cubic Spline. This explicitly forces the second derivatives at the outermost boundary points to zero. This prevents the polynomial from bending wildly at the edges of your chronological queue.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="r-script-section">
+# Cubic Spline Interpolation Engine
+# Purpose: Forge highly smooth piecewise curves preserving mathematical continuity
+impute_spline_interpolation <- function(relative_path) {
+  
+  # Construct complete cross-platform path to the ingestion yard
+  full_data_path <- file.path(getwd(), "data", relative_path)
+  
+  if (!file.exists(full_data_path)) {
+    stop(paste("Execution Error: Target file not found at locator:", full_data_path))
+  }
+  
+  # Ingest raw cargo logs, preserving empty spaces as NA strings
+  raw_cargo <- read.csv(full_data_path, header = TRUE, 
+                        na.strings = c("", "NA", "null"), stringsAsFactors = FALSE)
+  
+  # Cast variables to numeric types to ensure computational compliance
+  raw_cargo$Sequence <- as.numeric(raw_cargo$Sequence)
+  raw_cargo$Time <- as.numeric(raw_cargo$Time)
+  raw_cargo$Weight <- as.numeric(raw_cargo$Weight)
+  
+  # Enforce rigid sequential sorting prior to interpolation passes
+  raw_cargo <- raw_cargo[order(raw_cargo$Sequence), ]
+  
+  # Base R Vectorized Cubic Spline Logic (Zero External Dependencies)
+  spline_vector <- function(x, y) {
+    if (length(y) == 0) return(y)
+    na_indices <- which(is.na(y))
+    if (length(na_indices) == 0) return(y)
+    
+    # Core approximation pass utilizing natural cubic spline algorithms
+    interpolated_values <- spline(x, y, xout = x, method = "natural")$y
+    return(interpolated_values)
+  }
+  
+  # Deploy the curve-fitting crew across continuous data metrics
+  raw_cargo$Time_Imputed <- spline_vector(raw_cargo$Sequence, raw_cargo$Time)
+  raw_cargo$Weight_Imputed <- spline_vector(raw_cargo$Sequence, raw_cargo$Weight)
+  
+  # Generate integrated forensic customs report
+  cat("\n--- Logistical Spline Interpolation Curve Audit Complete ---\n")
+  cat("Processing chronological sequence vector: Natural cubic spline continuity active.\n\n")
+  
+  print(raw_cargo[, c("ID", "Sequence", "Time", "Time_Imputed", "Weight", "Weight_Imputed")])
+  cat("\n")
+  
+  return(raw_cargo)
+}
+
+# Execute the curve-fitting engine pointing directly to your local file
+audit_results <- impute_spline_interpolation("data_imp8.csv")
+    </div>
+
+<p><u>Python Script Execution</u></p>
+<p style="margin-left: 40px;">The following Python translation directly replicates the R script's architecture by generating a clean, warning-free code for this analytic method.  The default execution path here is a clamped cubic spline or a smoothing spline that does not set the boundary second derivatives to zero by default. Instead, it estimates coefficients to minimize global optimization constraints.</p>
+
+    <!-- Stylized Code/Script Container Profile -->
+    <div class="python-script-section">
+def impute_spline_interpolation(relative_path: str) -> pd.DataFrame:
+    """Ingests sequential data manifests, verifies chronological vector structures,
+    and applies Cubic Spline Interpolation to seal tracking gaps via smooth curves.
+    """
+    data_dir = Path("./data")
+    data_dir.mkdir(exist_ok=True)
+    file_path = data_dir / relative_path
+    
+    if not file_path.exists():
+        raise FileNotFoundError(f"Execution Error: Target file not found: {file_path}")
+        
+    raw_cargo = pd.read_csv(file_path, header=0, na_values=["", "NA", "null", "NaN"])
+    
+    # Cast variables explicitly to enforce structural compliance
+    raw_cargo["Sequence"] = pd.to_numeric(raw_cargo["Sequence"])
+    raw_cargo["Time"] = pd.to_numeric(raw_cargo["Time"])
+    raw_cargo["Weight"] = pd.to_numeric(raw_cargo["Weight"])
+    
+    # Enforce rigid sequential sorting prior to interpolation passes
+    raw_cargo = raw_cargo.sort_values(by="Sequence").reset_index(drop=True)
+    
+    # Execute Cubic Spline Interpolation using pandas native interpolate framework
+    # Index must be set to ensure spline geometry resolves across the true tracking timeline
+    raw_cargo = raw_cargo.set_index("Sequence")
+    raw_cargo["Time_Imputed"] = raw_cargo["Time"].interpolate(method="spline", order=3)
+    raw_cargo["Weight_Imputed"] = raw_cargo["Weight"].interpolate(method="spline", order=3)
+    raw_cargo = raw_cargo.reset_index()
+    
+    # Generate integrated forensic customs report
+    print("\n--- Logistical Spline Interpolation Curve Audit Complete ---")
+    print("Processing sequential tracking vector: Piecewise polynomial coefficients executed.\n")
+    
+    output_cols = ["ID", "Sequence", "Time", "Time_Imputed", "Weight", "Weight_Imputed"]
+    print(raw_cargo[output_cols].to_string(index=False))
+    print("")
+    
+    return raw_cargo
+
+# Execute the engine pointing directly to your local file
+audit_results = impute_spline_interpolation("data_imp8.csv")
+    </div>
+
+<p><u>Dataset (data_imp8.csv)</u><span style="color: red;"> Observations with features missing data are highlighed in red.</span></p>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr class="top-border bottom-border">
+                <th class="text-col">ID</th>
+                <th class="num-col">Sequence</th>
+                <th class="text-col">Carrier</th>
+                <th class="num-col">Time</th>
+                <th class="num-col">Weight</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-col">MNF-201</td>
+                <td class="num-col">1</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">14.2</td>
+                <td class="num-col">5200</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-202</td>
+                <td class="num-col">2</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">15.1</td>
+                <td class="num-col">5000</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-203</td>
+                <td class="num-col">3</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">16.0</td>
+                <td class="num-col">NaN</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-204</td>
+                <td class="num-col">4</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">NaN</td>
+                <td class="num-col">4600</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-205</td>
+                <td class="num-col">5</td>
+                <td class="text-col">Fleet_B</td>
+                <td class="num-col">17.8</td>
+                <td class="num-col">4300</td>
+            </tr>
+            <tr style="color: red;">
+                <td class="text-col">MNF-206</td>
+                <td class="num-col">6</td>
+                <td class="text-col">Fleet_C</td>
+                <td class="num-col">18.7</td>
+                <td class="num-col">NaN</td>
+            </tr>
+            <tr>
+                <td class="text-col">MNF-207</td>
+                <td class="num-col">7</td>
+                <td class="text-col">Fleet_A</td>
+                <td class="num-col">19.6</td>
+                <td class="num-col">3700</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p><u>Output</u><span style="color: red;"> Imputed values for features missing data are highlighed in red.</span></p>
+
+<p style="text-align: center;">R Script</p>
+<pre class="terminal-output">
+--- Logistical Spline Interpolation Curve Audit Complete ---
+Processing chronological sequence vector: Natural cubic spline continuity active.
+
+       ID Sequence Time Time_Imputed Weight Weight_Imputed
+1 MNF-201        1 14.2         14.2   5200       5200.000
+2 MNF-202        2 15.1         15.1   5000       5000.000
+3 MNF-203        3 16.0         16.0    NaN       <span style="color: red;">4819.355</span>
+4 MNF-204        4  NaN         <span style="color: red;">16.9</span>   4600       4600.000
+5 MNF-205        5 17.8         17.8   4300       4300.000
+6 MNF-206        6 18.7         18.7    NaN       <span style="color: red;">3995.161</span>
+7 MNF-207        7 19.6         19.6   3700       3700.000
+</pre>
+
+<p style="text-align: center;">Python Script</p>
+<pre class="terminal-output">
+--- Logistical Spline Interpolation Curve Audit Complete ---
+Processing sequential tracking vector: Piecewise polynomial coefficients executed.
+
+     ID  Sequence  Time  Time_Imputed  Weight  Weight_Imputed
+MNF-201         1  14.2          14.2  5200.0     5200.000000
+MNF-202         2  15.1          15.1  5000.0     5000.000000
+MNF-203         3  16.0          16.0     NaN     <span style="color: red;">4819.688788</span>
+MNF-204         4   NaN          <span style="color: red;">16.9</span>  4600.0     4600.000000
+MNF-205         5  17.8          17.8  4300.0     4300.000000
+MNF-206         6  18.7          18.7     NaN     <span style="color: red;">3977.882425</span>
+MNF-207         7  19.6          19.6  3700.0     3700.000000
+</pre>
+
+<a href="#TOC">Return to List of Methods</a>
+
+<hr style="background-color:gray; height:2px;">
+
+<h2>Repairing Data Gaps</h2>
+
+<p>This group of methods successfully deployed its data-cleaning fleet to repair broken shipping streams caused by missing manifests and sensor dropouts. To secure the intake lines against incomplete files, the terminal used Listwise Deletion to completely discard corrupted rows, acting as a strict customs barrier to stop bad data from stalling downstream route-planning engines. When low cargo volumes threatened to starve the predictive pipeline, Pairwise Deletion salvaged usable individual cells instead of scrapping the whole record. Routine transmission gaps were patched with standard statistical averages using Mean, Median, or Mode Imputation, while unassigned inventory states were stabilized with Constant Imputation, inserting fixed placeholder values to prevent costly server recalculation delays.</p>
+
+<p>The pipeline then restored rolling dispatch timelines and sequential transit gaps using timeline-aware operators. For brief communication dead zones when trucks entered cellular blind spots, Last Observation Carried Forward projected the last known telemetry status forward, while Next Observation Carried Backward worked in reverse to backfill past timelines for batch delivery verification. Mid-transit data gaps were connected with straight-line trajectories using Linear Interpolation. Finally, Spline Interpolation wove smooth, curving mathematical pathways across larger operational voids to eliminate sharp tracking jumps, delivering a flawless, continuous data cargo ready for live supply chain execution.</p>
+
+<a href="#TOC">Return to List of Methods</a>
+
+</body>
+</html>
+
